@@ -1,0 +1,103 @@
+/* CARD */
+.card-inner > div {
+	flex: 1 1 100%;
+	padding: 0.8rem 1rem;
+}
+.card-inner > div:not(:first-child) {
+	border-left: 1px solid var(--border);
+	padding-left: 1rem;
+}
+.dashboard-main > div {
+	padding: 1.2rem 1.5rem;
+}
+.dashboard-main > div:not(:first-child) {
+	border-top: 1px solid var(--border);
+}
+
+@media (max-width: 430px) {
+	.dashboard-main > div {
+		padding: 1.2rem 0.8rem;
+	}
+
+	.card-inner > div {
+		/* flex: 1 1 100%; */
+		padding: 0.8rem 0.5rem;
+		gap: 0.3rem;
+	}
+	.card-inner > div:not(:first-child) {
+		padding-left: 0.5rem;
+	}
+}
+
+/* Pagination */
+.pagination {
+	list-style: none;
+	position: relative;
+	margin-top: auto;
+	padding: 0.8rem 0.8rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	gap: 8px;
+	font-size: 0.8rem;
+}
+
+.pagination .page-num {
+	padding: 4px 8px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.pagination .active {
+	background-color: #ccc;
+}
+
+.disabled-btn {
+	background: #000 !important;
+}
+
+/* Remove scrollbar */
+.remove-scrollbar::-webkit-scrollbar {
+	width: 0px;
+	height: 0px;
+	display: none;
+}
+
+.remove-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.remove-scrollbar::-webkit-scrollbar-thumb {
+	background: transparent;
+	border-radius: 0px;
+}
+
+/* SCROLLBAR */
+.scrollbar-thin {
+	scrollbar-color: initial initial;
+	scrollbar-color: var(--scrollbar-thumb, initial)
+		var(--scrollbar-track, initial);
+	scrollbar-width: thin;
+}
+
+/* SVGS */
+.stroke-variant path {
+	stroke: var(--secondary) !important;
+}
+
+.triangle * {
+	fill: var(--secondary) !important;
+}
+
+/* NAVLINK */
+
+.nav-link:hover,
+.nav-link:hover * {
+	color: var(--foreground-variant);
+	stroke: var(--secondary) !important;
+}
+
+/* TABLE OVERRIDE */
+.shad-table-row-header th:has(.select-field) {
+	padding-left: 0 !important;
+}
