@@ -36,7 +36,7 @@ export const AddStaffSchema = yup.object().shape({
 		.required("Field is required"),
 });
 
-export const CongfigSchema = yup.object().shape({
+export const ConfigSchema = yup.object().shape({
 	customerBasicFee: yup.number().min(2, "Too low").max(5000, "Too high"),
 	customerLuxuryFee: yup.number().min(2, "Too low").max(5000, "Too high"),
 	driverComissionAmount: yup.number().min(2, "Too low").max(5000, "Too high"),

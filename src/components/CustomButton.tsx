@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { IconType } from "react-icons/lib";
 import ClipLoader from "react-spinners/ClipLoader";
-import { BtnLoader } from "./fallback/FallbackLoader";
 
 type BtnProps = {
 	title: string;

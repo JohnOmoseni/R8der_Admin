@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ArrowRight } from "@/constants/icons";
 import { DataTable } from "@/components/table/DataTable";
 import { customerColumns } from "@/components/table/columns/customerColumn";
 import { useGetRiders } from "@/hook/useGetOverview";

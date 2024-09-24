@@ -2,30 +2,29 @@ import { Button } from "@/components/CustomButton";
 import CustomFormField, {
 	FormFieldType,
 } from "@/components/forms/CustomFormField";
-import { driverColumn } from "@/components/table/columns/driverColumn";
-import { CongfigSchema } from "@/schema/validation";
+import { ConfigSchema } from "@/schema/validation";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { InferType } from "yup";
 
-function Config({ user }: { user: any }) {
+function Config({ user }: { user?: any }) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const initialValues = {
-		cusomerBasicFee: user?.basicFee,
-		cusomerLuxuryFee: user?.luxuryFee,
+		customerBasicFee: user?.basicFee,
+		customerLuxuryFee: user?.luxuryFee,
 		driverComissionType: "percentage",
 		driverCommissionAMount: user?.commissionAMount,
 	};
 
-	const onSubmit = (values: InferType<typeof CongfigSchema>) => {
+	const onSubmit = (values: InferType<typeof ConfigSchema>) => {
 		setIsLoading(true);
 		console.log(values);
 	};
 
 	const { values, setFieldValue, handleChange, handleSubmit } = useFormik({
 		initialValues,
-		validationSchema: CongfigSchema,
+		validationSchema: ConfigSchema,
 		onSubmit,
 	});
 
