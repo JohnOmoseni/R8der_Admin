@@ -14,7 +14,7 @@ function Config({ user }: { user?: any }) {
 		customerBasicFee: user?.basicFee,
 		customerLuxuryFee: user?.luxuryFee,
 		driverComissionType: "percentage",
-		driverCommissionAMount: user?.commissionAMount,
+		driverComissionAmount: user?.commissionAMount,
 	};
 
 	const onSubmit = (values: InferType<typeof ConfigSchema>) => {
