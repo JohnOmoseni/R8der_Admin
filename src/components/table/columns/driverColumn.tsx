@@ -51,6 +51,13 @@ export const driverColumn: ColumnDef<DriverType>[] = [
 				<StatusBadge status={row.original?.status!} />
 			</div>
 		),
+		enableColumnFilter: true,
+		filterFn: (row, columnId, filterValue) => {
+			const status = row.getValue(columnId) as string;
+			if (filterValue.toLowerCase() === "all") return true;
+
+			return status?.toLowerCase() === filterValue.toLowerCase();
+		},
 	},
 	{
 		accessorKey: "totalTrips",

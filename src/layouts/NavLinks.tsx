@@ -9,14 +9,14 @@ export type NavLinkProps = SidebarLinksProp & {
 	idx?: number;
 };
 
-function NavLinks({ label, href, tag, icon: Icon, idx }: NavLinkProps) {
+function NavLinks({ label, href, icon: Icon, idx }: NavLinkProps) {
 	const { pathname } = useLocation();
 	const isActive = pathname === href;
 
 	const { openMenu } = useAppSelector((state) => state.appState);
 	const dispatch = useAppDispatch();
 
-	const handleClick = (tag: string) => {
+	const handleClick = () => {
 		if (openMenu) dispatch(setOpenMenu(false));
 	};
 
@@ -25,7 +25,7 @@ function NavLinks({ label, href, tag, icon: Icon, idx }: NavLinkProps) {
 			<Link
 				to={href}
 				{...animateFn(linksAni, idx)}
-				onClick={() => handleClick(tag!)}
+				onClick={() => handleClick()}
 				className="row-flex-start gap-3 p-1 transition-all"
 			>
 				<Icon className={cn(isActive && "stroke-variant", "size-5")} />

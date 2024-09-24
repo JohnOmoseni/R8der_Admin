@@ -1,14 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 import dayjs from "dayjs";
-
-// export function handleFallback(
-//   error: Error | null,
-//   loading: boolean,
-// ): ReactNode {
-//   if (error) return <ErrorModal />;
-
-//   if (loading) return <Loading loading={loading} />;
-// }
 
 export const handleApiError = (error: any, message?: string) => {
 	console.error(`API Error - ${message}:`, error);
@@ -25,8 +17,16 @@ export const handleApiError = (error: any, message?: string) => {
 	throw error;
 };
 
-export const getDateRange = (value: string) => {
+export const getDateRange = (value: string | Date) => {
 	const today = dayjs().format("YYYY-MM-DD");
+
+	if (value instanceof Date) {
+		const formattedDate = dayjs(value).format("YYYY-MM-DD");
+		return {
+			startDate: formattedDate,
+			endDate: today,
+		};
+	}
 
 	switch (value) {
 		case "today":
@@ -57,8 +57,8 @@ export const getDateRange = (value: string) => {
 		case "custom":
 			// Assuming you will let the user input custom dates in the UI
 			return {
-				startDate: "2024-07-01", // You can modify this with actual custom input values
-				endDate: "2024-09-09", // Modify this as needed
+				startDate: "2024-07-01",
+				endDate: "2024-09-09",
 			};
 		default:
 			return {
@@ -80,7 +80,6 @@ export const copyToClipBoard = (
 				[key]: true,
 			}));
 
-			// Reset after a few seconds
 			setTimeout(() => {
 				setCopiedStatus((prevStatus) => ({
 					...prevStatus,
@@ -89,6 +88,7 @@ export const copyToClipBoard = (
 			}, 2000); // Reset the copy status after 2 seconds
 		},
 		(error) => {
+			toast.error("Error copying text", { description: error.message });
 			setCopiedStatus((prevStatus) => ({
 				...prevStatus,
 				[key]: false,

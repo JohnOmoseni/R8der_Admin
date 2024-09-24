@@ -7,6 +7,7 @@ import { requestApi } from "@/server/actions";
 import {
 	DriverDetailsType,
 	DriverType,
+	GetAllEmployeesType,
 	GetByIdParams,
 	GetDriversResponse,
 	GetOverviewParams,
@@ -267,5 +268,26 @@ export const useGetDriverDetails = ({
 			};
 		},
 		enabled: Boolean(driverId),
+	});
+};
+
+// STAFFS ----------------------------------------------------------------
+// GET ALL STAFFS
+
+export const useGetStaffs = () => {
+	return useQuery({
+		queryKey: ["getStaffsAndAdmins"],
+		queryFn: () => requestApi.getAllEmployee(),
+
+		select: (data) => {
+			const res: GetAllEmployeesType[] = data.data;
+
+			const employees = res?.map((item) => ({
+				...item,
+				roleName: item?.roleName === "admin-user" ? "Admin" : "Staff",
+			}));
+
+			return employees;
+		},
 	});
 };

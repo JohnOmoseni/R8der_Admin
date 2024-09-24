@@ -12,7 +12,7 @@ import {
 export const routes = {
 	ROOT: "/",
 	LOGIN: "/signin",
-	UNAUTH: "/unauthorized",
+	UNAUTH: "/dashboard",
 	DASHBOARD: "/dashboard",
 	PUBLIC_ROUTES: ["/signin", "/signup"],
 	ADMIN_ROUTES: ["/dashboard/staffs", "/dashboard/withdrawals"],
@@ -67,7 +67,7 @@ export const sidebarLinks = [
 		allowedRoles: [APP_ROLES.Admin],
 	},
 	{
-		label: "Inhouse Staffs",
+		label: "Staffs",
 		href: "/dashboard/staffs",
 		tag: "staffs",
 		icon: User,

@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 
 export const APP_ROLES = {
-	Admin: "Admin",
-	User: "User",
-	Staff: "Staff",
+	Admin: "ADMIN",
+	User: "USER",
+	Staff: "STAFF",
 };
 
 export type Status =
@@ -19,9 +19,13 @@ export type Status =
 	| "ACCEPTED"
 	| "IN_PROGRESS"
 	| "FAILED"
-	| "DEACTIVATED";
+	| "DEACTIVATED"
+	| "Verified"
+	| "Not Verified"
+	| "Active"
+	| "Deactivated";
 
-export type ROLE = "admin" | "staff";
+export type ROLE = "ADMIN" | "STAFF";
 
 export type User = {
 	userId: string;

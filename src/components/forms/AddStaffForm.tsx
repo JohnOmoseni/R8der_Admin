@@ -8,20 +8,29 @@ import FormWrapper from "./FormWrapper";
 import CustomFormField, { FormFieldType } from "./CustomFormField";
 import { SelectItem } from "../ui/select";
 import { Envelope } from "@/constants/icons";
+import { useAddStaff } from "@/hook/usePostQuery";
+import { ROLE } from "@/types";
+import { useNavigate } from "react-router-dom";
 
-const AddStaffForm = ({ user }: { user?: any }) => {
-	const [isLoading, setIsLoading] = useState(false);
+const AddStaffForm = () => {
+	const newStaffMutation = useAddStaff();
+	const navigate = useNavigate();
 
 	const onSubmit = async (values: InferType<typeof AddStaffSchema>) => {
-		setIsLoading(true);
 		console.log(values);
 
 		try {
+			const data = {
+				fullName: values.name,
+				email: values.email,
+				roleStatus: values.role as ROLE,
+			};
+
+			await newStaffMutation.mutateAsync(data);
+			toast.success("Staff added successfully");
+			navigate("/dashboard/add-staff/success");
 		} catch {
 			toast.error("Error adding staff");
-			// toastNotify(toast, "Error adding staff");
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -35,9 +44,9 @@ const AddStaffForm = ({ user }: { user?: any }) => {
 		handleSubmit,
 	} = useFormik({
 		initialValues: {
-			name: user?.name || "",
-			email: user?.email || "",
-			role: user?.role || "",
+			name: "",
+			email: "",
+			role: "",
 		},
 		validationSchema: AddStaffSchema,
 		onSubmit,
@@ -47,7 +56,7 @@ const AddStaffForm = ({ user }: { user?: any }) => {
 		<FormWrapper
 			buttonLabel="Add Staff"
 			onSubmit={handleSubmit}
-			isSubmitting={isLoading}
+			isSubmitting={newStaffMutation?.isPending}
 		>
 			<CustomFormField
 				fieldType={FormFieldType.INPUT}
@@ -88,10 +97,10 @@ const AddStaffForm = ({ user }: { user?: any }) => {
 				errors={errors}
 				touched={touched}
 			>
-				<SelectItem value="admin" className="shad-select-item">
+				<SelectItem value="ADMIN" className="shad-select-item">
 					Admin
 				</SelectItem>
-				<SelectItem value="staff" className="shad-select-item">
+				<SelectItem value="STAFF" className="shad-select-item">
 					Staff
 				</SelectItem>
 			</CustomFormField>

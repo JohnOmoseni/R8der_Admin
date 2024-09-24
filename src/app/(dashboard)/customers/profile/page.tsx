@@ -30,7 +30,7 @@ function CustomerProfile() {
 	};
 
 	return (
-		<SectionWrapper headerTitle="Customers" mainContainerStyles="py-6 ">
+		<SectionWrapper headerTitle="Customers" mainContainerStyles="py-6 px-4">
 			<div className="flex-column gap-6">
 				<BackArrow />
 

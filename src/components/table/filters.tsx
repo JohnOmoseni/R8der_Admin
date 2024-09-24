@@ -1,8 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
 import SelectDropdown from "../ui/components/SelectDropdown";
-import { FilterIcon } from "lucide-react";
-import { DropdownList } from "../ui/components/DropdownList";
 
 type Props = {
 	setSelectedFilter: Dispatch<SetStateAction<string>>;
@@ -10,12 +8,17 @@ type Props = {
 	isSelected?: string;
 	columnId?: string;
 	setColumnFilters?: any;
+	options?: {
+		label: string;
+		value: string;
+	}[];
+	placeholder?: string;
 };
 
-const options = [
-	{ label: "All", value: "All" },
-	{ label: "Verified", value: "VERIFIED" },
-	{ label: "Not-verified", value: "NOT_VERIFIED" },
+const defaultOptions = [
+	{ label: "All", value: "all" },
+	{ label: "Verified", value: "Verified" },
+	{ label: "Not-verified", value: "Not Verified" },
 ];
 
 function Filters({
@@ -23,6 +26,8 @@ function Filters({
 	selectedFilter,
 	setColumnFilters,
 	columnId = "role",
+	options = defaultOptions,
+	placeholder,
 }: Props) {
 	const selectedStyle = "!bg-foreground text-secondary-foreground shadow-sm";
 
@@ -40,28 +45,14 @@ function Filters({
 			<div className="sm:hidden block">
 				<SelectDropdown
 					value={selectedFilter}
+					defaultValue={options[0]}
 					options={options}
+					placeholder={placeholder}
 					onChangeHandler={handleClick}
-					trigger={
-						<div className="row-flex-start gap-2">
-							<FilterIcon className="size-4" />
-							<p>Filter by status</p>
-						</div>
-					}
-				/>
-
-				<DropdownList
-					list={options}
-					trigger={
-						<div className="row-flex-start gap-2">
-							<FilterIcon className="size-4" />
-							<p>Filter by status</p>
-						</div>
-					}
 				/>
 			</div>
 
-			<div className="sm:row-flex-start gap-3.5 max-[430px]:gap-1.5 hidden">
+			<div className="sm:row-flex-start gap-3.5 max-[430px]:gap-1.5 hidden cursor-pointer">
 				{options?.map((option) => (
 					<div
 						key={option.value}

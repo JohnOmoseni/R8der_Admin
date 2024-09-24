@@ -20,19 +20,21 @@ function Header({
 			<div className="row-flex-btwn gap-6">
 				<h2 className="capitalize">{title || "Overview"}</h2>
 
-				<div className="row-flex gap-4">
+				<div className="row-flex gap-3">
 					{customContent && customContent()}
 
 					<div
 						className={cn(
-							"hidden place-items-center md:grid",
-							customContent && "pl-4"
+							"hidden place-items-center sm:grid",
+							customContent && "pl-2"
 						)}
 					>
 						<TooltipWrapper
 							trigger={
-								<span className="icon-div">
+								<span className="icon-div relative">
 									<Bell className="size-5" />
+
+									<span className="absolute size-2 bg-red-500 rounded-full right-[0.42rem] top-[0.2rem]"></span>
 								</span>
 							}
 							content={<p className="p-1 text-center">Notification</p>}

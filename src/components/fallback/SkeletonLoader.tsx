@@ -67,7 +67,7 @@ export function SkeletonLoader({}: Props) {
 							<div key={idx} className="flex-column gap-3.5">
 								<div className="row-flex-btwn !items-start gap-4">
 									<div className="flex-column gap-1.5">
-										<span className="skeleton"></span>
+										<span className="skeleton max-sm:!w-[70px] md:max-[840px]:!w-[78px] max-[450px]:!w-[50px]"></span>
 										<p className="skeleton !h-2.5 !w-9" />
 									</div>
 									<div className="size-5 rounded-full bg-background-skeleton text-grey" />

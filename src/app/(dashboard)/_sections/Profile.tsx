@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { copyToClipBoard } from "@/utils";
-import { Copy } from "@/constants/icons";
+import { Check, Copy } from "@/constants/icons";
 import {
 	customerInfoMapper,
 	driverInfoMapper,
@@ -83,7 +83,11 @@ function Profile({
 							className="cursor-pointer group-hover:max-sm:block sm:hidden"
 							onClick={() => handleCopyValue(info[key], key)}
 						>
-							<Copy className="size-5" />
+							{copiedStatus[key] ? (
+								<Check className="size-5" />
+							) : (
+								<Copy className="size-5" />
+							)}
 						</div>
 
 						<div

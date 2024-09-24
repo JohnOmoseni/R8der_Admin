@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 import FallbackLoader from "@/components/fallback/FallbackLoader";
 import Menu from "@/layouts/Menu";
 
-function LayoutProvider({ children }: { children?: React.ReactNode }) {
+function LayoutProvider() {
 	const dispatch = useAppDispatch();
 	const { openMenu } = useAppSelector((state) => state.appState);
 

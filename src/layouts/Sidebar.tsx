@@ -10,9 +10,9 @@ import {
 } from "@/constants/icons";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import AvatarWrapper from "@/components/ui/components/AvatarWrapper";
-import ClipLoader from "react-spinners/ClipLoader";
 import { useState } from "react";
+import { BtnLoader } from "@/components/fallback/FallbackLoader";
+import AvatarWrapper from "@/components/ui/components/AvatarWrapper";
 
 const LinkRow = ({ href, icon: Icon, label, tag }: SidebarLinksProp) => {
 	const link =
@@ -28,9 +28,9 @@ const LinkRow = ({ href, icon: Icon, label, tag }: SidebarLinksProp) => {
 				className="nav-link row-flex-start size-full gap-1.5 py-1 font-semibold transition-all group-hover:scale-105"
 				to={href}
 			>
-				<Icon className={cn(isActive && "stroke-variant", "size-5")} />
+				<Icon className={cn(isActive && "stroke-variant", "size-[22px]")} />
 
-				{label}
+				<span className="mt-0.5 font-semibold">{label}</span>
 			</Link>
 		</li>
 	);
@@ -79,7 +79,7 @@ function Sidebar() {
 					</ul>
 				</div>
 
-				<div className="mx-auto mt-auto fixed bottom-0 w-72">
+				<div className="mx-auto mt-auto bottom-0 w-72">
 					<div className="mb-6 mt-12">
 						<div className="pl-[50px]">
 							<div className="row-flex-start gap-2.5">
@@ -112,14 +112,7 @@ function Sidebar() {
 								</span>
 
 								{isLoading ? (
-									<ClipLoader
-										loading={isLoading}
-										size={18}
-										color={"red"}
-										aria-label="Loading"
-										data-testid="loader"
-										className="row-flex mr-1.5 text-secondary"
-									/>
+									<BtnLoader isLoading={isLoading} />
 								) : (
 									<Logout className="h-fit w-5" />
 								)}

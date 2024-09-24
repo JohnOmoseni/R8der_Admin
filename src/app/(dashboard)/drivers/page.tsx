@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "@/constants/icons";
 import { DataTable } from "@/components/table/DataTable";
 import { useState } from "react";
 import { driverColumn } from "@/components/table/columns/driverColumn";
@@ -8,12 +7,13 @@ import { DriverType } from "@/types/server";
 import { toast } from "sonner";
 import { useGetDrivers } from "@/hook/useGetOverview";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
+import { useApproveDriver, useRejectDriver } from "@/hook/usePostQuery";
+import { BtnLoader } from "@/components/fallback/FallbackLoader";
 
 import clsx from "clsx";
 import SectionWrapper from "@/layouts/SectionWrapper";
 import TableSearch from "@/components/table/TableSearch";
 import Filters from "@/components/table/filters";
-import { useApproveDriver, useRejectDriver } from "@/hook/usePostQuery";
 
 function Drivers() {
 	const [selectedRows, setSelectedRows] = useState<DriverType[]>([]);
@@ -47,16 +47,23 @@ function Drivers() {
 	const handleAction = async (id: "approve" | "reject") => {
 		const selectedIds = selectedRows.map((row) => row.driverId);
 
-		if (id === "approve") {
-			try {
-				// const response = await axios.post("/api/drivers/select", {
-				// 	ids: selectedIds,
-				// });
-				// console.log("Request successful:", response);
-			} catch (error) {
-				console.error("Error sending request:", error);
-			}
+		if (selectedIds.length === 0) {
+			toast.error("No drivers selected!");
 			return;
+		}
+
+		try {
+			if (id === "approve") {
+				await approveMutation.mutateAsync(selectedIds);
+				toast.success("Drivers approved successfully");
+			} else if (id === "reject") {
+				await rejectMutation.mutateAsync(selectedIds);
+				toast.success("Drivers rejected successfully");
+			}
+
+			window.location.reload();
+		} catch (error) {
+			toast.error("Error processing request");
 		}
 	};
 
@@ -81,8 +88,6 @@ function Drivers() {
 											{value || 0}
 										</p>
 									</div>
-
-									<ArrowRight className="size-5 text-grey" />
 								</div>
 							))}
 					</div>
@@ -101,38 +106,47 @@ function Drivers() {
 								setSelectedFilter={setSelectedFilter}
 								columnId="status"
 								setColumnFilters={setColumnFilters}
+								placeholder="Filter by status"
 							/>
 						</div>
 
-						<div className="row-flex-btwn gap-3 rounded-sm bg-background-200 px-2.5 py-2 brightness-105 sm:gap-4">
-							{selectedRows.length > 0 ? (
+						{selectedRows.length > 0 && (
+							<div className="row-flex-btwn gap-3 rounded-sm bg-background-200 px-2.5 py-2 brightness-105 sm:gap-4">
 								<p className="text-xs font-semibold">
 									{selectedRows.length} row(s) selected
 								</p>
-							) : (
-								<p className="text-xs font-semibold">No rows selected</p>
-							)}
 
-							<div className="row-flex gap-2.5">
-								<div
-									className={cn("action-styles")}
-									onClick={() => handleAction("approve")}
-								>
-									Approve
-								</div>
-								<div
-									className={cn("action-styles")}
-									onClick={() => handleAction("reject")}
-								>
-									Reject
+								<div className="row-flex gap-2.5">
+									<div
+										className={cn("action-styles")}
+										onClick={() => handleAction("approve")}
+									>
+										Approve
+										{approveMutation.isPending && (
+											<BtnLoader
+												isLoading={approveMutation.isPending}
+												color="#16a34a "
+											/>
+										)}
+									</div>
+									<div
+										className={cn("action-styles")}
+										onClick={() => handleAction("reject")}
+									>
+										Reject
+										{rejectMutation.isPending && (
+											<BtnLoader isLoading={rejectMutation.isPending} />
+										)}
+									</div>
 								</div>
 							</div>
-						</div>
+						)}
 
 						<DataTable
 							columns={driverColumn}
 							tableData={driverData?.data || []}
 							columnFilters={columnFilters}
+							setSelectedRows={setSelectedRows}
 						/>
 					</div>
 				</>

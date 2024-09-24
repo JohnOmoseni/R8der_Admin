@@ -4,13 +4,12 @@ import { Close, logo } from "@/constants/icons";
 import { useAppDispatch, useAppSelector } from "@/types";
 import { setOpenMenu } from "@/redux/features/appSlice";
 import { animateFn, revealMenu, slideinVariant } from "@/utils/animate";
-import NavLinks from "@/layouts/NavLinks";
 import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import NavLinks from "@/layouts/NavLinks";
 
 function Menu() {
-	// const { role, user } = useAuth();const role = "Admin";
-	const role = "Admin";
+	const { role } = useAuth();
 
 	const dispatch = useAppDispatch();
 	const { openMenu } = useAppSelector((state) => state.appState);

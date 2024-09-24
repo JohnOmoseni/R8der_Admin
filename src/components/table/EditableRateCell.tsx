@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { EarningsDataType } from "./customersData";
 import { CellContext } from "@tanstack/react-table";
 
 function EditableRateCell({
@@ -8,7 +7,7 @@ function EditableRateCell({
 	column,
 	table,
 	getValue,
-}: CellContext<EarningsDataType, unknown>) {
+}: CellContext<any, unknown>) {
 	const [value, setValue] = useState("");
 	const initialValue = getValue() || "";
 

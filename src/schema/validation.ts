@@ -32,7 +32,7 @@ export const AddStaffSchema = yup.object().shape({
 		.required("Field is required"),
 	role: yup
 		.mixed()
-		.oneOf(["admin", "staff"], "Role must be either 'admin' or 'staff'")
+		.oneOf(["ADMIN", "STAFF"], "Role must be either 'admin' or 'staff'")
 		.required("Field is required"),
 });
 

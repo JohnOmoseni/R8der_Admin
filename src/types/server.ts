@@ -1,4 +1,4 @@
-import { Status } from ".";
+import { APP_ROLES, Status } from ".";
 
 export interface GetOverviewParams {
 	startDate: string;
@@ -85,4 +85,20 @@ export interface DriverDetailsType {
 }
 
 // APPROVE / REJECT DRIVERS
-export type ACTIONTYPE_DRIVER = string[];
+export type SELECTEDTYPE = string[];
+
+// STAFFS
+export type AddStaffParams = {
+	fullName: string;
+	email: string;
+	roleStatus?: (typeof APP_ROLES)[keyof typeof APP_ROLES];
+};
+
+export interface GetAllEmployeesType {
+	name: string;
+	email: string;
+	roleName: string;
+	dateAdded: string;
+	status: Status;
+	userId: string;
+}

@@ -18,25 +18,25 @@ import {
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight } from "@/constants/icons";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	tableData: TData[];
 	columnFilters?: ColumnFiltersState;
-	setSelectedRows?: (rows: TData[]) => void;
+	setSelectedRows: (rows: TData[]) => void; // New prop for selected rows
 }
 
-export function DataTable<TData, TValue>({
+export function TestDataTable<TData, TValue>({
 	columns,
 	tableData,
 	columnFilters,
-	setSelectedRows,
+	setSelectedRows, // New prop
 }: DataTableProps<TData, TValue>) {
 	const [data, setData] = useState(tableData);
 	const [sorting, setSorting] = useState<ColumnSort[]>([]);
-	const [rowSelection, setRowSelection] = useState({});
+	const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]); // State for selected rows
 
 	// Pagination state
 	const [currentPage, setCurrentPage] = useState(0);
@@ -53,16 +53,16 @@ export function DataTable<TData, TValue>({
 		return data?.slice(startIndex, startIndex + itemsPerPage);
 	}, [currentPage, data]);
 
+	// Table configuration with row selection support
 	const table = useReactTable({
 		data: paginatedData,
 		columns,
 		state: {
 			sorting,
 			columnFilters,
-			rowSelection,
 			pagination: {
 				pageIndex: currentPage,
-				pageSize: 5,
+				pageSize: itemsPerPage,
 			},
 		},
 		manualPagination: true,
@@ -82,14 +82,29 @@ export function DataTable<TData, TValue>({
 		getSortedRowModel: getSortedRowModel(),
 		getCoreRowModel: getCoreRowModel(),
 		onSortingChange: setSorting,
-		onRowSelectionChange: setRowSelection,
+		onRowSelectionChange: () => {
+			const selectedRows = table
+				.getSelectedRowModel()
+				.rows.map((row) => row.original); // Get original data of selected rows
+			setSelectedRows(selectedRows); // Pass selected rows to parent component
+		},
 	});
 
+	// Select all rows when checkbox is clicked
+	const toggleRowSelection = (rowId: string) => {
+		setSelectedRowIds((prev) =>
+			prev.includes(rowId)
+				? prev.filter((id) => id !== rowId)
+				: [...prev, rowId]
+		);
+	};
+
+	// Set the selected rows in the parent component
 	useEffect(() => {
 		const selectedRows = table
 			.getSelectedRowModel()
 			.rows.map((row) => row.original);
-		setSelectedRows && setSelectedRows(selectedRows); // Pass selected rows to parent
+		setSelectedRows(selectedRows); // Pass selected rows to parent
 	}, [table.getSelectedRowModel().rows, setSelectedRows]);
 
 	return (
@@ -99,6 +114,16 @@ export function DataTable<TData, TValue>({
 					<TableHeader className="">
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id} className="bg-background-200">
+								<TableHead>
+									{/* Add a checkbox for select all */}
+									<input
+										type="checkbox"
+										onChange={(e) => {
+											table.toggleAllRowsSelected(e.target.checked);
+										}}
+										checked={table.getIsAllRowsSelected()}
+									/>
+								</TableHead>
 								{headerGroup.headers.map((header) => {
 									const sortStatus = header.column.getIsSorted();
 									const sortIcons = {
@@ -145,14 +170,22 @@ export function DataTable<TData, TValue>({
 						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
-									key={row?.id}
+									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
 									className="shad-table-row"
 								>
+									<TableCell>
+										{/* Add a checkbox for row selection */}
+										<input
+											type="checkbox"
+											checked={row.getIsSelected()}
+											onChange={(e) => row.toggleSelected(e.target.checked)}
+										/>
+									</TableCell>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell
 											key={cell.id}
-											className="text-foreground-100 max-sm:p-2.5"
+											className="text-foreground-100 max-[430px]:p-2.5"
 										>
 											{flexRender(
 												cell.column.columnDef.cell,

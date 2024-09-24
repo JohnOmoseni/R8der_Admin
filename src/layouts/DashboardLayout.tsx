@@ -4,7 +4,7 @@ import Sidebar from "@/layouts/Sidebar";
 export default function DashboardLayout() {
 	return (
 		<div className="flex w-full h-full flex-col md:flex-row">
-			<div className="remove-scrollbar border-r border-border relative hidden w-72 overflow-y-auto shadow-sm md:block">
+			<div className="scrollbar-thin overflow-x-hidden border-r border-border relative hidden w-72 overflow-y-auto shadow-sm md:block">
 				<Sidebar />
 			</div>
 

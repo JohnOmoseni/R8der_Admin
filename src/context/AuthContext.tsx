@@ -36,7 +36,7 @@ export default function AuthProvider({
 	...props
 }: AuthProviderType) {
 	const [user, setUser] = useState<User | null>();
-	const [token, setToken] = useState<string | null>(); //store access token in memeory
+	const [token, setToken] = useState<string | null>();
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoadingAuth, setIsLoadingAuth] = useState(false);
 	const [role, setRole] = useState<
@@ -85,7 +85,7 @@ export default function AuthProvider({
 				email: data.email,
 				phone: data.phone,
 				img: data.photosImagePath,
-				role: data?.roles[0] === "admin-user" ? "Admin" : "Staff",
+				role: data?.roles[0] === "admin-user" ? "ADMIN" : "STAFF",
 			};
 
 			setToken(authToken);

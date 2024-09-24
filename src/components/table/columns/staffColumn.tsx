@@ -1,12 +1,32 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { StaffType } from "../staffData";
 import { StatusBadge } from "@/components/StatusBadge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { GetAllEmployeesType } from "@/types/server";
 
-export const staffColumn: ColumnDef<StaffType>[] = [
+export const staffColumn: ColumnDef<GetAllEmployeesType>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<input
+				type="checkbox"
+				checked={table.getIsAllRowsSelected()}
+				onChange={table.getToggleAllRowsSelectedHandler()}
+				className="input-checkbox h-5 w-5 shrink-0 bg-background-100 border border-input rounded-full focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+			/>
+		),
+		cell: ({ row }) => (
+			<>
+				<Checkbox
+					checked={row.getIsSelected()}
+					onCheckedChange={row.getToggleSelectedHandler()}
+				/>
+			</>
+		),
+	},
 	{
 		accessorKey: "user",
 		header: "User",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.user}</p>,
+		cell: ({ row }) => <p className="table-data-sm">{row.original?.name}</p>,
 		size: 100,
 	},
 
@@ -20,7 +40,9 @@ export const staffColumn: ColumnDef<StaffType>[] = [
 	{
 		accessorKey: "role",
 		header: "Role",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.role}</p>,
+		cell: ({ row }) => (
+			<p className="table-data-sm">{row.original?.roleName}</p>
+		),
 		enableColumnFilter: true,
 		filterFn: (row, columnId, filterValue) => {
 			const role = row.getValue(columnId) as string;
@@ -33,7 +55,7 @@ export const staffColumn: ColumnDef<StaffType>[] = [
 		accessorKey: "created_at",
 		header: "Date added",
 		cell: ({ row }) => (
-			<p className="table-data-sm">{row.original?.created_at}</p>
+			<p className="table-data-sm">{row.original?.dateAdded}</p>
 		),
 	},
 	{

@@ -20,8 +20,8 @@ function FormWrapper({
 	onSubmit,
 }: FormWrapperProps) {
 	return (
-		<div className={cn("mt-8 h-full w-full max-w-lg", containerStyles)}>
-			<form onSubmit={onSubmit} className="flex-column flex-1 gap-4">
+		<div className={cn("mt-6 h-full w-full max-w-lg", containerStyles)}>
+			<form onSubmit={onSubmit} className="flex-column flex-1 gap-8">
 				<div className="flex-column gap-2 space-y-3">{children}</div>
 
 				<Button

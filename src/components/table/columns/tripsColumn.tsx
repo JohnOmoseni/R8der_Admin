@@ -7,7 +7,9 @@ export const tripsColumn: ColumnDef<TripsType>[] = [
 	{
 		accessorKey: "id",
 		header: "Trip ID",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.tripId}</p>,
+		cell: ({ row }) => (
+			<p className="table-data-sm line-clamp-2">{row.original?.tripId}</p>
+		),
 		size: 100,
 	},
 

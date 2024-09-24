@@ -8,11 +8,21 @@ import {
 	defaultCustomerStats,
 	defaultDriverStats,
 	defaultTrips,
-	selectOptions,
 } from "@/constants";
 import { useGetOverview, useGetTrips } from "@/hook/useGetOverview";
 import { BarChartComponent } from "@/components/charts/BarChart";
 import { DashboardSkeletonLoader } from "@/components/fallback/SkeletonLoader";
+import { DropdownList } from "@/components/ui/components/DropdownList";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+
+const selectOptions = [
+	{ label: "Today", value: "today" },
+	{ label: "Yesterday", value: "yesterday" },
+	{ label: "Last 7 days", value: "week" },
+	{ label: "Last 30 days", value: "month" },
+	{ label: "This Year", value: "year" },
+];
 
 function Dashboard() {
 	const [selectedDateRange, setSelectedDateRange] = useState("today");
@@ -31,15 +41,23 @@ function Dashboard() {
 		endDate: dateRange.endDate,
 	});
 
-	console.log("[Summary]", data, tripsData, tripsError);
+	if (overviewError) toast.error("Error fetching information!");
 
-	if (overviewError) toast.error("Error fetching information");
-
-	const handleDateChange = async (value: string) => {
+	const handleDateChange = (value: string | Date) => {
 		if (!value) return;
-		setSelectedDateRange(value);
+
+		if (value instanceof Date) {
+			setSelectedDateRange(format(value, "PPP"));
+		} else {
+			const selectedObj = selectOptions.find((item) => item?.value === value);
+			selectedObj
+				? setSelectedDateRange(selectedObj.label as string)
+				: setSelectedDateRange(value);
+		}
 
 		const range = getDateRange(value);
+		console.log("[DATE VALUE]", value, range);
+
 		setDateRange(range);
 	};
 
@@ -59,11 +77,21 @@ function Dashboard() {
 						<div className="row-flex-start gap-3">
 							<h3>Trips</h3>
 
-							<SelectDropdown
-								value={selectedDateRange}
-								options={selectOptions}
-								defaultValue={{ label: "Today", value: selectedDateRange }}
-								onChangeHandler={handleDateChange}
+							<DropdownList
+								trigger={
+									<div className={cn("action-styles", "sm:!px-4")}>
+										<p className="mt-0.5 font-semibold">{selectedDateRange}</p>
+									</div>
+								}
+								list={selectOptions}
+								onClickHandlers={[
+									() => handleDateChange(selectOptions[0]?.value),
+									() => handleDateChange(selectOptions[1]?.value),
+									() => handleDateChange(selectOptions[2]?.value),
+									() => handleDateChange(selectOptions[3]?.value),
+									() => handleDateChange(selectOptions[4]?.value),
+								]}
+								onCalendarPopup={(date: Date) => handleDateChange(date)}
 							/>
 						</div>
 

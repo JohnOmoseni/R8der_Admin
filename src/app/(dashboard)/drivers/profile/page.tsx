@@ -35,7 +35,7 @@ function DriverProfile() {
 	};
 
 	return (
-		<SectionWrapper headerTitle="Drivers" mainContainerStyles="py-6">
+		<SectionWrapper headerTitle="Drivers" mainContainerStyles="py-6 px-4">
 			<div className="flex-column gap-6">
 				<BackArrow />
 

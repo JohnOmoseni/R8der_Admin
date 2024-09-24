@@ -101,3 +101,24 @@
 .shad-table-row-header th:has(.select-field) {
 	padding-left: 0 !important;
 }
+
+input[type="checkbox"].input-checkbox {
+	cursor: pointer;
+	appearance: none;
+	box-sizing: content-box;
+}
+
+input[type="checkbox"].input-checkbox:checked {
+	background-color: black;
+}
+
+/* Optionally, add a checkmark when checked */
+input[type="checkbox"].input-checkbox:checked::after {
+	content: "✔";
+	color: white;
+	font-size: 12px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

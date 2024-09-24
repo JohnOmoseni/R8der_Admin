@@ -10,8 +10,17 @@ export const StatusBadge = ({ status }: { status: Status }) => {
 		"ACCEPTED",
 		"SUCCESS",
 		"ACTIVE",
+		"Verified",
+		"Active",
 	];
-	const error = ["CANCELLED", "NOT_VERIFIED", "FAILED", "NOT_VERIFIED"];
+	const error = [
+		"CANCELLED",
+		"NOT_VERIFIED",
+		"FAILED",
+		"NOT_VERIFIED",
+		"Not Verified",
+		"Deactivated",
+	];
 	const yellow = ["IN_PROGRESS", "PENDING"];
 
 	return (

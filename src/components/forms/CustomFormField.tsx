@@ -65,7 +65,7 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 			return (
 				<>
 					{IconSrc && (
-						<span className="ml-2.5 block mt-[1px]">
+						<span className="ml-2.5 mr-0.5 block mt-[1px]">
 							<IconSrc claasname="w-5 h-fit " />
 						</span>
 					)}

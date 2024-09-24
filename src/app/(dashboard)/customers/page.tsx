@@ -44,7 +44,7 @@ function Customers() {
 							customerStats.map(({ label, value, status }, idx) => (
 								<div className="row-flex-btwn !items-start gap-4" key={idx}>
 									<div className="flex-column gap-3">
-										<span className="label">{label || "Total stats"}</span>
+										<span className="label">{label}</span>
 										<p
 											className={clsx("font-semibold uppercase", {
 												"text-green-500": status === "high",
@@ -54,8 +54,6 @@ function Customers() {
 											{value || 0}
 										</p>
 									</div>
-
-									<ArrowRight className="size-5 text-grey" />
 								</div>
 							))}
 					</div>

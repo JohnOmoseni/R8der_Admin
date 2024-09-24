@@ -21,6 +21,7 @@ const getOverview = async (
 	}
 };
 
+// RIDERS ENDPOINTS
 const getRiders = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(APIURLS.GET_RIDERS);
@@ -49,6 +50,7 @@ const getRiderById = async ({
 	}
 };
 
+// DRIVERS ENDPOINT
 const getDrivers = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(APIURLS.GET_DRIVERS);
@@ -77,6 +79,7 @@ const getDriverById = async ({
 	}
 };
 
+// TRIPS ENDPOINT
 const getTrips = async (
 	params: GetOverviewParams
 ): Promise<AxiosResponse["data"]> => {
@@ -86,6 +89,52 @@ const getTrips = async (
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_TRIP}`, payload);
+		console.log("[TRIPS OVERVIEW RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+// STAFF ENDPOINT
+const getAllRoles = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_ALL_ROLES}`);
+		console.log("[ALL ROLES RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getAllEmployee = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_STAFFS_ADMINS}`);
+		console.log("[ALL STAFFS RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_ALL_ADMINS}`);
+		console.log("[ALL ADMINS RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getStaff = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_STAFF_DETAILS}}`);
+		console.log("[STAFF DETAILS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -100,4 +149,8 @@ export const requestApi = {
 	getDrivers,
 	getDriverById,
 	getTrips,
+	getAllRoles,
+	getAllEmployee,
+	getAllAdmins,
+	getStaff,
 };

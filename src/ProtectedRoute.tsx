@@ -2,6 +2,7 @@ import { PropsWithChildren, useLayoutEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import FallbackLoader from "./components/fallback/FallbackLoader";
+import { routes } from "./constants";
 
 function ProtectedRoute({ children }: PropsWithChildren) {
 	const { user } = useAuth();
@@ -12,7 +13,7 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 	useLayoutEffect(() => {
 		if (user === null) {
 			// Redirect to login page
-			navigate("/signin");
+			navigate(routes.LOGIN, { replace: true });
 		}
 	}, [navigate, user]);
 

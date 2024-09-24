@@ -1,41 +1,37 @@
-import React, { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { routes } from "@/constants";
 import { toast } from "sonner";
-import FallbackLoader from "@/components/fallback/FallbackLoader";
 import { useLocation, useNavigate } from "react-router-dom";
-
-interface WithAuthAndRoleProtectionProps {
-	allowedRoles: string[]; // Array of roles allowed to access the component
-}
+import FallbackLoader from "@/components/fallback/FallbackLoader";
 
 const withAuthAndRoleProtection = <P extends object>(
 	WrappedComponent: React.ComponentType<P>,
-	allowedRoles: string[]
+	allowedRoles: string[] // Array of roles allowed to access the component
 ) => {
 	const ProtectedComponent = (props: P) => {
-		const { user, token, isAuthenticated } = useAuth();
-		const navigate = useNavigate();
+		// @ts-ignore
+		const { user, token, role } = useAuth();
 		const { pathname } = useLocation();
-		const role = "Admin";
+		const navigate = useNavigate();
 
-		useEffect(() => {
+		useLayoutEffect(() => {
 			// Redirect to login if not authenticated
-			if (!isAuthenticated || !token) {
-				navigate(routes.LOGIN);
+			if (!token) {
+				navigate(routes.LOGIN, { replace: true });
 				toast.warning("Please log in.");
 				return;
 			}
 
 			// Check if the user has the required role for this route
-			const hasRequiredRole = allowedRoles.includes(role || "");
+			const hasRequiredRole = allowedRoles.includes(role!);
 
 			// If the user doesn't have the required role, redirect to unauthorized page
-			if (isAuthenticated && token && !hasRequiredRole) {
+			if (token && !hasRequiredRole) {
 				navigate(routes.UNAUTH);
 				toast.warning("Unauthorized access");
 			}
-		}, [isAuthenticated, token, role, allowedRoles, navigate, pathname]);
+		}, [token, role, allowedRoles, pathname]);
 
 		if (token === undefined || role === undefined) {
 			return <FallbackLoader />; // Show a loader while checking authentication and role
