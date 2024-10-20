@@ -1,20 +1,21 @@
 import { SlidingTabs } from "@/components/tabs/SlidingTabs";
 import { tabIDs } from "@/constants";
+import { toast } from "sonner";
 import { useState } from "react";
-import { tripsColumn } from "@/components/table/columns/tripsColumn";
-import { DataTable } from "@/components/table/DataTable";
 import { useParams } from "react-router-dom";
 import { useGetRiderDetails } from "@/hook/useGetOverview";
 import BackArrow from "@/components/BackArrow";
 import TabsPanel from "@/components/tabs/TabsPanel";
 import SectionWrapper from "@/layouts/SectionWrapper";
-import Profile from "../../drivers/_tab-content/Profile";
-import { toast } from "sonner";
 import FallbackLoader from "@/components/fallback/FallbackLoader";
+import AvatarWrapper from "@/components/ui/components/AvatarWrapper";
+import Trips from "./Trips";
+import Profile from "./Profile";
+import { getInitials } from "@/utils";
 
 function CustomerProfile() {
 	const { id } = useParams();
-	const [activeTab, setActiveTab] = useState(tabIDs[0]);
+	const [activeTab, setActiveTab] = useState(0);
 	const {
 		data: riderData,
 		isError,
@@ -25,8 +26,8 @@ function CustomerProfile() {
 
 	if (isError) toast.error("Error fetching customer details");
 
-	const changeTab = (id: string) => {
-		id && setActiveTab(id);
+	const changeTab = (id: number) => {
+		!isNaN(id) && setActiveTab(id);
 	};
 
 	return (
@@ -34,17 +35,31 @@ function CustomerProfile() {
 			<div className="flex-column gap-6">
 				<BackArrow />
 
-				<h3 className="mt-4">{riderData?.fullName || "Rider"} details</h3>
+				<div className="rounded-lg border border-border-100 mt-1 pt-4 pb-3 px-5">
+					<div className="row-flex-start gap-4 mb-8">
+						<AvatarWrapper
+							containerClassName="!bg-[#033678] size-14"
+							fallback={getInitials(riderData?.fullName)}
+						/>
 
-				<div className="row-flex-start gap-4 border-b border-border-100">
-					<SlidingTabs
-						activeTab={activeTab}
-						changeTab={changeTab}
-						tabIDs={tabIDs}
-					/>
+						<div className="flex-column gap-0.5 flex-1 w-full">
+							<h3 className="text-lg sm:text-xl">
+								{riderData?.fullName || "Rider"} details
+							</h3>
+							<span className="grey-text !font-light">Date joined: ----</span>
+						</div>
+					</div>
+
+					<div className="row-flex-start gap-4">
+						<SlidingTabs
+							activeTab={activeTab}
+							changeTab={changeTab}
+							tabIDs={tabIDs}
+						/>
+					</div>
 				</div>
 
-				<div className="mt-3 w-full">
+				<div className="w-full">
 					{isLoading ? (
 						<div className="loader-container">
 							<FallbackLoader />
@@ -52,17 +67,10 @@ function CustomerProfile() {
 					) : (
 						<>
 							<TabsPanel activeTab={activeTab} id={tabIDs[0]} idx={0}>
-								<Profile
-									profileInfo={riderData}
-									type="customerInfo"
-									headingTitle="Profile"
-								/>
+								<Profile profileInfo={riderData} />
 							</TabsPanel>
 							<TabsPanel activeTab={activeTab} id={tabIDs[1]} idx={1}>
-								<DataTable
-									columns={tripsColumn}
-									tableData={riderData?.riderTrips || []}
-								/>
+								<Trips riderData={riderData} />
 							</TabsPanel>
 						</>
 					)}

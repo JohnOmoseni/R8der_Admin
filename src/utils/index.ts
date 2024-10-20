@@ -17,6 +17,14 @@ export const handleApiError = (error: any, message?: string) => {
 	throw error;
 };
 
+export function getInitials(name: string) {
+	if (!name) return "TA";
+	return name
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase())
+		.join("");
+}
+
 export const getDateRange = (value: string | Date) => {
 	const today = dayjs().format("YYYY-MM-DD");
 

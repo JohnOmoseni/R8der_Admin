@@ -7,7 +7,7 @@ function Success() {
 	const navigate = useNavigate();
 
 	return (
-		<div className="grid place-items-center h-dvh">
+		<div className="grid place-items-center h-[95vh]">
 			<div className="flex-column !items-center gap-6">
 				<div className="relative">
 					<SuccessIcon className="h-fit w-fit" />

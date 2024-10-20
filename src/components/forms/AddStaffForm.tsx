@@ -20,14 +20,15 @@ const AddStaffForm = () => {
 
 		try {
 			const data = {
-				fullName: values.name,
+				firstName: values.firstName,
+				lastName: values.lastName,
 				email: values.email,
 				roleStatus: values.role as ROLE,
 			};
 
 			await newStaffMutation.mutateAsync(data);
 			toast.success("Staff added successfully");
-			navigate("/dashboard/add-staff/success");
+			navigate("/dashboard/staffs/add-staff/success");
 		} catch {
 			toast.error("Error adding staff");
 		}
@@ -43,7 +44,8 @@ const AddStaffForm = () => {
 		handleSubmit,
 	} = useFormik({
 		initialValues: {
-			name: "",
+			firstName: "",
+			lastName: "",
 			email: "",
 			role: "",
 		},
@@ -59,9 +61,20 @@ const AddStaffForm = () => {
 		>
 			<CustomFormField
 				fieldType={FormFieldType.INPUT}
-				name="name"
-				label="Name"
-				field={{ value: values.name, placeholder: "John Doe" }}
+				name="firstName"
+				label="First Name"
+				field={{ value: values.firstName, placeholder: "John" }}
+				onChange={handleChange}
+				onBlur={handleBlur}
+				errors={errors}
+				touched={touched}
+			/>
+
+			<CustomFormField
+				fieldType={FormFieldType.INPUT}
+				name="lastName"
+				label="Last Name"
+				field={{ value: values.lastName, placeholder: "Doe" }}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}

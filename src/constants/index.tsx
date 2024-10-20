@@ -3,6 +3,7 @@ import {
 	Banknote,
 	Car,
 	Dashboard,
+	Money,
 	Settings,
 	User,
 	Users,
@@ -12,10 +13,15 @@ import {
 export const routes = {
 	ROOT: "/",
 	LOGIN: "/signin",
+	VERIFY_OTP: "/verify-otp",
 	UNAUTH: "/dashboard",
 	DASHBOARD: "/dashboard",
-	PUBLIC_ROUTES: ["/signin", "/signup"],
-	ADMIN_ROUTES: ["/dashboard/staffs", "/dashboard/withdrawals"],
+	PUBLIC_ROUTES: ["/signin", "/verify-otp"],
+	ADMIN_ROUTES: [
+		"/dashboard/staffs",
+		"/dashboard/withdrawals",
+		"/dashboard/settlements",
+	],
 };
 
 export const tabIDs = ["Profile", "Trips"];
@@ -36,6 +42,7 @@ export const sidebarLinks = [
 		tag: "dashboard",
 		icon: Dashboard,
 		allowedRoles: [APP_ROLES.Admin, APP_ROLES.User, APP_ROLES.Staff],
+		showAlways: true,
 	},
 	{
 		label: "Trips",
@@ -58,7 +65,13 @@ export const sidebarLinks = [
 		icon: Usersquare,
 		allowedRoles: [APP_ROLES.Admin, APP_ROLES.Staff],
 	},
-
+	{
+		label: "Settlements",
+		href: "/dashboard/settlements",
+		tag: "settlements",
+		icon: Money,
+		allowedRoles: [APP_ROLES.Admin],
+	},
 	{
 		label: "Withdrawals",
 		href: "/dashboard/withdrawals",
@@ -67,19 +80,19 @@ export const sidebarLinks = [
 		allowedRoles: [APP_ROLES.Admin],
 	},
 	{
-		label: "Staffs",
+		label: "Users",
 		href: "/dashboard/staffs",
 		tag: "staffs",
 		icon: User,
 		allowedRoles: [APP_ROLES.Admin],
 	},
-
 	{
 		label: "Settings",
 		href: "/dashboard/settings",
 		tag: "settings",
 		icon: Settings,
 		allowedRoles: [APP_ROLES.Admin, APP_ROLES.User, APP_ROLES.Staff],
+		showAlways: true,
 	},
 ];
 
@@ -166,6 +179,24 @@ export const defaultCustomerStats = [
 	},
 ];
 
+export const defaultRevenueStats = [
+	{
+		label: "Total Revenue Volume",
+		value: "0",
+		isValue: false,
+	},
+	{
+		label: "Total Revenue Value",
+		value: "0",
+		isValue: true,
+	},
+	{
+		label: "Drivers Debts",
+		value: "0",
+		isValue: true,
+	},
+];
+
 // Profile defaults
 export const infoMapper = (profileInfo: any): Record<string, any> => ({
 	name: profileInfo?.fullName,
@@ -224,6 +255,7 @@ export const keyMappings: Record<
 		{ key: "rating", label: "Rating" },
 		{ key: "totalTrips", label: "Total trips" },
 		{ key: "totalEarnings", label: "Total Earnings" },
+		{ key: "balance", label: "Balance" },
 	],
 	vehicleInfo: [
 		{ key: "vehicleBrand", label: "Vehicle brand" },

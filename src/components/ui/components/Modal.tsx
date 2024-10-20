@@ -32,7 +32,7 @@ export function Modal({
 
 			<AlertDialogContent
 				className={cn(
-					"shad-alert-dialog scrollbar-thin mx-auto grid max-h-[600px] min-h-[300px] max-w-lg items-center overflow-y-auto rounded-xl pt-2 pb-1 px-0 shadow-lg max-sm:w-[85%] sm:min-w-[300px]",
+					"shad-alert-dialog scrollbar-thin mx-auto grid max-h-[580px] min-h-[300px] max-w-lg items-center !overflow-y-auto rounded-xl pt-2 pb-1 px-0 shadow-lg max-sm:w-[85%] sm:min-w-[300px]",
 					modalStyles
 				)}
 			>

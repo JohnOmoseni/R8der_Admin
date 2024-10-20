@@ -31,11 +31,12 @@ function Staffs() {
 	const [selectedFilter, setSelectedFilter] = useState("all");
 	const [showModal, setShowModal] = useState(false);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-	const headerContent = useStaffHeader(setShowModal);
+	const { data: employeesData, isError, isLoading, refetch } = useGetStaffs();
 
-	const { data: employeesData, isError, isLoading } = useGetStaffs();
 	const activateMutation = useActivateStaff();
 	const deactivateMutation = useDeactivateStaff();
+
+	const headerContent = useStaffHeader(setShowModal, refetch);
 
 	if (isError) toast.error("Something went wrong");
 
@@ -46,17 +47,18 @@ function Staffs() {
 			toast.error("No staffs selected!");
 			return;
 		}
+		let res = selectedIds.length === 1 ? "Staff" : "Staffs";
 
 		try {
 			if (id === "activate") {
 				await activateMutation.mutateAsync(selectedIds);
-				toast.success("Staffs activated successfully");
+				toast.success(`${res} activated successfully`);
 			} else if (id === "deactivate") {
 				await deactivateMutation.mutateAsync(selectedIds);
-				toast.success("Staffs deactivated successfully");
+				toast.success(`${res} deactivated successfully`);
 			}
 
-			window.location.reload();
+			refetch();
 		} catch (error) {
 			toast.error("Error processing request");
 		}
@@ -82,6 +84,7 @@ function Staffs() {
 								selectedFilter={selectedFilter}
 								setSelectedFilter={setSelectedFilter}
 								options={options}
+								columnId="roleName"
 								placeholder={"Filter by role"}
 							/>
 						</div>
@@ -92,9 +95,9 @@ function Staffs() {
 									{selectedRows.length} row(s) selected
 								</p>
 
-								<div className="row-flex gap-2.5">
+								<div className="row-flex gap-2.5 ">
 									<div
-										className={cn("action-styles")}
+										className={cn("badge-long !bg-background-100")}
 										onClick={() => handleAction("activate")}
 									>
 										Activate
@@ -106,7 +109,7 @@ function Staffs() {
 										)}
 									</div>
 									<div
-										className={cn("action-styles")}
+										className={cn("badge-long !bg-background-100")}
 										onClick={() => handleAction("deactivate")}
 									>
 										Deactivate

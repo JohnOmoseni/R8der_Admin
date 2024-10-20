@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -17,6 +19,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { BtnLoader } from "@/components/fallback/FallbackLoader";
 
 type Props = {
 	trigger?: ReactNode;
@@ -34,6 +37,29 @@ export function DropdownList({
 	onCalendarPopup,
 }: Props) {
 	const [date, setDate] = useState<Date>();
+	const [loadingStates, setLoadingStates] = useState<boolean[]>(
+		list!?.map(() => false)
+	);
+
+	const handleItemClick = async (idx: number) => {
+		if (onClickHandlers && onClickHandlers[idx]) {
+			setLoadingStates((prev) => {
+				const newStates = [...prev];
+				newStates[idx] = true; // Set loading state for clicked item
+				return newStates;
+			});
+
+			try {
+				await onClickHandlers[idx]();
+			} finally {
+				setLoadingStates((prev) => {
+					const newStates = [...prev];
+					newStates[idx] = false;
+					return newStates;
+				});
+			}
+		}
+	};
 
 	return (
 		<DropdownMenu>
@@ -47,27 +73,37 @@ export function DropdownList({
 				)}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="right-0 w-44">
-				{list?.map((item, idx) => (
-					<>
-						{idx !== 0 && showSeparator && (
-							<DropdownMenuSeparator className="h-px bg-background-200" />
-						)}
-						<DropdownMenuGroup>
-							<DropdownMenuItem
-								key={idx}
-								onClick={() => {
-									if (onClickHandlers && onClickHandlers[idx]) {
-										onClickHandlers[idx]();
-									}
-								}}
-							>
-								{typeof item === "object" && "label" in item
-									? item?.label
-									: item}
-							</DropdownMenuItem>
-						</DropdownMenuGroup>
-					</>
-				))}
+				{list && list?.length > 0 ? (
+					list?.map((item, idx) => (
+						<React.Fragment key={idx}>
+							{idx !== 0 && showSeparator && (
+								<DropdownMenuSeparator
+									key="separator"
+									className="h-px bg-background-200"
+								/>
+							)}
+							<DropdownMenuGroup>
+								<DropdownMenuItem
+									key={idx}
+									onClick={() => handleItemClick(idx)}
+								>
+									<div className="row-flex-btwn w-full gap-2">
+										{typeof item === "object" && "label" in item
+											? item?.label
+											: item}
+										{loadingStates[idx] && (
+											<BtnLoader isLoading={loadingStates[idx]} />
+										)}{" "}
+									</div>
+								</DropdownMenuItem>
+							</DropdownMenuGroup>
+						</React.Fragment>
+					))
+				) : (
+					<DropdownMenuItem>
+						<div className="row-flex text-center w-full">No item</div>
+					</DropdownMenuItem>
+				)}
 
 				{onCalendarPopup && (
 					<Popover>

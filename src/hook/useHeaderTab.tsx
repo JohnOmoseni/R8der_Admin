@@ -1,79 +1,119 @@
-import { useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Cancel, Check } from "@/constants/icons";
 import { cn } from "@/lib/utils";
+import DownloadReport from "@/components/DownloadReport";
+import { BtnLoader } from "@/components/fallback/FallbackLoader";
 
-const tabIDs = ["Profile", "Vehicle and KYC Details", "Trips", "Withdrawals"];
+type LoadingState = {
+	type: "approve" | "deactivate" | "";
+	loading: boolean;
+};
 
-function useHeaderTab(activeTab: string) {
-	let headerContent;
-	const action = "badge min-w-[125px] gap-2 !bg-transparent !pl-2.5 !pr-4";
+type Props = {
+	activeTab: number;
+	tableData?: any[];
+	filename?: string;
+	onApprove: () => Promise<void>;
+	onDeactivate: () => Promise<void>;
+};
+
+function useHeaderTab({
+	activeTab,
+	tableData,
+	filename,
+	onApprove,
+	onDeactivate,
+}: Props) {
+	const [headerContent, setHeaderContent] = useState<JSX.Element | null>(null);
+	const [isLoading, setIsLoading] = useState<LoadingState>({
+		type: "",
+		loading: false,
+	});
+
+	const action = "badge min-w-[125px] !gap-2  !bg-transparent !px-3";
+
+	const handleApprove = useCallback(async () => {
+		try {
+			setIsLoading({ type: "approve", loading: true });
+			await onApprove();
+		} catch (error) {
+			console.error("Error approving:", error);
+		} finally {
+			setIsLoading({ type: "approve", loading: false });
+		}
+	}, [onApprove]);
+
+	const handleDeactivate = useCallback(async () => {
+		try {
+			setIsLoading({ type: "deactivate", loading: true });
+			await onDeactivate();
+		} catch (error) {
+			console.error("Error deactivating:", error);
+		} finally {
+			setIsLoading({ type: "deactivate", loading: false });
+		}
+	}, [onDeactivate]);
+
+	const deactivate = (
+		<div className={cn(action, "error")} onClick={handleDeactivate}>
+			<Cancel className="size-4 text-red-600" />
+			<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
+			{isLoading?.type === "deactivate" && (
+				<BtnLoader isLoading={isLoading?.loading} />
+			)}
+		</div>
+	);
+
+	const approve = (
+		<div className={cn(action, "!bg-foreground")} onClick={handleApprove}>
+			<Check className="size-4 text-white" />
+			<p className="mt-0.5 font-semibold text-background">Approve</p>
+			{isLoading?.type === "approve" && (
+				<BtnLoader isLoading={isLoading?.loading} />
+			)}
+		</div>
+	);
+
+	const exportBtn = <DownloadReport data={tableData} filename={filename} />;
 
 	useEffect(() => {
 		switch (activeTab) {
-			case tabIDs[0]:
-				headerContent = (
+			case 0:
+				setHeaderContent(
 					<div className="row-flex gap-2.5 max-[430px]:!flex-wrap">
-						<div className={cn(action, "error")}>
-							<Cancel className="size-4 text-red-600" />
-							<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
-						</div>
-						<div className={cn(action, "!bg-foreground")}>
-							<Check className="size-4 text-white" />
-							<p className="mt-0.5 font-semibold text-background">Activate</p>
-						</div>
+						{deactivate}
+						{approve}
 					</div>
 				);
 				break;
-			case tabIDs[1]:
-				headerContent = (
+			case 1:
+				setHeaderContent(
 					<div className="row-flex gap-2.5 max-[600px]:!flex-wrap">
 						<div className="row-flex gap-2.5">
-							<div className={cn(action, "")}>
-								<Cancel className="size-4" />
-								<p className="mt-0.5 font-semibold">Export</p>
-							</div>
-							<div className={cn(action, "!error")}>
-								<Cancel className="size-4 text-red-600" />
-								<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
-							</div>
+							{exportBtn}
+							{deactivate}
 						</div>
-						<div className={cn(action, "!bg-foreground")}>
-							<Check className="size-4 text-white" />
-							<p className="mt-0.5 font-semibold text-background">Activate</p>
-						</div>
+						{approve}
 					</div>
 				);
 				break;
-			case tabIDs[2]:
-				headerContent = (
+			case 2:
+				setHeaderContent(
 					<div className="row-flex gap-2.5 max-[600px]:!flex-wrap">
 						<div className="row-flex gap-2.5">
-							<div className={cn(action, "")}>
-								<Cancel className="size-4" />
-								<p className="mt-0.5 font-semibold">Export</p>
-							</div>
-							<div className={cn(action, "!error")}>
-								<Cancel className="size-4 text-red-600" />
-								<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
-							</div>
+							{exportBtn}
+							{deactivate}
 						</div>
-						<div className={cn(action, "!bg-foreground")}>
-							<Check className="size-4 text-white" />
-							<p className="mt-0.5 font-semibold text-background">Activate</p>
-						</div>
+						{approve}
 					</div>
 				);
 				break;
-			case tabIDs[3]:
-				headerContent = (
-					<div className="badge gap-2 !pl-2.5 !pr-4">
-						<Cancel className="size-4" />
-						<p className="mt-0.5 font-semibold">Export</p>
-					</div>
-				);
+			case 3:
+				setHeaderContent(<>{exportBtn}</>);
 				break;
 			default:
-				headerContent = <></>;
+				setHeaderContent(<></>);
+				break;
 		}
 	}, [activeTab]);
 

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { DataTable } from "@/components/table/DataTable";
-import { withdrawColumn } from "@/components/table/columns/withdrawColumn";
 import { WithdrawType } from "@/types/server";
 import Filters from "@/components/table/filters";
 import TableSearch from "@/components/table/TableSearch";
 import { ColumnFiltersState } from "@tanstack/react-table";
+import { driverWithdrawalColumn } from "@/components/table/columns/driverWithdrawalColumn";
 
 function Withdrawals({ withdrawals }: { withdrawals?: Array<WithdrawType> }) {
 	const [selectedFilter, setSelectedFilter] = useState("all");
@@ -26,7 +26,10 @@ function Withdrawals({ withdrawals }: { withdrawals?: Array<WithdrawType> }) {
 				/>
 			</div>
 
-			<DataTable columns={withdrawColumn} tableData={withdrawals || []} />
+			<DataTable
+				columns={driverWithdrawalColumn}
+				tableData={withdrawals || []}
+			/>
 		</div>
 	);
 }

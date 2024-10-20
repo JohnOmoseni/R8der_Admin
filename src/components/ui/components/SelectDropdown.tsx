@@ -14,9 +14,11 @@ type SelectProps = {
 	options: Option[];
 	value?: string;
 	defaultValue?: Option;
-	placeholder?: string;
+	placeholder?: ReactNode;
 	trigger?: ReactNode;
 	triggerStyles?: string;
+	isArrowDown?: boolean;
+
 	onChangeHandler?: (value: string) => void;
 };
 
@@ -27,6 +29,7 @@ const SelectDropdown = ({
 	placeholder,
 	trigger,
 	triggerStyles,
+	isArrowDown = false,
 	onChangeHandler,
 }: SelectProps) => {
 	return (
@@ -35,7 +38,10 @@ const SelectDropdown = ({
 			value={value}
 			defaultValue={defaultValue?.value}
 		>
-			<SelectTrigger className={cn("shad-select-trigger", triggerStyles)}>
+			<SelectTrigger
+				className={cn("shad-select-trigger", triggerStyles)}
+				isArrowDown={isArrowDown}
+			>
 				{trigger ? (
 					trigger
 				) : (
@@ -44,15 +50,18 @@ const SelectDropdown = ({
 			</SelectTrigger>
 			<SelectContent className="shad-select-content">
 				{options?.length > 0 &&
-					options.map((option, idx) => (
-						<SelectItem
-							key={idx}
-							value={option.value!}
-							className="shad-select-item"
-						>
-							{option.label}
-						</SelectItem>
-					))}
+					options.map((option, idx) => {
+						const isAllOption = option.value === "all";
+						return (
+							<SelectItem
+								key={idx}
+								value={option.value!}
+								className={cn("shad-select-item", isAllOption && "!hidden")}
+							>
+								{option.label}
+							</SelectItem>
+						);
+					})}
 			</SelectContent>
 		</Select>
 	);

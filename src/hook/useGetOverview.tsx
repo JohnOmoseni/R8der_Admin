@@ -1,9 +1,11 @@
 import {
 	defaultCustomerStats,
 	defaultDriverStats,
+	defaultRevenueStats,
 	defaultTrips,
 } from "@/constants";
 import { requestApi } from "@/server/actions";
+import { SettingsDataType } from "@/types";
 import {
 	DriverDetailsType,
 	DriverType,
@@ -12,6 +14,7 @@ import {
 	GetDriversResponse,
 	GetOverviewParams,
 	GetRidersResponse,
+	SettingsResponse,
 } from "@/types/server";
 import { useQuery } from "@tanstack/react-query";
 
@@ -25,6 +28,7 @@ export const useGetOverview = ({ startDate, endDate }: GetOverviewParams) => {
 				return {
 					driverStats: defaultDriverStats,
 					customerStats: defaultCustomerStats,
+					revenueStats: defaultRevenueStats,
 				};
 
 			const driverStats = [
@@ -63,19 +67,41 @@ export const useGetOverview = ({ startDate, endDate }: GetOverviewParams) => {
 				},
 			];
 
+			const revenueStats = [
+				{
+					label: "Total Revenue Volume",
+					value: data?.totalRevenueVolume,
+					isValue: false,
+				},
+				{
+					label: "Total Revenue Value",
+					value: data?.totalRevenueValue,
+					isValue: true,
+				},
+				{
+					label: "Drivers Debts",
+					value: data?.totalRevenueValue,
+					isValue: true,
+				},
+			];
+
 			return {
 				driverStats,
 				customerStats,
+				revenueStats,
 			};
 		},
 		enabled: !!startDate || !!endDate,
 	});
 };
 
-export const useGetTrips = ({ startDate, endDate }: GetOverviewParams) => {
+export const useGetTripsOverview = ({
+	startDate,
+	endDate,
+}: GetOverviewParams) => {
 	return useQuery({
 		queryKey: ["getTrips", { startDate, endDate }],
-		queryFn: () => requestApi.getTrips({ startDate, endDate }),
+		queryFn: () => requestApi.getTripsOverview({ startDate, endDate }),
 
 		select: (data) => {
 			if (!data) return defaultTrips;
@@ -288,6 +314,87 @@ export const useGetStaffs = () => {
 			}));
 
 			return employees;
+		},
+	});
+};
+
+// WITHDRAWALS ----------------------------------------------------------------
+// GET ALL WITHDRAWALS
+
+export const useGetWithdrawals = () => {
+	return useQuery({
+		queryKey: ["getWithdrawals"],
+		queryFn: () => requestApi.getWithdrawals(),
+
+		select: (data) => {
+			const response = data.data;
+
+			const withdrawals = {
+				fullName: response?.fullName,
+				destination: response?.destination,
+				tripId: response?.tripId,
+				amount: response?.amount,
+				dateCreated: response?.dateCreated,
+				status: response?.status,
+			};
+
+			return withdrawals;
+		},
+	});
+};
+
+// SETTINGS ----------------------------------------------------------------
+// GET SETTINGS LIST
+
+export const useGetSettingsList = () => {
+	return useQuery({
+		queryKey: ["getSettingsList"],
+		queryFn: () => requestApi.getSettingsList(),
+
+		select: (data) => {
+			const response = data.data;
+
+			const settingsData: SettingsDataType = {
+				basicTripFee: undefined,
+				luxuryTripFee: undefined,
+				driverCommissionType: undefined,
+				driverCommissionAmount: undefined,
+			};
+
+			response?.forEach((item: SettingsResponse) => {
+				switch (item.settingsType) {
+					case "BASIC_TRIP_FEE":
+						settingsData.basicTripFee = item.value;
+						break;
+					case "LUXURY_TRIP_FEE":
+						settingsData.luxuryTripFee = item.value;
+						break;
+					case "DRIVER_COMM_FEE":
+						settingsData.driverCommissionType = item.commissionType;
+						settingsData.driverCommissionAmount = item.value;
+						break;
+					default:
+						break;
+				}
+			});
+
+			return {
+				...data,
+				settingsData,
+			};
+		},
+	});
+};
+
+export const useGetAllCouponCodes = () => {
+	return useQuery({
+		queryKey: ["getAllCouponCodes"],
+		queryFn: () => requestApi.getAllCouponCodes(),
+
+		select: (data) => {
+			const response = data.data;
+
+			return response;
 		},
 	});
 };

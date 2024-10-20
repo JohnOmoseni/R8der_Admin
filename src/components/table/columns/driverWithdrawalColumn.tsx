@@ -2,7 +2,7 @@ import { WithdrawType } from "@/types/server";
 import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 
-export const withdrawColumn: ColumnDef<WithdrawType>[] = [
+export const driverWithdrawalColumn: ColumnDef<WithdrawType>[] = [
 	{
 		accessorKey: "type",
 		header: "Type",

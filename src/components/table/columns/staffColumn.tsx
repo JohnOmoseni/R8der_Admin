@@ -38,7 +38,7 @@ export const staffColumn: ColumnDef<GetAllEmployeesType>[] = [
 		),
 	},
 	{
-		accessorKey: "role",
+		accessorKey: "roleName",
 		header: "Role",
 		cell: ({ row }) => (
 			<p className="table-data-sm">{row.original?.roleName}</p>

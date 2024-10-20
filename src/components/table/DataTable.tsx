@@ -7,6 +7,7 @@ import {
 	getSortedRowModel,
 	ColumnSort,
 	ColumnFiltersState,
+	getPaginationRowModel,
 } from "@tanstack/react-table";
 import {
 	Table,
@@ -16,10 +17,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Button } from "../ui/button";
-import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight } from "@/constants/icons";
-import { useEffect, useMemo, useState } from "react";
-import ReactPaginate from "react-paginate";
+import { ArrowDown, ArrowUp } from "@/constants/icons";
+import { useEffect, useState } from "react";
+import TablePaginate from "./TablePaginate";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -38,34 +38,14 @@ export function DataTable<TData, TValue>({
 	const [sorting, setSorting] = useState<ColumnSort[]>([]);
 	const [rowSelection, setRowSelection] = useState({});
 
-	// Pagination state
-	const [currentPage, setCurrentPage] = useState(0);
-	const itemsPerPage = 5;
-	const pageCount = Math.ceil(data?.length / itemsPerPage);
-
-	const handlePageClick = (event: any) => {
-		setCurrentPage(event.selected);
-	};
-
-	// Get the current page's data by slicing the tableData
-	const paginatedData = useMemo(() => {
-		const startIndex = currentPage * itemsPerPage;
-		return data?.slice(startIndex, startIndex + itemsPerPage);
-	}, [currentPage, data]);
-
 	const table = useReactTable({
-		data: paginatedData,
+		data,
 		columns,
 		state: {
 			sorting,
 			columnFilters,
 			rowSelection,
-			pagination: {
-				pageIndex: currentPage,
-				pageSize: 5,
-			},
 		},
-		manualPagination: true,
 		meta: {
 			updateData: (
 				rowIndex: string | number,
@@ -81,6 +61,7 @@ export function DataTable<TData, TValue>({
 		getFilteredRowModel: getFilteredRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		onRowSelectionChange: setRowSelection,
 	});
@@ -176,37 +157,7 @@ export function DataTable<TData, TValue>({
 				</Table>
 			</div>
 
-			<ReactPaginate
-				previousLabel={
-					<Button
-						variant="outline"
-						size="sm"
-						disabled={!table.getCanPreviousPage()}
-						className="shad-grey-btn group disabled:cursor-pointer"
-					>
-						<ArrowLeft size={20} className="group-disabled:text-background" />
-					</Button>
-				}
-				nextLabel={
-					<Button
-						variant="outline"
-						size="sm"
-						disabled={currentPage + 1 == pageCount ? true : false}
-						className="shad-grey-btn group disabled:cursor-pointer"
-					>
-						<ArrowRight size={20} className="group-disabled:text-background" />
-					</Button>
-				}
-				breakLabel={"..."}
-				pageCount={pageCount}
-				marginPagesDisplayed={2}
-				disabledLinkClassName="disabled-btn"
-				pageRangeDisplayed={1}
-				onPageChange={handlePageClick}
-				containerClassName={"pagination"}
-				activeLinkClassName={"active"}
-				pageLinkClassName="page-num"
-			/>
+			<TablePaginate table={table} />
 		</div>
 	);
 }

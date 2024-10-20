@@ -31,7 +31,7 @@ function TableSearch({
 	return (
 		<div
 			className={cn(
-				"row-flex-start w-48 rounded-md border border-border px-3.5 py-1 max-[430px]:px-2.5 sm:w-[250px]",
+				"row-flex-start w-48 rounded-md border border-border px-3.5 py-1 max-[430px]:px-2.5 sm:w-[250px] lg:w-[300px]",
 				containerStyles
 			)}
 		>
@@ -39,7 +39,7 @@ function TableSearch({
 			<Input
 				value={taskName}
 				placeholder={placeholder ?? "Search..."}
-				className="i-reset !pl-2 sm:!pl-3"
+				className="i-reset h-8"
 				onChange={(e) => onFIlterChange(filterBy, e.target.value)}
 			/>
 		</div>

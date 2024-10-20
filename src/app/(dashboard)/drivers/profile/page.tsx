@@ -1,10 +1,15 @@
 import { SlidingTabs } from "@/components/tabs/SlidingTabs";
 import { useState } from "react";
-import { tripsColumn } from "@/components/table/columns/tripsColumn";
+import { tripsColumn } from "@/components/table/columns/driverTripColumn";
 import { DataTable } from "@/components/table/DataTable";
 import { useParams } from "react-router-dom";
-import { useGetDriverDetails } from "@/hook/useGetOverview";
 import { toast } from "sonner";
+import { KeyboardArrowDown } from "@/constants/icons";
+import {
+	useApproveDriver,
+	useGetDriverDetails,
+	useRejectDriver,
+} from "@/hook/useUsers";
 
 import useHeaderTab from "@/hook/useHeaderTab";
 import BackArrow from "@/components/BackArrow";
@@ -18,20 +23,77 @@ import FallbackLoader from "@/components/fallback/FallbackLoader";
 const tabIDs = ["Profile", "Vehicle and KYC Details", "Trips", "Withdrawals"];
 
 function DriverProfile() {
-	const [activeTab, setActiveTab] = useState(tabIDs[0]);
-	let headerContent = useHeaderTab(activeTab);
+	const [activeTab, setActiveTab] = useState(0);
 	const { id } = useParams();
+	const [exportData, setExportData] = useState<any>([]);
+	const approveMutation = useApproveDriver();
+	const rejectMutation = useRejectDriver();
+
+	if (!id) {
+		toast.error("Driver ID not found");
+		return null;
+	}
 
 	const {
 		data: driverData,
 		isError,
 		isLoading,
+		refetch,
 	} = useGetDriverDetails({ driverId: id! });
+
+	const onApprove = async () => {
+		try {
+			await approveMutation.mutateAsync([id!]);
+			toast.success("Driver approved successfully");
+
+			refetch();
+		} catch (error) {
+			toast.error("Error processing request");
+		}
+	};
+
+	const onDeactivate = async () => {
+		try {
+			await rejectMutation.mutateAsync([id!]);
+			toast.success("Driver rejected successfully");
+
+			refetch();
+		} catch (error) {
+			toast.error("Error processing request");
+		}
+	};
+
+	let headerContent = useHeaderTab({
+		activeTab,
+		onApprove,
+		onDeactivate,
+		tableData: exportData,
+	});
 
 	if (isError) toast.error("Error fetching driver details");
 
-	const changeTab = (id: string) => {
-		id && setActiveTab(id);
+	const changeTab = (id: number) => {
+		setActiveTab(id);
+
+		const dataArray = Object.entries(driverData!)?.map(([key, value]) => ({
+			key,
+			value,
+		}));
+
+		switch (id) {
+			case 1:
+				setExportData(dataArray);
+				break;
+			case 2:
+				setExportData(driverData?.driverTrips || []);
+				break;
+			case 3:
+				setExportData(driverData?.driverWithdraws || []);
+				break;
+			default:
+				setExportData([]);
+				break;
+		}
 	};
 
 	return (
@@ -39,8 +101,10 @@ function DriverProfile() {
 			<div className="flex-column gap-6">
 				<BackArrow />
 
-				<div className="row-flex-btwn gap-4">
-					<h3 className="w-full">{driverData?.fullName || "Driver"} details</h3>
+				<div className="row-flex-btwn gap-4 pr-1">
+					<h3 className="w-full text-xl md:text-[1.35rem] capitalize">
+						{driverData?.fullName || "Driver"} details
+					</h3>
 
 					{headerContent}
 				</div>
@@ -68,15 +132,15 @@ function DriverProfile() {
 								/>
 							</TabsPanel>
 							<TabsPanel activeTab={activeTab} id={tabIDs[1]} idx={1}>
-								<VehicleDetails profileInfo={driverData} />
+								<VehicleDetails profileInfo={driverData} driverId={id} />
 							</TabsPanel>
-							<TabsPanel activeTab={activeTab} id={tabIDs[2]} idx={1}>
+							<TabsPanel activeTab={activeTab} id={tabIDs[2]} idx={2}>
 								<DataTable
 									columns={tripsColumn}
 									tableData={driverData?.driverTrips || []}
 								/>
 							</TabsPanel>
-							<TabsPanel activeTab={activeTab} id={tabIDs[3]} idx={1}>
+							<TabsPanel activeTab={activeTab} id={tabIDs[3]} idx={3}>
 								<Withdrawals withdrawals={driverData?.driverWithdraws} />
 							</TabsPanel>
 						</>

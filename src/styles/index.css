@@ -28,7 +28,8 @@
 		--border-variant: #398dfa;
 
 		--grey: #8c9db1;
-		--grey-100: #8c9db1;
+		--grey-100: #919eab33;
+		--grey-200: #b8b8b8;
 
 		--input: #aab7c6;
 		--placeholder: #8c9db1;
@@ -105,13 +106,13 @@
 		@apply relative overflow-hidden before:absolute after:absolute after:inset-0 after:rounded-lg after:bg-secondary after:mix-blend-soft-light;
 	}
 	.badge {
-		@apply row-flex line-clamp-1 w-max cursor-pointer gap-2 rounded-md border border-border bg-background px-3.5 py-1.5 text-sm font-semibold capitalize transition focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 sm:whitespace-nowrap;
+		@apply row-flex leading-3 line-clamp-1 w-max cursor-pointer gap-1 rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold capitalize transition focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 sm:whitespace-nowrap;
 	}
 	.icon-div {
 		@apply grid size-8 cursor-pointer place-items-center rounded-full border border-border-100 bg-background p-1 clip-circle;
 	}
 	.card {
-		@apply row-flex-btwn mt-4 rounded-md border border-border shadow-sm;
+		@apply row-flex-btwn mt-3 rounded-md border border-border shadow-sm;
 	}
 	.filter-div {
 		@apply row-flex small-text w-min whitespace-nowrap rounded-full border border-border bg-background px-5 py-2 text-sm font-semibold;
@@ -120,10 +121,12 @@
 		@apply w-full h-[250px] grid place-items-center relative;
 	}
 	.badge-long {
-		@apply row-flex w-[80px] rounded-md border border-border px-6 py-2.5 font-semibold text-foreground;
+		@apply row-flex gap-1 sm:min-w-[80px] max-[430px]:text-xs px-4 sm:px-5 w-max rounded-lg border border-border py-2 font-semibold hover:bg-background-100 active:bg-background-200 transition cursor-pointer;
 	}
-	.action-styles {
-		@apply badge !text-xs max-[430px]:text-[0.7rem] sm:!px-6;
+
+	/* CUSTOM UTILS  */
+	.not-first-of-type\:border-t > :not(:first-of-type) {
+		@apply border-t border-border-100;
 	}
 
 	/* CUSTOM BUTTONS */
@@ -131,7 +134,7 @@
 		@apply border-border bg-background text-foreground !important;
 	}
 	.btn-variant {
-		@apply row-flex my-1 h-10 w-full whitespace-nowrap rounded-md border border-border-variant bg-secondary px-7 py-3.5 font-semibold capitalize tracking-wide text-secondary-foreground subpixel-antialiased shadow-sm filter transition duration-150 active:translate-y-0.5 active:brightness-90 disabled:pointer-events-none disabled:opacity-60 disabled:brightness-75 md:py-4 2xl:h-12;
+		@apply row-flex h-10 w-full whitespace-nowrap rounded-md border border-border-variant bg-secondary px-7 py-3.5 font-semibold capitalize tracking-wide text-secondary-foreground subpixel-antialiased shadow-sm filter transition duration-150 active:translate-y-0.5 active:brightness-90 disabled:border-none disabled:pointer-events-none disabled:bg-grey-200 disabled:opacity-80  md:py-4 2xl:h-12;
 	}
 	.select-field {
 		@apply h-10 w-full rounded-md border border-border px-2.5 py-0 shadow-sm placeholder:text-grey-100 disabled:opacity-50 !important;
@@ -139,27 +142,25 @@
 
 	/* RESETS */
 	.i-reset {
-		@apply overflow-hidden text-ellipsis whitespace-nowrap rounded-none border-none bg-transparent outline-none placeholder:text-placeholder focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+		@apply overflow-hidden text-ellipsis whitespace-nowrap rounded-none border-none bg-transparent outline-none placeholder:text-placeholder focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-0;
 	}
 
 	/* =====  SHADCN OVERRIDES */
 	.shad-input {
-		@apply my-auto h-10 w-full rounded-full border border-border bg-input px-3 text-base disabled:border-border;
+		@apply my-auto w-full rounded-lg border border-border-100 px-2 text-base disabled:border-border;
 	}
 	.shad-alert-dialog {
 		@apply border-2 border-border  outline-none;
 	}
-	.shad-dialog button {
-		@apply focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
-	}
+
 	.shad-select-trigger {
-		@apply h-auto w-max min-w-[100px] gap-3 border-border bg-inherit text-xs placeholder:text-grey-100 focus:ring-0 focus:ring-transparent md:whitespace-nowrap;
+		@apply h-auto w-max min-w-[100px] gap-2 border border-border-100 font-semibold flex items-center rounded-lg py-2 px-3 bg-inherit text-sm placeholder:text-placeholder focus:ring-0 focus:ring-transparent md:whitespace-nowrap cursor-pointer leading-4 active:bg-background-200 transition;
 	}
 	.shad-select-content {
 		@apply relative rounded-lg !important;
 	}
 	.shad-select-item {
-		@apply row-flex-start cursor-pointer py-2;
+		@apply row-flex-start cursor-pointer py-2 text-sm px-2;
 	}
 
 	/* Data Table */

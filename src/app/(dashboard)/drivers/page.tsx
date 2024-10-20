@@ -5,9 +5,12 @@ import { driverColumn } from "@/components/table/columns/driverColumn";
 import { ColumnFiltersState } from "@tanstack/react-table";
 import { DriverType } from "@/types/server";
 import { toast } from "sonner";
-import { useGetDrivers } from "@/hook/useGetOverview";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
-import { useApproveDriver, useRejectDriver } from "@/hook/usePostQuery";
+import {
+	useApproveDriver,
+	useRejectDriver,
+	useGetDrivers,
+} from "@/hook/useUsers";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 
 import clsx from "clsx";
@@ -20,7 +23,7 @@ function Drivers() {
 	const [selectedFilter, setSelectedFilter] = useState("all");
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-	const { data: driverData, isError, isLoading } = useGetDrivers();
+	const { data: driverData, isError, isLoading, refetch } = useGetDrivers();
 	const approveMutation = useApproveDriver();
 	const rejectMutation = useRejectDriver();
 
@@ -61,7 +64,7 @@ function Drivers() {
 				toast.success("Drivers rejected successfully");
 			}
 
-			window.location.reload();
+			refetch();
 		} catch (error) {
 			toast.error("Error processing request");
 		}
@@ -77,10 +80,10 @@ function Drivers() {
 						{driverStats?.length &&
 							driverStats.map(({ label, value, status }, idx) => (
 								<div className="row-flex-btwn !items-start gap-4" key={idx}>
-									<div className="flex-column gap-3">
+									<div className="flex-column gap-2.5">
 										<span className="label">{label || "Total stats"}</span>
 										<p
-											className={clsx("font-semibold uppercase", {
+											className={clsx("font-semibold uppercase text-lg", {
 												"text-green-500": status === "high",
 												"text-red-500": status === "low",
 											})}
@@ -118,7 +121,7 @@ function Drivers() {
 
 								<div className="row-flex gap-2.5">
 									<div
-										className={cn("action-styles")}
+										className={cn("badge-long")}
 										onClick={() => handleAction("approve")}
 									>
 										Approve
@@ -130,7 +133,7 @@ function Drivers() {
 										)}
 									</div>
 									<div
-										className={cn("action-styles")}
+										className={cn("badge-long")}
 										onClick={() => handleAction("reject")}
 									>
 										Reject

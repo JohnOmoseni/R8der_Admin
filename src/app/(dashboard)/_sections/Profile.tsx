@@ -8,6 +8,7 @@ import {
 	infoMapper,
 	keyMappings,
 } from "@/constants";
+import { StatusBadge } from "@/components/StatusBadge";
 
 type ProfileProps = {
 	isProfileVariant?: boolean;
@@ -41,8 +42,6 @@ function Profile({
 
 	const keys = keyMappings[type] || keyMappings.default;
 
-	console.log("[Info]", info, "[keys]", keys, "[Profile]", profileInfo);
-
 	const handleCopyValue = (text: string, key: string) => {
 		if (text) copyToClipBoard(text, key, setCopiedStatus);
 	};
@@ -70,14 +69,20 @@ function Profile({
 								: "flex-1 max-sm:justify-end max-sm:text-end"
 						)}
 					>
-						<p
-							className={cn(
-								"font-semibold",
-								key === "email" && "text-sm underline"
-							)}
-						>
-							{Array.isArray(info[key]) ? info[key].join(", ") : info[key]}
-						</p>
+						{label.includes("Status") ? (
+							<StatusBadge status={info[key]} />
+						) : (
+							<p
+								className={cn(
+									"font-semibold",
+									key === "email" && "text-sm italic underline"
+								)}
+							>
+								{Array.isArray(info[key])
+									? info[key].join(", ")
+									: info[key] ?? "-"}
+							</p>
+						)}
 
 						<div
 							className="cursor-pointer group-hover:max-sm:block sm:hidden"

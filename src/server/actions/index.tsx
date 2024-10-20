@@ -2,7 +2,7 @@ import api from "../axios";
 import APIURLS from "../apiUrls";
 import { AxiosResponse } from "axios";
 import { handleApiError } from "@/utils";
-import { GetByIdParams, GetOverviewParams } from "@/types/server";
+import { GetByIdParams, GetOverviewParams, SettingsType } from "@/types/server";
 
 const getOverview = async (
 	params?: GetOverviewParams
@@ -80,7 +80,7 @@ const getDriverById = async ({
 };
 
 // TRIPS ENDPOINT
-const getTrips = async (
+const getTripsOverview = async (
 	params: GetOverviewParams
 ): Promise<AxiosResponse["data"]> => {
 	const payload = {
@@ -90,6 +90,29 @@ const getTrips = async (
 	try {
 		const response = await api.post(`${APIURLS.GET_TRIP}`, payload);
 		console.log("[TRIPS OVERVIEW RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_ALL_TRIPS}`);
+		console.log("[ALL TRIPS RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+// WITHDRAWALS ENDPOINT
+const getWithdrawals = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_WITHDRAWALS}`);
+		console.log("[WITHDRAWALS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -133,8 +156,65 @@ const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
 
 const getStaff = async (): Promise<AxiosResponse["data"]> => {
 	try {
-		const response = await api.get(`${APIURLS.GET_STAFF_DETAILS}}`);
+		const response = await api.get(`${APIURLS.GET_STAFF_DETAILS}`);
 		console.log("[STAFF DETAILS RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+// SETTINGS ENDPOINTS
+const getSettingsList = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_SETTINGS}`);
+		console.log("[SETTINGS LIST RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getSettingByType = async ({
+	settingType,
+}: {
+	settingType: SettingsType;
+}): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_SETTINGS}/${settingType}`);
+		console.log("[SETTING TYPE RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getAllCouponCodes = async (): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(`${APIURLS.GET_COUPON_CODES}`);
+		console.log("[COUPON CODES RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getAllCouponCodesById = async ({
+	id,
+	value,
+}: {
+	id: "target" | "code";
+	value: string;
+}): Promise<AxiosResponse["data"]> => {
+	const url =
+		id === "target" ? APIURLS.GET_COUPON_BYTARGET : APIURLS.GET_COUPON_BYCODE;
+	try {
+		const response = await api.get(`${url}/${value}`);
+		console.log(`[COUPON CODES BY ${id}]`, response);
 
 		return response.data;
 	} catch (error) {
@@ -148,9 +228,16 @@ export const requestApi = {
 	getRiderById,
 	getDrivers,
 	getDriverById,
-	getTrips,
+	getTripsOverview,
+	getAllTrips,
 	getAllRoles,
 	getAllEmployee,
 	getAllAdmins,
 	getStaff,
+	getWithdrawals,
+
+	getSettingsList,
+	getSettingByType,
+	getAllCouponCodes,
+	getAllCouponCodesById,
 };

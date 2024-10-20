@@ -23,29 +23,30 @@ const config = {
 				ring: "var(--ring)",
 				placeholder: "var(--placeholder)",
 				border: {
+					"100": "var(--border-100)",
 					DEFAULT: "var(--border)",
 					variant: "var(--border-variant)",
-					100: "var(--border-100)",
 				},
 				background: {
+					"100": "var(--background-100)",
+					"200": "var(--background-200)",
 					DEFAULT: "var(--background)",
-					100: "var(--background-100)",
-					200: "var(--background-200)",
 					skeleton: "var(--skeleton)",
 				},
 				foreground: {
+					"100": "var(--foreground-100)",
 					DEFAULT: "var(--foreground)",
-					100: "var(--foreground-100)",
 					variant: "var(--foreground-variant)",
 				},
 				secondary: {
+					"100": "var(--secondary-100)",
 					DEFAULT: "var(--secondary)",
-					100: "var(--secondary-100)",
 					foreground: "var(--secondary-foreground)",
 				},
 				grey: {
+					"100": "var(--grey-100)",
+					"200": "var(--grey-200)",
 					DEFAULT: "var(--grey)",
-					100: "var(--grey-100)",
 				},
 				muted: {
 					DEFAULT: "var(--muted)",
@@ -69,12 +70,20 @@ const config = {
 			},
 			keyframes: {
 				"accordion-down": {
-					from: { height: "0" },
-					to: { height: "var(--radix-accordion-content-height)" },
+					from: {
+						height: "0",
+					},
+					to: {
+						height: "var(--radix-accordion-content-height)",
+					},
 				},
 				"accordion-up": {
-					from: { height: "var(--radix-accordion-content-height)" },
-					to: { height: "0" },
+					from: {
+						height: "var(--radix-accordion-content-height)",
+					},
+					to: {
+						height: "0",
+					},
 				},
 			},
 			animation: {

@@ -1,62 +1,93 @@
 import { Button } from "@/components/CustomButton";
+import FallbackLoader from "@/components/fallback/FallbackLoader";
 import CustomFormField, {
 	FormFieldType,
 } from "@/components/forms/CustomFormField";
+import { useGetSettingsList } from "@/hook/useGetOverview";
+import { useUpdateSettings } from "@/hook/usePostQuery";
 import { ConfigSchema } from "@/schema/validation";
+import { CommissionType } from "@/types/server";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { toast } from "sonner";
 import { InferType } from "yup";
 
-function Config({ user }: { user?: any }) {
-	const [isLoading, setIsLoading] = useState(false);
+function Config() {
+	const { data, isError, isLoading, error } = useGetSettingsList();
+	const updateSettingsMutation = useUpdateSettings();
+	const settingsList = data?.settingsData;
 
 	const initialValues = {
-		customerBasicFee: user?.basicFee,
-		customerLuxuryFee: user?.luxuryFee,
-		driverComissionType: "percentage",
-		driverComissionAmount: user?.commissionAMount,
+		customerBasicFee: settingsList?.basicTripFee || "",
+		customerLuxuryFee: settingsList?.luxuryTripFee || "",
+		driverCommissionType: settingsList?.driverCommissionType || "PERCENTAGE",
+		driverCommissionAmount: settingsList?.driverCommissionAmount || "",
 	};
 
-	const onSubmit = (values: InferType<typeof ConfigSchema>) => {
-		setIsLoading(true);
-		console.log(values);
+	if (isError)
+		toast.error(`${error?.message || "Error fetching Settings list"}`);
+
+	const onSubmit = async (values: InferType<typeof ConfigSchema>) => {
+		console.log("Form values", values);
+		try {
+			const payload = {
+				basicTripFee: values.customerBasicFee,
+				luxuryTripFee: values.customerLuxuryFee,
+				driverCommissionType: values.driverCommissionType as CommissionType,
+				driverCommissionAmount: values.driverCommissionAmount,
+			};
+
+			await updateSettingsMutation.mutateAsync(payload);
+
+			toast.success(
+				updateSettingsMutation.data?.message || "Setiings updated successfully"
+			);
+		} catch {}
 	};
 
 	const { values, setFieldValue, handleChange, handleSubmit } = useFormik({
 		initialValues,
-		validationSchema: ConfigSchema,
+		validationSchema: null,
 		onSubmit,
+		enableReinitialize: true,
 	});
 
-	return (
+	return isLoading ? (
+		<div className="relative w-full min-h-[70vh]">
+			<FallbackLoader />
+		</div>
+	) : (
 		<div className="flex-column gap-8 max-w-2xl">
 			<Section
 				title="Customer Fee Configuration"
 				value1={values.customerBasicFee}
 				value2={values.customerLuxuryFee}
 				desc1="Customer service fee for basic trips"
-				desc2="Customer service fee for basic trips"
+				desc2="Customer service fee for luxury trips"
 				setFieldValue={setFieldValue}
 				handleChange={handleChange}
 				placeholder={"\u20A6100"}
+				name1="customerBasicFee"
+				name2="customerLuxuryFee"
 			/>
 
 			<Section
 				title="Driver Fee Configurations"
-				value1={values.driverComissionType}
-				value2={values.driverComissionAmount}
+				value1={values.driverCommissionType}
+				value2={values.driverCommissionAmount}
 				showCheckbox
 				desc1="Driver commission type"
 				desc2="Driver commission amount"
 				setFieldValue={setFieldValue}
 				handleChange={handleChange}
 				placeholder="10%"
+				name1="driverCommissionType"
+				name2="driverCommissionAmount"
 			/>
 
 			<Button
 				onClick={handleSubmit}
-				disabled={isLoading}
-				isLoading={isLoading}
+				disabled={updateSettingsMutation.isPending}
+				isLoading={updateSettingsMutation.isPending}
 				type="submit"
 				title="Save"
 				className="!mt-3 ml-auto !w-max"
@@ -71,6 +102,8 @@ type SectionType = {
 	title: string;
 	desc1: string;
 	desc2: string;
+	name1: string;
+	name2: string;
 	value1: any;
 	value2: any;
 	placeholder: string;
@@ -89,6 +122,8 @@ const Section = ({
 	setFieldValue,
 	showCheckbox,
 	handleChange,
+	name1,
+	name2,
 }: SectionType) => {
 	return (
 		<div className="flex-column gap-3">
@@ -102,31 +137,31 @@ const Section = ({
 						<div className="flex-column min-[550px]:row-flex-start gap-y-2 w-full gap-x-[15%]">
 							<CustomFormField
 								fieldType={FormFieldType.CHECKBOX}
-								name="driverComissionType"
+								name="driverCommissionType"
 								label="Percentage"
 								field={{
-									value: value1 == "percentage" ? true : false,
+									value: value1 == "PERCENTAGE" ? true : false,
 								}}
 								onChange={() => {
-									setFieldValue("driverComissionType", "percentage");
+									setFieldValue("driverCommissionType", "PERCENTAGE");
 								}}
 							/>
 
 							<CustomFormField
 								fieldType={FormFieldType.CHECKBOX}
-								name="driverComissionType"
+								name="driverCommissionType"
 								label="Flat fee"
 								field={{
-									value: value1 === "flat" ? true : false,
+									value: value1 === "FLAT" ? true : false,
 								}}
 								onChange={() => {
-									setFieldValue("driverComissionType", "flat");
+									setFieldValue("driverCommissionType", "FLAT");
 								}}
 							/>
 						</div>
 					) : (
 						<CustomFormField
-							name="basicFee"
+							name={name1}
 							fieldType={FormFieldType.INPUT}
 							field={{
 								value: value1,
@@ -141,7 +176,7 @@ const Section = ({
 					<p className="text-sm sm:whitespace-nowrap">{desc2}</p>
 
 					<CustomFormField
-						name="luxuryFee"
+						name={name2}
 						fieldType={FormFieldType.INPUT}
 						field={{
 							value: value2,

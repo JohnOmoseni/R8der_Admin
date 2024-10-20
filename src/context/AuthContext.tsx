@@ -19,6 +19,8 @@ type AuthContextType = {
 	token?: string | null;
 	role?: (typeof APP_ROLES)[keyof typeof APP_ROLES] | string | null;
 	handleLogin: (email: string, password: string) => Promise<void>;
+	handleVerifyOtp: (otp: number, email: string) => Promise<void>;
+	handleResendOtp: (email: string) => Promise<void>;
 	handleLogout: () => Promise<void>;
 	isAuthenticated?: boolean;
 	isLoadingAuth?: boolean;
@@ -74,18 +76,20 @@ export default function AuthProvider({
 		try {
 			const data = await authApi.login({ email, password });
 
-			if (!data.status) throw new Error("Error signing in");
+			if (!data?.status) throw new Error(data?.message || "Error Signing in");
+			const response = data?.data;
 
-			const authToken = data?.accessToken;
+			const authToken = response?.accessToken;
 
 			const currentUser = {
-				userId: data.userId,
-				username: `${data?.firstName} ${data?.lastName}`,
-				firstName: data.firstName,
-				email: data.email,
-				phone: data.phone,
-				img: data.photosImagePath,
-				role: data?.roles[0] === "admin-user" ? "ADMIN" : "STAFF",
+				userId: response.userId,
+				username: `${response?.firstName} ${response?.lastName}`,
+				firstName: response.firstName,
+				email: response.email,
+				phone: response.phone,
+				img: response.photosImagePath,
+				otpVerified: false,
+				role: response?.roles?.[0] === "admin-user" ? "ADMIN" : "STAFF",
 			};
 
 			setToken(authToken);
@@ -94,12 +98,12 @@ export default function AuthProvider({
 			sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
 			sessionStorage.setItem("token", JSON.stringify(authToken));
 
-			toast.success("Signed in successfully");
-			navigate("/dashboard");
+			toast.success(data?.message || "Login successful. Please verify OTP.");
+			navigate("/verify-otp");
 		} catch (error: any) {
 			// null - request made and it failed
-			const errorMessage = error.response?.data?.message;
-			let message = "Failed to sign in";
+			const errorMessage = error?.response?.data?.message;
+			let message = "Login Failed";
 
 			if (errorMessage?.includes("Invalid username or password")) {
 				message = "Email not found";
@@ -114,10 +118,66 @@ export default function AuthProvider({
 				<div className="row-flex-start gap-2">
 					<Alert className="size-5 text-red-500 self-start" />
 					<div className="flex-column gap-0.5">
-						<h3>Error signing in</h3> <p className="">{message}</p>
+						<h3>{errorMessage || message}</h3> <p className="">{message}</p>
 					</div>
 				</div>
 			);
+		} finally {
+			setIsLoadingAuth(false);
+		}
+	};
+
+	const handleVerifyOtp = async (otp: number, email: string) => {
+		if (!otp || !email) return;
+		setIsLoadingAuth(true);
+
+		try {
+			const data = await authApi.verifyOtp({ otp, email });
+
+			if (!data?.status)
+				throw new Error(data?.message || "OTP verification failed");
+
+			const finalAuthToken = data?.data?.accessToken;
+			const updatedUser = {
+				...user,
+				otpVerified: true,
+				userId: user?.userId || "",
+				username: user?.username || "",
+				firstName: user?.firstName || "",
+				email: user?.email || "",
+				phone: user?.phone || "",
+				img: user?.img || "",
+				role: user?.role || "",
+			};
+
+			sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+			sessionStorage.setItem("token", JSON.stringify(finalAuthToken));
+
+			setUser(updatedUser);
+			setToken(finalAuthToken);
+
+			toast.success("OTP verified successfully. Redirecting to dashboard...");
+
+			navigate("/dashboard");
+		} catch (error: any) {
+			toast.error(error?.message || "Failed to verify OTP. Please try again.");
+		} finally {
+			setIsLoadingAuth(false);
+		}
+	};
+
+	const handleResendOtp = async (email: string) => {
+		if (!email) return;
+		setIsLoadingAuth(true);
+
+		try {
+			const { data } = await authApi.resendOtp({ email });
+
+			if (!data?.status)
+				throw new Error(data?.message || "Failed to resend OTP");
+			toast.success("OTP resent successfully");
+		} catch (error: any) {
+			toast.error(error?.message || "Failed to resend OTP");
 		} finally {
 			setIsLoadingAuth(false);
 		}
@@ -204,6 +264,8 @@ export default function AuthProvider({
 				isLoadingAuth,
 				handleLogin,
 				handleLogout,
+				handleVerifyOtp,
+				handleResendOtp,
 			}}
 			{...props}
 		>

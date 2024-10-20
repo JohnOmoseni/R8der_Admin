@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CustomFormField, {
 	FormFieldType,
 } from "@/components/forms/CustomFormField";
@@ -8,21 +7,37 @@ import { useFormik } from "formik";
 import { PasswordSchema } from "@/schema/validation";
 import { cn } from "@/lib/utils";
 import { Alert, CheckCircle, Lock } from "@/constants/icons";
+import { toast } from "sonner";
+import { useUpdatePassword } from "@/hook/usePostQuery";
 
 function PasswordForm({ user }: { user?: any }) {
-	const [isLoading, setIsLoading] = useState(false);
+	const changePasswordMutation = useUpdatePassword();
 
 	const onSubmit = async (values: InferType<typeof PasswordSchema>) => {
-		setIsLoading(true);
-		console.log(values);
+		console.log("Form submitted", values);
+
+		try {
+			const payload = {
+				oldPassword: values.current_password!,
+				newPassword: values.new_password,
+				confirmNewPassword: values.confirm_password,
+			};
+
+			await changePasswordMutation.mutateAsync(payload);
+			toast.success(changePasswordMutation.data?.message);
+		} catch {
+			toast.error(
+				`${changePasswordMutation.error?.message || "Error updating password."}`
+			);
+		}
 	};
 
 	const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
 		useFormik({
 			initialValues: {
-				current_password: user?.currentPassword || "123456",
-				new_password: "123456",
-				confirm_password: "123456",
+				current_password: user?.currentPassword || "",
+				new_password: "",
+				confirm_password: "",
 			},
 			validationSchema: PasswordSchema,
 			onSubmit,
@@ -32,7 +47,7 @@ function PasswordForm({ user }: { user?: any }) {
 		<FormWrapper
 			buttonLabel="Save"
 			onSubmit={handleSubmit}
-			isSubmitting={isLoading}
+			isSubmitting={changePasswordMutation.isPending}
 			containerStyles="mt-0"
 			btnStyles="!w-max !ml-auto"
 		>
@@ -55,6 +70,8 @@ function PasswordForm({ user }: { user?: any }) {
 				field={{ value: values.new_password, type: "password" }}
 				iconSrc={Lock}
 				onChange={handleChange}
+				errors={errors}
+				touched={touched}
 			/>
 
 			<div className="relative w-full pb-4">
@@ -66,7 +83,6 @@ function PasswordForm({ user }: { user?: any }) {
 					iconSrc={Lock}
 					onChange={handleChange}
 					onBlur={handleBlur}
-					errors={errors}
 					touched={touched}
 				/>
 
@@ -82,6 +98,7 @@ function PasswordForm({ user }: { user?: any }) {
 							<span className="error-text">{errors?.["confirm_password"]}</span>
 						</>
 					) : (
+						!errors?.["new_password"] &&
 						!errors?.["confirm_password"] &&
 						touched?.["confirm_password"] && (
 							<>

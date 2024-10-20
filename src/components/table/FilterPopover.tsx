@@ -20,7 +20,7 @@ function Filters({ columnFilters, status, setColumnFilters }: Props) {
 		// setColumnFilters([{id: "status", value: [1]}])
 		setColumnFilters((prev: any) => {
 			const statuses =
-				prev.find((filter: any) => filter.id === "status")?.value || "";
+				prev?.find((filter: any) => filter.id === "status")?.value || "";
 			if (!statuses) {
 				return prev.concat({
 					id: "status",

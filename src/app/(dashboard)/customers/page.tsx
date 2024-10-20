@@ -3,10 +3,12 @@ import { DataTable } from "@/components/table/DataTable";
 import { customerColumns } from "@/components/table/columns/customerColumn";
 import { useGetRiders } from "@/hook/useGetOverview";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
+import { Download } from "@/constants/icons";
 import { toast } from "sonner";
 import clsx from "clsx";
 import SectionWrapper from "@/layouts/SectionWrapper";
 import TableSearch from "@/components/table/TableSearch";
+import DownloadReport from "@/components/DownloadReport";
 
 function Customers() {
 	const [columnFilters, setColumnFilters] = useState([]);
@@ -33,7 +35,21 @@ function Customers() {
 	];
 
 	return (
-		<SectionWrapper headerTitle="Customers">
+		<SectionWrapper
+			headerTitle="Customers"
+			customHeaderContent={
+				<DownloadReport
+					data={ridersData?.data || []}
+					filename="Customers.xlsx"
+					trigger={
+						<>
+							<Download className="size-4" />
+							<p className="mt-0.5 font-semibold">Export</p>
+						</>
+					}
+				/>
+			}
+		>
 			{isLoading ? (
 				<SkeletonLoader />
 			) : (
@@ -42,10 +58,10 @@ function Customers() {
 						{customerStats?.length &&
 							customerStats.map(({ label, value, status }, idx) => (
 								<div className="row-flex-btwn !items-start gap-4" key={idx}>
-									<div className="flex-column gap-3">
+									<div className="flex-column gap-2.5">
 										<span className="label">{label}</span>
 										<p
-											className={clsx("font-semibold uppercase", {
+											className={clsx("font-semibold text-lg uppercase", {
 												"text-green-500": status === "high",
 												"text-red-500": status === "low",
 											})}

@@ -1,5 +1,13 @@
 import { postApi } from "@/server/actions/post";
-import { AddStaffParams, SELECTEDTYPE } from "@/types/server";
+import { SettingsDataType } from "@/types";
+import {
+	AddStaffParams,
+	CouponResponseType,
+	CouponTargetParmas,
+	UpdateRoleParams,
+	SELECTEDTYPE,
+	UpdatePasswordParams,
+} from "@/types/server";
 import {
 	useMutation,
 	UseMutationResult,
@@ -40,7 +48,7 @@ export const useRejectDriver = () => {
 	});
 };
 
-// STAFFS
+// STAFFS MUTATION
 // ACTIVATE STAFF
 export const useActivateStaff = (): UseMutationResult<
 	any,
@@ -88,6 +96,95 @@ export const useAddStaff = () => {
 		onError: (error) => console.error("[Adding Staff Error]", error),
 		onSuccess: (_values) => {
 			queryClient.invalidateQueries({ queryKey: ["getStaffsAndAdmins"] });
+		},
+	});
+};
+
+// UPDATE ROLE
+export const useUpdateRole = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: UpdateRoleParams) => postApi.updateRole(data),
+		onError: (error) => console.error("[Updating User Role Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getStaffsAndAdmins"] });
+		},
+	});
+};
+
+//  SETTINGS CONFIG MUTATION
+export const useUpdateSettings = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: SettingsDataType) => postApi.updateSetting(data),
+		onError: (error) => console.error("[Update Settings Config Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getSettingsList"] });
+		},
+	});
+};
+
+export const useUpdatePassword = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: UpdatePasswordParams) => postApi.updatePassword(data),
+		onError: (error) => console.error("[Update Password Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getUserPassword"] });
+		},
+	});
+};
+
+// CREATE DISCOUNT
+export const useCreateCoupon = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: CouponResponseType) => postApi.createCoupon(data),
+		onError: (error) => console.error("[Creating Discount Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getDiscountAndCoupons"] });
+		},
+	});
+};
+
+// UPDATE DISCOUNTS & COUPONS
+export const useUpdateDiscount = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: CouponResponseType) => postApi.updateDiscount(data),
+		onError: (error) => console.error("[Updated Discount Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getAllCouponCodes"] });
+		},
+	});
+};
+
+export const useDeactivateCoupon = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: CouponTargetParmas) =>
+			postApi.deactivateCouponById(data),
+		onError: (error) => console.error("[Deactivated Discount Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getAllCouponCodes"] });
+		},
+	});
+};
+
+export const useDeleteCoupon = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (data: string) => postApi.deleteCouponById(data),
+		onError: (error) => console.error("[Deleted Discount Error]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getAllCouponCodes"] });
 		},
 	});
 };

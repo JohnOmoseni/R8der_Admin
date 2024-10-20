@@ -21,7 +21,7 @@ function FormWrapper({
 }: FormWrapperProps) {
 	return (
 		<div className={cn("mt-6 h-full w-full max-w-lg", containerStyles)}>
-			<form onSubmit={onSubmit} className="flex-column flex-1 gap-8">
+			<form onSubmit={onSubmit} className="flex-column flex-1 gap-10 md:gap-16">
 				<div className="flex-column gap-2 space-y-3">{children}</div>
 
 				<Button

@@ -1,16 +1,25 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
-import { Link } from "react-router-dom";
 import { TripsType } from "@/types/server";
+import { SheetMenu } from "@/components/ui/components/SheetMenu";
+import Receipt from "@/app/(dashboard)/_sections/Receipt";
 
-export const tripsColumn: ColumnDef<TripsType>[] = [
+export const customerTripsColumn: ColumnDef<TripsType>[] = [
 	{
-		accessorKey: "id",
+		accessorKey: "riderName",
+		header: "Customer Name",
+		cell: ({ row }) => (
+			<p className="table-data-sm line-clamp-2">
+				{row.original?.riderName || "Unknown"}
+			</p>
+		),
+	},
+	{
+		accessorKey: "tripId",
 		header: "Trip ID",
 		cell: ({ row }) => (
-			<p className="table-data-sm line-clamp-2">{row.original?.tripId}</p>
+			<p className="table-data-sm !text-center">{row.original?.tripId}</p>
 		),
-		size: 100,
 	},
 
 	{
@@ -46,10 +55,12 @@ export const tripsColumn: ColumnDef<TripsType>[] = [
 		header: "Action",
 		cell: ({ row }) => {
 			const trip = row.original;
+
 			return (
-				<Link to={`/dashboard/trips/${trip.tripId}`} className="max-sm:px-2">
-					<p className="badge !font-medium !px-5 py-2">View receipt</p>
-				</Link>
+				<SheetMenu
+					trigger={<div className="badge-long">View receipt</div>}
+					content={<Receipt details={trip} />}
+				/>
 			);
 		},
 	},

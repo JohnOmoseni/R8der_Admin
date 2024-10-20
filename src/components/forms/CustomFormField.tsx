@@ -16,6 +16,7 @@ export enum FormFieldType {
 	INPUT = "input",
 	CHECKBOX = "checkbox",
 	SELECT = "select",
+	SKELETON = "skeleton",
 }
 
 interface CustomProps {
@@ -37,6 +38,7 @@ interface CustomProps {
 	errors?: FormikErrors<any>;
 	touched?: FormikTouched<any>;
 	required?: boolean;
+	inputStyles?: string;
 	renderSkeleton?: (field: any) => React.ReactNode;
 	onKeyDown?: KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 	onChange?: any;
@@ -52,6 +54,7 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 		name,
 		onBlur,
 		onChange,
+		inputStyles,
 		iconSrc: IconSrc,
 	} = props;
 	const placeholder = field?.placeholder ?? "";
@@ -66,7 +69,7 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 				<>
 					{IconSrc && (
 						<span className="ml-2.5 mr-0.5 block mt-[1px]">
-							<IconSrc claasname="w-5 h-fit " />
+							<IconSrc className="w-[18px] h-fit " />
 						</span>
 					)}
 					<Input
@@ -78,7 +81,7 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 						value={field?.value as string}
 						onChange={onChange}
 						onBlur={onBlur}
-						className={cn("i-reset")}
+						className={cn("i-reset", inputStyles)}
 					/>
 
 					{field?.type === "password" && (
@@ -87,9 +90,9 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 							onClick={changePasswordVisibility}
 						>
 							{showPassword ? (
-								<Eye size={22} className="text-secondary" />
+								<Eye size={20} className="text-secondary" />
 							) : (
-								<EyeOff size={22} className="text-secondary" />
+								<EyeOff size={20} className="text-secondary" />
 							)}
 						</span>
 					)}
@@ -99,8 +102,16 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 		case FormFieldType.SELECT:
 			return (
 				<Select onValueChange={onChange} defaultValue={field?.value as string}>
-					<SelectTrigger className="shad-select-trigger !w-full">
-						<SelectValue placeholder={placeholder || "Select"} />
+					<SelectTrigger
+						className={cn("shad-select-trigger !w-full", inputStyles)}
+					>
+						<SelectValue
+							placeholder={
+								<span className="text-placeholder">
+									{placeholder || "Select"}
+								</span>
+							}
+						/>
 					</SelectTrigger>
 					<SelectContent className="shad-select-content">
 						{props.children}
@@ -115,16 +126,19 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 						id={name}
 						name={name}
 						checked={field?.value}
-						onCheckedChange={onChange}
+						onCheckedChange={(checked) => onChange(checked)}
 					/>
 					<Label
 						htmlFor={name}
-						className="mt-0.5 cursor-pointer leading-5 text-grey"
+						className="mt-0.5 cursor-pointer leading-4 text-grey"
 					>
 						{label}
 					</Label>
 				</div>
 			);
+
+		case FormFieldType.SKELETON:
+			return props.renderSkeleton ? props.renderSkeleton(field) : null;
 
 		default:
 			return null;
@@ -135,7 +149,6 @@ const CustomFormField = (props: CustomProps) => {
 	const {
 		name,
 		label,
-		field,
 		errors,
 		touched,
 		containerStyles,
@@ -172,16 +185,14 @@ const CustomFormField = (props: CustomProps) => {
 			)}
 			{result}
 
-			{field?.type !== "password" && (
-				<p
-					className={cn(
-						"transition-sm hidden group-[.is-error]:my-1.5 ml-0.5 line-clamp-2 h-0 text-xs font-semibold leading-4 text-red-500 group-[.is-error]:block group-[.is-error]:h-auto group-[.is-error]:animate-in",
-						isShowPasswordError && "md:min-h-5"
-					)}
-				>
-					{errors?.[name] as string}
-				</p>
-			)}
+			<p
+				className={cn(
+					"transition-sm hidden group-[.is-error]:my-1.5 ml-0.5 line-clamp-2 h-0 text-xs font-semibold leading-4 text-red-500 group-[.is-error]:block group-[.is-error]:h-auto group-[.is-error]:animate-in",
+					isShowPasswordError && "md:min-h-5"
+				)}
+			>
+				{errors?.[name] as string}
+			</p>
 		</div>
 	);
 };
