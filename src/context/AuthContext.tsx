@@ -103,7 +103,7 @@ export default function AuthProvider({
 		} catch (error: any) {
 			// null - request made and it failed
 			const errorMessage = error?.response?.data?.message;
-			let message = "Login Failed";
+			let message = "Error signing in";
 
 			if (errorMessage?.includes("Invalid username or password")) {
 				message = "Email not found";
@@ -160,7 +160,9 @@ export default function AuthProvider({
 
 			navigate("/dashboard");
 		} catch (error: any) {
-			toast.error(error?.message || "Failed to verify OTP. Please try again.");
+			const errorMessage = error?.response?.data?.message;
+			toast.error(errorMessage || "Failed to verify OTP. Please try again.");
+			throw new Error(errorMessage || "Failed to verify OTP.");
 		} finally {
 			setIsLoadingAuth(false);
 		}
@@ -177,7 +179,10 @@ export default function AuthProvider({
 				throw new Error(data?.message || "Failed to resend OTP");
 			toast.success("OTP resent successfully");
 		} catch (error: any) {
-			toast.error(error?.message || "Failed to resend OTP");
+			const errorMessage = error?.response?.data?.message;
+
+			toast.error(errorMessage || "Failed to resend OTP");
+			throw new Error(errorMessage || "Failed to resend OTP.");
 		} finally {
 			setIsLoadingAuth(false);
 		}
