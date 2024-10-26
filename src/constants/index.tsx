@@ -46,7 +46,7 @@ export const sidebarLinks = [
 	},
 	{
 		label: "Trips",
-		href: "/dashboard/trips",
+		href: "/dashboard/trips/customers",
 		tag: "trips",
 		icon: Car,
 		allowedRoles: [APP_ROLES.Admin, APP_ROLES.User, APP_ROLES.Staff],

@@ -8,7 +8,7 @@ import { PopoverWrapper } from "@/components/ui/components/PopoverWrapper";
 
 const popoverList = ["View Details", "Go to Trip Details", "Retry Settlement"];
 
-function SettlementAction({ id }: { id: string }) {
+function SettlementAction({}: { id: string }) {
 	const navigate = useNavigate();
 
 	const [loadingStates, setLoadingStates] = useState<boolean[]>(

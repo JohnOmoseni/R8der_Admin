@@ -11,7 +11,7 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 	console.log("[Current user]", user);
 
 	useLayoutEffect(() => {
-		if (user === null || !token) {
+		if (user === null || token === null) {
 			// Redirect to login page
 			navigate(routes.LOGIN, { replace: true });
 			return;
@@ -23,7 +23,7 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 		}
 	}, [navigate, user, token]);
 
-	if (user === undefined || token === undefined) return <FallbackLoader />;
+	if (user === undefined) return <FallbackLoader />;
 
 	return children;
 }

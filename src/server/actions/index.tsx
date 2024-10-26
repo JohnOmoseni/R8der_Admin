@@ -35,13 +35,9 @@ const getRiders = async (): Promise<AxiosResponse["data"]> => {
 
 const getRiderById = async ({
 	riderId,
-	page = 0,
-	size = 10,
 }: Omit<GetByIdParams, "driverId">): Promise<AxiosResponse["data"]> => {
 	try {
-		const response = await api.get(
-			`${APIURLS.GET_RIDER_DETAILS}/${riderId}?page=${page}&size=${size}`
-		);
+		const response = await api.get(`${APIURLS.GET_RIDER_DETAILS}/${riderId}`);
 		console.log("[RIDER BY ID RESPONSE]", response);
 
 		return response.data;
@@ -64,13 +60,9 @@ const getDrivers = async (): Promise<AxiosResponse["data"]> => {
 
 const getDriverById = async ({
 	driverId,
-	page = 0,
-	size = 10,
 }: Omit<GetByIdParams, "riderId">): Promise<AxiosResponse["data"]> => {
 	try {
-		const response = await api.get(
-			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}?page=${page}&size=${size}`
-		);
+		const response = await api.get(`${APIURLS.GET_DRIVER_DETAILS}/${driverId}`);
 		console.log("[DRIVER BY ID RESPONSE]", response);
 
 		return response.data;

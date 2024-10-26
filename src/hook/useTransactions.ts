@@ -21,8 +21,10 @@ export const useGetWithdrawals = () => {
 
 export const useGetWithdrawalById = ({
 	transactionId,
+	enabled,
 }: {
 	transactionId: string;
+	enabled?: boolean;
 }) => {
 	return useQuery({
 		queryKey: ["getWithdrawalById", transactionId],
@@ -34,6 +36,6 @@ export const useGetWithdrawalById = ({
 
 			return response;
 		},
-		enabled: !!transactionId,
+		enabled: !!transactionId && enabled,
 	});
 };

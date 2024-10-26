@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	tableData: TData[];
 	columnFilters?: ColumnFiltersState;
+	globalFilter?: any;
 	setSelectedRows?: (rows: TData[]) => void;
 }
 
@@ -32,6 +33,7 @@ export function DataTable<TData, TValue>({
 	columns,
 	tableData,
 	columnFilters,
+	globalFilter,
 	setSelectedRows,
 }: DataTableProps<TData, TValue>) {
 	const [data, setData] = useState(tableData);
@@ -45,6 +47,7 @@ export function DataTable<TData, TValue>({
 			sorting,
 			columnFilters,
 			rowSelection,
+			globalFilter,
 		},
 		meta: {
 			updateData: (
@@ -70,7 +73,7 @@ export function DataTable<TData, TValue>({
 		const selectedRows = table
 			.getSelectedRowModel()
 			.rows.map((row) => row.original);
-		setSelectedRows && setSelectedRows(selectedRows); // Pass selected rows to parent
+		setSelectedRows && setSelectedRows(selectedRows);
 	}, [table.getSelectedRowModel().rows, setSelectedRows]);
 
 	return (

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { DataTable } from "@/components/table/DataTable";
 import { customerColumns } from "@/components/table/columns/customerColumn";
-import { useGetRiders } from "@/hook/useGetOverview";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import { Download } from "@/constants/icons";
 import { toast } from "sonner";
+import { useGetRiders } from "@/hook/useUsers";
 import clsx from "clsx";
 import SectionWrapper from "@/layouts/SectionWrapper";
 import TableSearch from "@/components/table/TableSearch";

@@ -24,7 +24,7 @@ const SectionWrapper = ({
 
 			<main
 				className={cn(
-					"h-full w-full overflow-y-auto py-3",
+					"h-full w-full overflow-y-auto py-3 pb-4",
 					mainContainerStyles,
 					!mainContainerStyles && "px-6 max-[430px]:px-3"
 				)}

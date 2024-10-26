@@ -1,18 +1,27 @@
 import { motion } from "framer-motion";
 import { sidebarLinks } from "@/constants";
-import { Close, logo } from "@/constants/icons";
+import { Close, logo, Logout } from "@/constants/icons";
 import { useAppDispatch, useAppSelector } from "@/types";
 import { setOpenMenu } from "@/redux/features/appSlice";
 import { animateFn, revealMenu, slideinVariant } from "@/utils/animate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import NavLinks from "@/layouts/NavLinks";
 
 function Menu() {
-	const { role } = useAuth();
-
-	const dispatch = useAppDispatch();
+	const { role, handleLogout } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
 	const { openMenu } = useAppSelector((state) => state.appState);
+	const dispatch = useAppDispatch();
+
+	const onLogout = async () => {
+		setIsLoading(true);
+		await handleLogout();
+
+		dispatch(setOpenMenu(false));
+		setIsLoading(false);
+	};
 
 	useEffect(() => {
 		if (openMenu) {
@@ -52,14 +61,29 @@ function Menu() {
 					className="absolute left-5 top-5 h-fit w-12 object-contain"
 				/>
 
-				<nav className="flex-1 pl-[4%] pt-[max(5rem,_22%)]">
-					<ul className="flex-column gap-8 overflow-y-auto text-lg">
+				<nav className="flex-1 pl-[4%] pt-[max(5rem,_22%)] flex-column gap-4">
+					<ul className="flex-column gap-5 overflow-y-auto text-lg">
 						{sidebarLinks.map((link, idx) =>
 							link.allowedRoles.includes(role!) ? (
 								<NavLinks key={idx} {...link} idx={idx} />
 							) : null
 						)}
 					</ul>
+
+					<div
+						className="row-flex-start self-end mt-auto cursor-pointer gap-3"
+						onClick={onLogout}
+					>
+						<span className="text-base mt-0.5">
+							{isLoading ? "Signing out" : "Log out"}
+						</span>
+
+						{isLoading ? (
+							<BtnLoader isLoading={isLoading} />
+						) : (
+							<Logout className="h-fit w-5" />
+						)}
+					</div>
 				</nav>
 			</motion.div>
 		</motion.div>

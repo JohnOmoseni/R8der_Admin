@@ -7,7 +7,7 @@ import { handleApiError } from "@/utils";
 const getWithdrawals = async (): Promise<AxiosResponse["data"]> => {
 	const payload = {
 		status: "ALL",
-		periodType: "ALLTIME",
+		periodType: "ALL",
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_WITHDRAWALS}`, payload);
@@ -24,7 +24,7 @@ const getWithdrawalById = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(
-			`${APIURLS.GET_TRIP_DETAILS}/${transactionId}`
+			`${APIURLS.GET_WITHDRAWAL_DETAILS}/${transactionId}`
 		);
 		console.log("[WITHDRAWAL DETAILS (RECEIPT) RESPONSE]", response);
 

@@ -27,11 +27,13 @@ type Props = {
 	showSeparator?: boolean;
 	onClickHandlers?: Array<(...array: any[]) => void>;
 	onCalendarPopup?: (date: Date) => void;
+	renderItem?: (item: any, idx: number) => ReactNode;
 };
 
 export function DropdownList({
 	trigger,
 	list,
+	renderItem,
 	showSeparator,
 	onClickHandlers,
 	onCalendarPopup,
@@ -72,7 +74,7 @@ export function DropdownList({
 					</div>
 				)}
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="right-0 w-44">
+			<DropdownMenuContent className="right-0">
 				{list && list?.length > 0 ? (
 					list?.map((item, idx) => (
 						<React.Fragment key={idx}>
@@ -83,18 +85,22 @@ export function DropdownList({
 								/>
 							)}
 							<DropdownMenuGroup>
-								<DropdownMenuItem
-									key={idx}
-									onClick={() => handleItemClick(idx)}
-								>
-									<div className="row-flex-btwn w-full gap-2">
-										{typeof item === "object" && "label" in item
-											? item?.label
-											: item}
-										{loadingStates[idx] && (
-											<BtnLoader isLoading={loadingStates[idx]} />
-										)}{" "}
-									</div>
+								<DropdownMenuItem key={idx}>
+									{renderItem ? (
+										renderItem(item, idx)
+									) : (
+										<div
+											className="row-flex-btwn w-full cursor-pointer gap-2"
+											onClick={() => handleItemClick(idx)}
+										>
+											{typeof item === "object" && "label" in item
+												? item?.label
+												: item}
+											{loadingStates[idx] && (
+												<BtnLoader isLoading={loadingStates[idx]} />
+											)}{" "}
+										</div>
+									)}
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
 						</React.Fragment>

@@ -1,6 +1,5 @@
 import { Modal } from "@/components/ui/components/Modal";
 import { KeyboardArrowDown } from "@/constants/icons";
-import { useDeactivateCoupon, useDeleteCoupon } from "@/hook/usePostQuery";
 import { CouponResponseType } from "@/types/server";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -9,6 +8,7 @@ import { DropdownVariant } from "@/components/ui/components/DropdownVariant";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import CouponModal from "./CouponModal";
+import { useDeactivateCoupon, useDeleteCoupon } from "@/hook/useSettings";
 
 const dropdownList = ["Edit", "Delete", "Deactivate"];
 

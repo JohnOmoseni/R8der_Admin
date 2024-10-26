@@ -4,7 +4,6 @@ import { tripsColumn } from "@/components/table/columns/driverTripColumn";
 import { DataTable } from "@/components/table/DataTable";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { KeyboardArrowDown } from "@/constants/icons";
 import {
 	useApproveDriver,
 	useGetDriverDetails,

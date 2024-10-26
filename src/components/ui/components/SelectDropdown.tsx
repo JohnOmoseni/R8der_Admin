@@ -18,6 +18,7 @@ type SelectProps = {
 	trigger?: ReactNode;
 	triggerStyles?: string;
 	isArrowDown?: boolean;
+	hideAllOption?: boolean;
 
 	onChangeHandler?: (value: string) => void;
 };
@@ -31,6 +32,7 @@ const SelectDropdown = ({
 	triggerStyles,
 	isArrowDown = false,
 	onChangeHandler,
+	hideAllOption,
 }: SelectProps) => {
 	return (
 		<Select
@@ -39,7 +41,7 @@ const SelectDropdown = ({
 			defaultValue={defaultValue?.value}
 		>
 			<SelectTrigger
-				className={cn("shad-select-trigger", triggerStyles)}
+				className={cn("shad-select-trigger capitalize", triggerStyles)}
 				isArrowDown={isArrowDown}
 			>
 				{trigger ? (
@@ -51,7 +53,7 @@ const SelectDropdown = ({
 			<SelectContent className="shad-select-content">
 				{options?.length > 0 &&
 					options.map((option, idx) => {
-						const isAllOption = option.value === "all";
+						const isAllOption = option.value === "all" && hideAllOption;
 						return (
 							<SelectItem
 								key={idx}

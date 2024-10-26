@@ -24,7 +24,10 @@ export function SheetMenu({ trigger, header, content }: Props) {
 			<SheetTrigger asChild>
 				{trigger ? trigger : <Button variant="outline">Open</Button>}
 			</SheetTrigger>
-			<SheetContent aria-describedby={undefined}>
+			<SheetContent
+				aria-describedby={undefined}
+				className="overflow-y-auto overflow-x-hidden"
+			>
 				<SheetHeader>
 					<>
 						<VisuallyHidden.Root>

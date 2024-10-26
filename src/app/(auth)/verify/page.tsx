@@ -7,45 +7,66 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 function VerifyOTP() {
 	const { handleVerifyOtp, handleResendOtp, isLoadingAuth, user } = useAuth();
 	const [otpValue, setOtpValue] = useState("");
 	const [error, setError] = useState("");
-	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [resendCountdown, setResendCountdown] = useState(180);
+	const [isResendingOtp, setIsResendingOtp] = useState(false);
+	const [isCountdownActive, setIsCountdownActive] = useState(false);
+	const [isResendRequested, setIsResendRequested] = useState(false);
+	const [hasMounted, setIsMounted] = useState(false);
 
 	useEffect(() => {
-		if (resendCountdown > 0) {
+		if (isCountdownActive && resendCountdown > 0) {
 			const interval = setInterval(() => {
 				setResendCountdown((prev) => prev - 1);
 			}, 1000);
 			return () => clearInterval(interval);
+		} else if (resendCountdown === 0) {
+			setIsCountdownActive(false);
 		}
-	}, [resendCountdown]);
+	}, [isCountdownActive, resendCountdown]);
+
+	useEffect(() => {
+		(async () => {
+			await handleResend();
+			setIsMounted(true);
+		})();
+	}, []);
 
 	const handleSubmit = async () => {
-		setIsSubmitting(true);
 		setError("");
 
 		try {
-			await handleVerifyOtp(Number(otpValue), user?.email || "");
+			await handleVerifyOtp(otpValue, user?.email || "");
 		} catch (e) {
-			console.log("TESTE", e, "running");
 			setError("Failed to verify OTP.");
 		} finally {
-			setIsSubmitting(false);
 		}
 	};
 
 	const handleResend = async () => {
+		if (isResendingOtp) return;
 		setError("");
-		setResendCountdown(180);
+		setIsResendingOtp(true);
 
 		try {
 			await handleResendOtp(user?.email || "");
-		} catch (e) {
+
+			setResendCountdown(180);
+			setIsCountdownActive(true);
+			if (hasMounted) {
+				toast.success("OTP resent successfully");
+				setIsResendRequested(true);
+			}
+		} catch (e: any) {
+			toast.error(e?.message || "Failed to resend OTP");
 			setError("Failed to resend OTP. Please try again.");
+		} finally {
+			setIsResendingOtp(false);
 		}
 	};
 
@@ -96,32 +117,34 @@ function VerifyOTP() {
 						</p>
 					)}
 
-					<p className="mt-1.5 leading-5 tracking-wide text-foreground-100">
-						Resend code in:{" "}
-						<span className="text-secondary inline-flex font-normal">
-							{Math.floor(resendCountdown / 60)
-								.toString()
-								.padStart(2, "0")}
-							:{(resendCountdown % 60).toString().padStart(2, "0")}
-						</span>
-					</p>
-
-					{resendCountdown === 0 && (
-						<Button
-							title="Resend OTP"
-							className=" !w-max !px-3.5"
-							onClick={handleResend}
-							disabled={isSubmitting}
-						/>
-					)}
+					<div className="">
+						{!isResendRequested ? (
+							<span
+								className="font-semibold text-secondary cursor-pointer"
+								onClick={handleResend}
+							>
+								{isResendingOtp && hasMounted ? "Resending..." : "Resend OTP"}
+							</span>
+						) : (
+							<p className="mt-0.5 leading-5 text-foreground-100 tracking-wide">
+								Resend code in:{" "}
+								<span className="text-secondary inline-flex font-normal">
+									{Math.floor(resendCountdown / 60)
+										.toString()
+										.padStart(2, "0")}
+									:{(resendCountdown % 60).toString().padStart(2, "0")}
+								</span>
+							</p>
+						)}
+					</div>
 				</div>
 			</div>
 
 			<Button
 				type="submit"
-				title={isSubmitting ? "Verifing..." : "Verify"}
+				title={isLoadingAuth ? "Verifing..." : "Verify"}
 				className={cn("!mt-auto !w-full !py-5")}
-				disabled={isSubmitting || otpValue.length !== 4}
+				disabled={isLoadingAuth || otpValue.length !== 4}
 				onClick={handleSubmit}
 				isLoading={isLoadingAuth}
 			/>

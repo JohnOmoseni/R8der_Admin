@@ -3,8 +3,7 @@ import FallbackLoader from "@/components/fallback/FallbackLoader";
 import CustomFormField, {
 	FormFieldType,
 } from "@/components/forms/CustomFormField";
-import { useGetSettingsList } from "@/hook/useGetOverview";
-import { useUpdateSettings } from "@/hook/usePostQuery";
+import { useGetSettingsList, useUpdateSettings } from "@/hook/useSettings";
 import { ConfigSchema } from "@/schema/validation";
 import { CommissionType } from "@/types/server";
 import { useFormik } from "formik";

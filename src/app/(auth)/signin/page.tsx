@@ -8,13 +8,21 @@ import { SignUpSchema } from "@/schema/validation";
 import { useFormik } from "formik";
 import { InferType } from "yup";
 import { useAuth } from "@/context/AuthContext";
+import { useLayoutEffect } from "react";
+import { routes } from "@/constants";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-	const { handleLogin, isLoadingAuth } = useAuth();
+	const { handleLogin, isLoadingAuth, user, token } = useAuth();
+	const navigate = useNavigate();
+
+	useLayoutEffect(() => {
+		if (token && user?.otpVerified) {
+			navigate(routes.DASHBOARD);
+		}
+	}, [user, token]);
 
 	const onSubmit = async (values: InferType<typeof SignUpSchema>) => {
-		console.log("Form submitted:", values);
-
 		await handleLogin(values?.email, values?.password);
 	};
 

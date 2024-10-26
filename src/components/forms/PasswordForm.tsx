@@ -8,7 +8,7 @@ import { PasswordSchema } from "@/schema/validation";
 import { cn } from "@/lib/utils";
 import { Alert, CheckCircle, Lock } from "@/constants/icons";
 import { toast } from "sonner";
-import { useUpdatePassword } from "@/hook/usePostQuery";
+import { useUpdatePassword } from "@/hook/useSettings";
 
 function PasswordForm({ user }: { user?: any }) {
 	const changePasswordMutation = useUpdatePassword();
@@ -23,8 +23,8 @@ function PasswordForm({ user }: { user?: any }) {
 				confirmNewPassword: values.confirm_password,
 			};
 
-			await changePasswordMutation.mutateAsync(payload);
-			toast.success(changePasswordMutation.data?.message);
+			const res = await changePasswordMutation.mutateAsync(payload);
+			toast.success(res?.message || "Password changed successfully");
 		} catch {
 			toast.error(
 				`${changePasswordMutation.error?.message || "Error updating password."}`

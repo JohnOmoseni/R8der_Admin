@@ -35,6 +35,7 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 		accessorKey: "date",
 		header: "Date",
 		cell: ({ row }) => <p className="table-data-sm">{row.original?.date}</p>,
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: "status",
@@ -45,11 +46,13 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 			</div>
 		),
 		enableColumnFilter: true,
-		filterFn: (row, columnId, filterStatuses) => {
-			if (filterStatuses.length === 0) true;
-			const status = row.getValue(columnId);
+		enableSorting: false,
+		filterFn: (row, columnId, filterValue) => {
+			const status = row.getValue(columnId) as string;
+			if (filterValue.toLowerCase() === "all" || filterValue === "")
+				return true;
 
-			return filterStatuses.includes(status);
+			return status?.toLowerCase() === filterValue.toLowerCase();
 		},
 	},
 	{
@@ -61,7 +64,13 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 			return (
 				<SheetMenu
 					trigger={<div className="badge-long">View receipt</div>}
-					content={<Receipt details={withdrawal} type="withdrawalReceipt" />}
+					content={
+						<Receipt
+							details={withdrawal}
+							type="transactionReceipt"
+							specificType="withdrawal_receipt"
+						/>
+					}
 				/>
 			);
 		},

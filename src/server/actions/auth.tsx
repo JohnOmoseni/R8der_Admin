@@ -21,7 +21,7 @@ const login = async (params: {
 };
 
 const verifyOtp = async (params: {
-	otp: number;
+	otp: string;
 	email: string;
 }): Promise<AxiosResponse["data"]> => {
 	const payload = {

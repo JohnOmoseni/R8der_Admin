@@ -3,13 +3,13 @@ import { DataTable } from "@/components/table/DataTable";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import { toast } from "sonner";
 import { ColumnFiltersState } from "@tanstack/react-table";
-import { useGetAllCouponCodes } from "@/hook/useGetOverview";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/CustomButton";
 import { couponsColumn } from "@/components/table/columns/couponsColumn";
 import { Modal } from "@/components/ui/components/Modal";
 import TableSearch from "@/components/table/TableSearch";
 import CouponModal from "../CouponModal";
+import { useGetAllCouponCodes } from "@/hook/useSettings";
 
 function Coupons() {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "@/constants/icons";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx/xlsx.mjs";
 
@@ -18,9 +18,11 @@ function DownloadReport({
 	sheet_name = "Sheet 1",
 	title,
 	trigger,
-}: Props) {
+	children,
+}: Props & PropsWithChildren) {
+	// DOWNLOAD DATA AS EXCEL DATA
 	const onDownload = async () => {
-		if (!Array.isArray(data)) {
+		if (!Array.isArray(data) || data?.length === 0) {
 			console.error("Invalid data for table export");
 			return;
 		}
@@ -43,12 +45,13 @@ function DownloadReport({
 	return (
 		<div
 			className={cn(
-				"badge !grid grid-cols-[max-content,_1fr] !gap-2 !px-4",
-				""
+				children ? "" : "badge !grid grid-cols-[max-content,_1fr] leading-3"
 			)}
 			onClick={onDownload}
 		>
-			{trigger ? (
+			{children ? (
+				children
+			) : trigger ? (
 				trigger
 			) : (
 				<>

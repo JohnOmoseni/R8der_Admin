@@ -4,10 +4,8 @@ import { cn } from "@/lib/utils";
 import { Modal } from "@/components/ui/components/Modal";
 import { ColumnFiltersState } from "@tanstack/react-table";
 import { staffColumn } from "@/components/table/columns/staffColumn";
-import { useActivateStaff, useDeactivateStaff } from "@/hook/usePostQuery";
 import { toast } from "sonner";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
-import { useGetStaffs } from "@/hook/useGetOverview";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 
 import TableSearch from "@/components/table/TableSearch";
@@ -19,6 +17,11 @@ import useStaffHeader from "@/hook/useStaffHeader";
 // @ts-ignore
 import withAuthAndRoleProtection from "@/hoc/withAuthAndRoleProtection";
 import { APP_ROLES } from "@/types";
+import {
+	useActivateStaff,
+	useDeactivateStaff,
+	useGetStaffs,
+} from "@/hook/useStaffs";
 
 const options = [
 	{ label: "All", value: "all" },
@@ -31,7 +34,7 @@ function Staffs() {
 	const [selectedFilter, setSelectedFilter] = useState("all");
 	const [showModal, setShowModal] = useState(false);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-	const { data: employeesData, isError, isLoading, refetch } = useGetStaffs();
+	const { data: employeesData, isError, isFetching, refetch } = useGetStaffs();
 
 	const activateMutation = useActivateStaff();
 	const deactivateMutation = useDeactivateStaff();
@@ -66,7 +69,7 @@ function Staffs() {
 
 	return (
 		<SectionWrapper headerTitle="Staffs" customHeaderContent={headerContent}>
-			{isLoading ? (
+			{isFetching ? (
 				<SkeletonLoader />
 			) : (
 				<>

@@ -10,13 +10,17 @@ export type PeriodTypeParams =
 	| "YESTERDAY"
 	| "WEEK"
 	| "MONTH"
-	| "YEAR";
+	| "YEAR"
+	| "ALLTIME"
+	| "ALL"
+	| "CUSTOM";
+
+export type DriverStandingParams = "ALL" | "VERIFIED" | "UNVERIFIED" | "OWING";
 
 export interface GetByIdParams {
-	page?: number;
-	size?: number;
 	driverId: string;
 	riderId: string;
+	periodType?: PeriodTypeParams;
 }
 
 // RIDERS
@@ -32,6 +36,8 @@ export interface GetRidersResponse {
 
 export interface GetRiderByIdResponse {
 	fullName: string;
+	firstName?: string;
+	lastName?: string;
 	emailAddress: string;
 	phoneNumber: string;
 	created_at?: string;
@@ -58,6 +64,7 @@ export interface GetDriversResponse {
 	totalDrivers: number;
 	verifiedDrivers: number;
 	unverifiedDrivers: number;
+	owningDrivers: number;
 	drivers: DriverType[];
 }
 

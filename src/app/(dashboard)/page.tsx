@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import SectionWrapper from "@/layouts/SectionWrapper";
-import SelectDropdown from "@/components/ui/components/SelectDropdown";
 import { useState } from "react";
 import { getDateRange } from "@/utils";
 import { toast } from "sonner";
@@ -10,7 +9,12 @@ import {
 	defaultRevenueStats,
 	defaultTrips,
 } from "@/constants";
-import { useGetOverview, useGetTripsOverview } from "@/hook/useGetOverview";
+import {
+	useGetOverview,
+	useGetRevenueStats,
+	useGetTripsOverview,
+	useGetTripsPerformance,
+} from "@/hook/useGetOverview";
 import { BarChartComponent } from "@/components/charts/BarChart";
 import { DashboardSkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import { DropdownList } from "@/components/ui/components/DropdownList";
@@ -23,6 +27,8 @@ import {
 	Wallet,
 } from "@/constants/icons";
 import { Link } from "react-router-dom";
+import { PeriodTypeParams } from "@/types/server";
+import FallbackLoader from "@/components/fallback/FallbackLoader";
 
 const selectOptions = [
 	{ label: "Today", value: "today" },
@@ -35,18 +41,44 @@ const selectOptions = [
 function Dashboard() {
 	const [selectedDateRange, setSelectedDateRange] = useState("Today");
 	const [dateRange, setDateRange] = useState(() => getDateRange("today"));
+	const [periodTypeTripPerf, setPeriodTypeTripPerf] = useState<
+		PeriodTypeParams | undefined
+	>("YEAR");
+	const [periodTypeRevenueStats, setPeriodTypeRevenueStats] = useState<
+		PeriodTypeParams | undefined
+	>("YEAR");
 
 	const { data, isError, isLoading, status } = useGetOverview({
 		startDate: dateRange.startDate,
 		endDate: dateRange.endDate,
 	});
+
 	const { data: tripsData } = useGetTripsOverview({
 		startDate: dateRange.startDate,
 		endDate: dateRange.endDate,
 	});
 
-	let overviewError = status === "error";
-	if (isError) toast.error("Error fetching information!");
+	const { data: revenueStatsData } = useGetRevenueStats({
+		periodType: periodTypeRevenueStats,
+	});
+
+	const { data: tripsPerf, isLoading: isFetchingPerf } = useGetTripsPerformance(
+		{
+			periodType: periodTypeTripPerf,
+		}
+	);
+
+	const handlePeriodTypeChange = (
+		value: any,
+		type: "tripPerf" | "revenueStats"
+	) => {
+		if (!value) return;
+		if (type === "tripPerf") {
+			setPeriodTypeTripPerf(value.toUpperCase());
+		} else if (type === "revenueStats") {
+			setPeriodTypeRevenueStats(value.toUpperCase());
+		}
+	};
 
 	const handleDateChange = (value: string | Date) => {
 		if (!value) return;
@@ -66,12 +98,15 @@ function Dashboard() {
 		setDateRange(range);
 	};
 
+	let overviewError = status === "error";
+	if (isError) toast.error("Error fetching information!");
+
 	const trips = overviewError ? defaultTrips : tripsData;
 	const driverStats = overviewError ? defaultDriverStats : data?.driverStats;
 	const customerStats = overviewError
 		? defaultCustomerStats
 		: data?.customerStats;
-	const revenueStats = overviewError ? defaultRevenueStats : data?.revenueStats;
+	const revenueStats = revenueStatsData || defaultRevenueStats;
 
 	return (
 		<SectionWrapper headerTitle="Overview" mainContainerStyles="dashboard-main">
@@ -85,19 +120,31 @@ function Dashboard() {
 
 							<DropdownList
 								trigger={
-									<div className="shad-select-trigger !capitalize">
-										{selectedDateRange} <KeyboardArrowDown className="size-4" />
+									<div className="shad-select-trigger !min-w-fit !capitalize">
+										{selectOptions?.find(
+											(option) =>
+												option.value === periodTypeRevenueStats?.toLowerCase()
+										)?.label || "This Year"}{" "}
+										<KeyboardArrowDown className="size-4" />
 									</div>
 								}
 								list={selectOptions}
-								onClickHandlers={[
-									() => handleDateChange(selectOptions[0]?.value),
-									() => handleDateChange(selectOptions[1]?.value),
-									() => handleDateChange(selectOptions[2]?.value),
-									() => handleDateChange(selectOptions[3]?.value),
-									() => handleDateChange(selectOptions[4]?.value),
-								]}
-								onCalendarPopup={(date: Date) => handleDateChange(date)}
+								renderItem={(item) => {
+									return (
+										<div
+											className={cn(
+												"row-flex-btwn w-full cursor-pointer",
+												item?.value === periodTypeRevenueStats?.toLowerCase() &&
+													"text-secondary font-semibold"
+											)}
+											onClick={() =>
+												handlePeriodTypeChange(item?.value, "revenueStats")
+											}
+										>
+											{item?.label}
+										</div>
+									);
+								}}
 							/>
 						</div>
 
@@ -143,7 +190,7 @@ function Dashboard() {
 
 							<DropdownList
 								trigger={
-									<div className="shad-select-trigger">
+									<div className="shad-select-trigger justify-between">
 										{selectedDateRange} <KeyboardArrowDown className="size-4" />
 									</div>
 								}
@@ -241,19 +288,49 @@ function Dashboard() {
 
 					<div>
 						<div className="card !block">
-							<div className="flex-column gap-6 px-4 pt-3.5 pb-2">
+							<div className="flex-column gap-7 px-4 pt-3.5 pb-2">
 								<div className="row-flex-start gap-4">
 									<h3>Trips Performance</h3>
 
-									<SelectDropdown
-										options={selectOptions}
-										defaultValue={selectOptions[3]}
+									<DropdownList
+										trigger={
+											<div className="shad-select-trigger !min-w-fit !capitalize">
+												{selectOptions?.find(
+													(option) =>
+														option.value === periodTypeTripPerf?.toLowerCase()
+												)?.label || "This Year"}{" "}
+												<KeyboardArrowDown className="size-4" />
+											</div>
+										}
+										list={selectOptions}
+										renderItem={(item) => {
+											return (
+												<div
+													className={cn(
+														"row-flex-btwn w-full cursor-pointer",
+														item?.value === periodTypeTripPerf?.toLowerCase() &&
+															"text-secondary font-semibold"
+													)}
+													onClick={() =>
+														handlePeriodTypeChange(item?.value, "tripPerf")
+													}
+												>
+													{item?.label}
+												</div>
+											);
+										}}
 									/>
 								</div>
 
 								{/* charts */}
-								<div>
-									<BarChartComponent />
+								<div className="min-h-[20vh]">
+									{isFetchingPerf ? (
+										<div className="loader-container">
+											<FallbackLoader />
+										</div>
+									) : (
+										<BarChartComponent data={tripsPerf || []} />
+									)}
 								</div>
 							</div>
 						</div>

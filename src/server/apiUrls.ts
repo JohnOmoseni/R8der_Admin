@@ -21,7 +21,7 @@ export default {
 	GET_RIDER_DETAILS: `/trip/dashboard/rider`,
 
 	GET_TRIP: `/trip/dashboard/trips/overview`,
-	GET_TRIP_PERFORMANCE: `/trip/dashboard/trips/performance`,
+	GET_TRIP_PERFORMANCE: `/trip/dashboard/trip/performance`,
 	GET_ALL_TRIPS: `/trip/dashboard/trips/summary`,
 	GET_TRIP_DETAILS: `/trip/dashboard/tripdetails`,
 

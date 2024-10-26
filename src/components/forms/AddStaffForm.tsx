@@ -2,14 +2,14 @@ import { useFormik } from "formik";
 import { InferType } from "yup";
 import { AddStaffSchema } from "@/schema/validation";
 import { toast } from "sonner";
+import { SelectItem } from "../ui/select";
+import { Envelope } from "@/constants/icons";
+import { ROLE } from "@/types";
+import { useNavigate } from "react-router-dom";
+import { useAddStaff } from "@/hook/useStaffs";
 
 import FormWrapper from "./FormWrapper";
 import CustomFormField, { FormFieldType } from "./CustomFormField";
-import { SelectItem } from "../ui/select";
-import { Envelope } from "@/constants/icons";
-import { useAddStaff } from "@/hook/usePostQuery";
-import { ROLE } from "@/types";
-import { useNavigate } from "react-router-dom";
 
 const AddStaffForm = () => {
 	const newStaffMutation = useAddStaff();

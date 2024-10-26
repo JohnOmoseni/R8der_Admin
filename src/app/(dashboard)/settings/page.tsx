@@ -35,7 +35,7 @@ function Settings() {
 
 				<div
 					className={cn(
-						"w-full mt-3  max-w-4xl",
+						"w-full mt-3 max-w-4xl",
 						activeTab !== 2 && "sm:max-xl:pr-8"
 					)}
 				>

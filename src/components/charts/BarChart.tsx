@@ -8,49 +8,55 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
-
-const chartData = [
-	{ month: "January", desktop: 186, mobile: 80 },
-	{ month: "February", desktop: 305, mobile: 200 },
-	{ month: "March", desktop: 237, mobile: 120 },
-	{ month: "April", desktop: 73, mobile: 190 },
-	{ month: "May", desktop: 209, mobile: 130 },
-	{ month: "June", desktop: 214, mobile: 140 },
-];
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const chartConfig = {
-	desktop: {
-		label: "Desktop",
+	count: {
+		label: "Count",
 		color: "var(--chart-1)",
 	},
-	mobile: {
-		label: "Mobile",
+	amount: {
+		label: "Amount",
 		color: "var(--chart-2)",
 	},
 } satisfies ChartConfig;
 
-export function BarChartComponent() {
-	return (
+export function BarChartComponent({ data }: { data: any }) {
+	const [chartData, setChartData] = useState<any>();
+
+	useEffect(() => {
+		setChartData(data?.summary);
+	}, [data?.summary]);
+
+	return chartData && chartData?.length > 0 ? (
 		<ChartContainer
 			config={chartConfig}
-			className="max-h-[440px] min-h-[200px] w-full"
+			className={cn("w-full min-h-[200px] max-h-[350px]")}
 		>
-			<BarChart accessibilityLayer data={chartData}>
+			<BarChart
+				accessibilityLayer
+				data={chartData && chartData?.length > 0 ? chartData : ([] as any)}
+			>
 				<XAxis
-					dataKey="month"
+					dataKey="period"
 					tickLine={false}
 					tickMargin={10}
 					axisLine={false}
-					tickFormatter={(value) => value.slice(0, 3)}
+					tickFormatter={(value) => value}
 					color="#5F738C"
 				/>
 
 				<ChartTooltip content={<ChartTooltipContent />} />
 				<ChartLegend content={<ChartLegendContent />} />
 
-				<Bar dataKey="mobile" fill="var(--color-mobile)" radius={8} />
-				<Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+				<Bar dataKey="count" fill="var(--color-count)" radius={8} />
+				<Bar dataKey="amount" fill="var(--color-amount)" radius={8} />
 			</BarChart>
 		</ChartContainer>
+	) : (
+		<h3 className="text-center h-[200px] grid place-items-center text-gray-400">
+			No data available
+		</h3>
 	);
 }

@@ -12,24 +12,24 @@ import { customerTripsColumn } from "@/components/table/columns/customerTripsCol
 
 import clsx from "clsx";
 import SectionWrapper from "@/layouts/SectionWrapper";
-import TableSearch from "@/components/table/TableSearch";
-import Filters from "@/components/table/FilterPopover";
+import Filters from "@/components/table/filters";
+import DownloadReport from "@/components/DownloadReport";
+import TableGlobalSearch from "@/components/table/TableGlobalSearch";
 
-const options = [
-	{ label: "Completed", value: "completed" },
+const statusOptions = [
+	{ label: "All", value: "all" },
+	{ label: "Requested", value: "requested" },
+	{ label: "In-progress", value: "in_progress" },
 	{ label: "Cancelled", value: "cancelled" },
 ];
-
 function Trips() {
-	const [columnFilters, setColumnFilters] = useState([]);
 	const { data: tripsData, isError, isLoading } = useGetAllTrips();
 	const [selectedFilter, setSelectedFilter] = useState("");
+	const [globalFilter, setGlobalFilter] = useState("");
+	const [columnFilters, setColumnFilters] = useState([]);
 
 	const location = useLocation();
 	const isDriver = location?.state === "Driver";
-	// const isError = false;
-	// const isLoading = false;
-	// const tripsData: any = [];
 	const isDownloading = false;
 
 	if (isError) toast.error("Error fetching trips");
@@ -90,55 +90,54 @@ function Trips() {
 					</div>
 
 					<div className="mt-10 row-flex-btwn gap-4">
-						<TableSearch
+						<TableGlobalSearch
 							placeholder={`Search by ${
 								isDriver ? "driver" : "customer"
 							} name, amount, trip ID`}
-							filterBy={`${isDriver ? "driverName" : "riderName"}`}
-							columnFilters={columnFilters}
-							setColumnFilters={setColumnFilters}
+							globalValue={globalFilter || ""}
+							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
 						<div className="row-flex gap-2">
-							{/* <Filters
+							<Filters
 								placeholder="Status"
-								options={options}
-								onChangeHandler={handleClick}
+								columnId="status"
+								showAsDropdown={true}
+								options={statusOptions}
 								isArrowDown={true}
-							/> */}
-
-							{/* <Filters
-								setColumnFilters={setColumnFilters}
 								selectedFilter={selectedFilter}
 								setSelectedFilter={setSelectedFilter}
-								status=""
-							/> */}
+								setColumnFilters={setColumnFilters}
+							/>
 
-							<div className="shad-select-trigger capitalize !px-4">
-								{isDownloading ? "downloading" : "Download report"}
-								{isDownloading ? (
-									<BtnLoader isLoading={isDownloading} />
-								) : (
-									<FileDownload className="size-4" />
-								)}
-							</div>
+							<DownloadReport
+								data={tripsData?.trips || []}
+								filename={
+									isDriver ? "Drivers_Trip.xlsx" : "Customers_Trip.xlsx"
+								}
+								trigger={
+									<>
+										<p className="mt-0.5 font-semibold capitalize">
+											{isDownloading ? "downloading" : "Download report"}
+										</p>
+										{isDownloading ? (
+											<BtnLoader isLoading={isDownloading} />
+										) : (
+											<FileDownload className="size-4" />
+										)}
+									</>
+								}
+							/>
 						</div>
 					</div>
 
 					<div className="mt-6">
-						{isDriver ? (
-							<DataTable
-								columns={driverTripsColumn}
-								tableData={tripsData?.trips || []}
-								columnFilters={columnFilters}
-							/>
-						) : (
-							<DataTable
-								columns={customerTripsColumn}
-								tableData={tripsData?.trips || []}
-								columnFilters={columnFilters}
-							/>
-						)}
+						<DataTable
+							columns={isDriver ? driverTripsColumn : customerTripsColumn}
+							tableData={tripsData?.trips || []}
+							globalFilter={globalFilter}
+							columnFilters={columnFilters}
+						/>
 					</div>
 				</>
 			)}

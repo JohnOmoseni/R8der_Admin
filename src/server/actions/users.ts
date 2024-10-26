@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 import { handleApiError } from "@/utils";
 import {
 	ApproveDriverDocument,
+	DriverStandingParams,
 	GetByIdParams,
 	SELECTEDTYPE,
 } from "@/types/server";
@@ -22,12 +23,11 @@ const getRiders = async (): Promise<AxiosResponse["data"]> => {
 
 const getRiderById = async ({
 	riderId,
-	page = 0,
-	size = 10,
+	periodType,
 }: Omit<GetByIdParams, "driverId">): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(
-			`${APIURLS.GET_RIDER_DETAILS}/${riderId}?page=${page}&size=${size}`
+			`${APIURLS.GET_RIDER_DETAILS}/${riderId}?periodType=${periodType}`
 		);
 		console.log("[RIDER BY ID RESPONSE]", response);
 
@@ -38,9 +38,13 @@ const getRiderById = async ({
 };
 
 // DRIVERS ENDPOINT
-const getDrivers = async (): Promise<AxiosResponse["data"]> => {
+const getDrivers = async (
+	standing: DriverStandingParams | undefined = "ALL"
+): Promise<AxiosResponse["data"]> => {
 	try {
-		const response = await api.get(APIURLS.GET_DRIVERS);
+		const response = await api.get(
+			`${APIURLS.GET_DRIVERS}?standing=${standing}`
+		);
 		console.log("[DRIVERS RESPONSE]", response);
 
 		return response.data;
@@ -51,12 +55,11 @@ const getDrivers = async (): Promise<AxiosResponse["data"]> => {
 
 const getDriverById = async ({
 	driverId,
-	page = 0,
-	size = 10,
+	periodType,
 }: Omit<GetByIdParams, "riderId">): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(
-			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}?page=${page}&size=${size}`
+			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}??periodType=${periodType}`
 		);
 		console.log("[DRIVER BY ID RESPONSE]", response);
 

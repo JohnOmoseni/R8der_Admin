@@ -19,7 +19,7 @@ type AuthContextType = {
 	token?: string | null;
 	role?: (typeof APP_ROLES)[keyof typeof APP_ROLES] | string | null;
 	handleLogin: (email: string, password: string) => Promise<void>;
-	handleVerifyOtp: (otp: number, email: string) => Promise<void>;
+	handleVerifyOtp: (otp: string, email: string) => Promise<void>;
 	handleResendOtp: (email: string) => Promise<void>;
 	handleLogout: () => Promise<void>;
 	isAuthenticated?: boolean;
@@ -127,7 +127,7 @@ export default function AuthProvider({
 		}
 	};
 
-	const handleVerifyOtp = async (otp: number, email: string) => {
+	const handleVerifyOtp = async (otp: string, email: string) => {
 		if (!otp || !email) return;
 		setIsLoadingAuth(true);
 
@@ -137,26 +137,14 @@ export default function AuthProvider({
 			if (!data?.status)
 				throw new Error(data?.message || "OTP verification failed");
 
-			const finalAuthToken = data?.data?.accessToken;
 			const updatedUser = {
 				...user,
 				otpVerified: true,
-				userId: user?.userId || "",
-				username: user?.username || "",
-				firstName: user?.firstName || "",
-				email: user?.email || "",
-				phone: user?.phone || "",
-				img: user?.img || "",
-				role: user?.role || "",
 			};
 
-			sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
-			sessionStorage.setItem("token", JSON.stringify(finalAuthToken));
-
-			setUser(updatedUser);
-			setToken(finalAuthToken);
-
+			setUser(updatedUser as User);
 			toast.success("OTP verified successfully. Redirecting to dashboard...");
+			sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
 
 			navigate("/dashboard");
 		} catch (error: any) {
@@ -170,21 +158,16 @@ export default function AuthProvider({
 
 	const handleResendOtp = async (email: string) => {
 		if (!email) return;
-		setIsLoadingAuth(true);
 
 		try {
-			const { data } = await authApi.resendOtp({ email });
+			const data = await authApi.resendOtp({ email });
 
 			if (!data?.status)
 				throw new Error(data?.message || "Failed to resend OTP");
-			toast.success("OTP resent successfully");
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 
-			toast.error(errorMessage || "Failed to resend OTP");
 			throw new Error(errorMessage || "Failed to resend OTP.");
-		} finally {
-			setIsLoadingAuth(false);
 		}
 	};
 

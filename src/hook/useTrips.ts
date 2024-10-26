@@ -1,5 +1,5 @@
 import { tripsApi } from "@/server/actions/trips";
-import { AllTripsType, TripsType } from "@/types/server";
+import { TripsType } from "@/types/server";
 import { useQuery } from "@tanstack/react-query";
 
 // TRIPS ----------------------------------------------------------------
@@ -47,22 +47,7 @@ export const useGetTripById = ({ tripId }: { tripId: string }) => {
 			const response = data.data;
 			// TRIP RECEIPT
 
-			const tripData = {
-				status: response?.status,
-				tripDate: response?.tripDate,
-				driverName: response?.driverName,
-				customerName: response?.customerName,
-				pickUp: response?.pickUp,
-				destination: response?.destination,
-				car: response?.car, //for customer
-				plateNumber: response?.plateNumber,
-				fareAmount: response?.fareAmount,
-				transactionCharge: response?.transactionCharge,
-				vat: response?.vat,
-				tripId: response?.tripId,
-			};
-
-			return tripData;
+			return response;
 		},
 		enabled: !!tripId,
 	});

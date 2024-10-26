@@ -3,14 +3,14 @@ import { DataTable } from "@/components/table/DataTable";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import { toast } from "sonner";
 
-import { ColumnFiltersState } from "@tanstack/react-table";
 import { FileDownload } from "@/constants/icons";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import { withdrawalColumn } from "@/components/table/columns/withdrawalColumn";
 import { useGetWithdrawals } from "@/hook/useTransactions";
 import SectionWrapper from "@/layouts/SectionWrapper";
-import TableSearch from "@/components/table/TableSearch";
-import SelectDropdown from "@/components/ui/components/SelectDropdown";
+import TableGlobalSearch from "@/components/table/TableGlobalSearch";
+import DownloadReport from "@/components/DownloadReport";
+import Filters from "@/components/table/filters";
 
 const options = [
 	{ label: "All", value: "all" },
@@ -20,14 +20,14 @@ const options = [
 ];
 
 function Withdrawals() {
-	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const { data: withdrawalData, isLoading, isError } = useGetWithdrawals();
+	const [selectedFilter, setSelectedFilter] = useState("");
+	const [globalFilter, setGlobalFilter] = useState("");
+	const [columnFilters, setColumnFilters] = useState([]);
 
 	const isDownloading = false;
 
 	if (isError) toast.error("Error fetching information");
-
-	const handleClick = () => {};
 
 	return (
 		<SectionWrapper
@@ -38,30 +38,40 @@ function Withdrawals() {
 			) : (
 				<>
 					<div className="mt-5 row-flex-btwn gap-4">
-						<TableSearch
+						<TableGlobalSearch
 							placeholder="Search by customer name, amount, trip ID"
-							filterBy="fullName"
-							columnFilters={columnFilters}
-							setColumnFilters={setColumnFilters}
+							globalValue={globalFilter}
+							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
 						<div className="row-flex gap-2">
-							<SelectDropdown
-								// defaultValue={options[0]}
-								options={options}
-								onChangeHandler={handleClick}
+							<Filters
 								placeholder="Status"
+								columnId="status"
+								showAsDropdown={true}
+								options={options}
 								isArrowDown={true}
+								selectedFilter={selectedFilter}
+								setSelectedFilter={setSelectedFilter}
+								setColumnFilters={setColumnFilters}
 							/>
 
-							<div className="shad-select-trigger capitalize !px-4">
-								{isDownloading ? "downloading" : "Download report"}
-								{isDownloading ? (
-									<BtnLoader isLoading={isDownloading} />
-								) : (
-									<FileDownload className="size-4" />
-								)}
-							</div>
+							<DownloadReport
+								data={withdrawalData || []}
+								filename={"Transactions.xlsx"}
+								trigger={
+									<>
+										<p className="mt-0.5 font-semibold capitalize">
+											{isDownloading ? "downloading" : "Download report"}
+										</p>
+										{isDownloading ? (
+											<BtnLoader isLoading={isDownloading} />
+										) : (
+											<FileDownload className="size-4" />
+										)}
+									</>
+								}
+							/>
 						</div>
 					</div>
 
@@ -69,6 +79,7 @@ function Withdrawals() {
 						<DataTable
 							columns={withdrawalColumn}
 							tableData={withdrawalData || []}
+							globalFilter={globalFilter}
 							columnFilters={columnFilters}
 						/>
 					</div>

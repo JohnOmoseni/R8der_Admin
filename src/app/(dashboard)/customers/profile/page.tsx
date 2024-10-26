@@ -1,9 +1,10 @@
 import { SlidingTabs } from "@/components/tabs/SlidingTabs";
 import { tabIDs } from "@/constants";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetRiderDetails } from "@/hook/useGetOverview";
+import { getInitials } from "@/utils";
+import { useGetRiderDetails } from "@/hook/useUsers";
 import BackArrow from "@/components/BackArrow";
 import TabsPanel from "@/components/tabs/TabsPanel";
 import SectionWrapper from "@/layouts/SectionWrapper";
@@ -11,20 +12,25 @@ import FallbackLoader from "@/components/fallback/FallbackLoader";
 import AvatarWrapper from "@/components/ui/components/AvatarWrapper";
 import Trips from "./Trips";
 import Profile from "./Profile";
-import { getInitials } from "@/utils";
+import dayjs from "dayjs";
+import { PeriodTypeParams } from "@/types/server";
 
 function CustomerProfile() {
 	const { id } = useParams();
 	const [activeTab, setActiveTab] = useState(0);
+	const [periodType, setPeriodType] = useState<PeriodTypeParams>("MONTH");
 	const {
 		data: riderData,
 		isError,
 		isLoading,
-	} = useGetRiderDetails({ riderId: id! });
-
-	console.log("[RIDER]", riderData);
+		refetch,
+	} = useGetRiderDetails({ riderId: id!, periodType: periodType });
 
 	if (isError) toast.error("Error fetching customer details");
+
+	useEffect(() => {
+		refetch();
+	}, [periodType]);
 
 	const changeTab = (id: number) => {
 		!isNaN(id) && setActiveTab(id);
@@ -40,13 +46,19 @@ function CustomerProfile() {
 						<AvatarWrapper
 							containerClassName="!bg-[#033678] size-14"
 							fallback={getInitials(riderData?.fullName)}
+							src={riderData?.img}
 						/>
 
 						<div className="flex-column gap-0.5 flex-1 w-full">
 							<h3 className="text-lg sm:text-xl">
 								{riderData?.fullName || "Rider"} details
 							</h3>
-							<span className="grey-text !font-light">Date joined: ----</span>
+							<span className="grey-text !font-light">
+								Date joined:{" "}
+								{riderData?.dateJoined
+									? dayjs(riderData?.dateJoined).format("YYYY-MM-DD, h:mm A")
+									: "---"}
+							</span>
 						</div>
 					</div>
 
@@ -70,7 +82,7 @@ function CustomerProfile() {
 								<Profile profileInfo={riderData} />
 							</TabsPanel>
 							<TabsPanel activeTab={activeTab} id={tabIDs[1]} idx={1}>
-								<Trips riderData={riderData} />
+								<Trips riderData={riderData} setPeriodType={setPeriodType} />
 							</TabsPanel>
 						</>
 					)}

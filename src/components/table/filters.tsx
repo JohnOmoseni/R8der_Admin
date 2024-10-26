@@ -13,6 +13,8 @@ type Props = {
 		value: string;
 	}[];
 	placeholder?: string;
+	showAsDropdown?: boolean;
+	isArrowDown?: boolean;
 };
 
 const defaultOptions = [
@@ -28,6 +30,8 @@ function Filters({
 	columnId = "role",
 	options = defaultOptions,
 	placeholder,
+	showAsDropdown,
+	isArrowDown = false,
 }: Props) {
 	const selectedStyle = "!bg-foreground text-secondary-foreground shadow-sm";
 
@@ -42,17 +46,23 @@ function Filters({
 
 	return (
 		<>
-			<div className="sm:hidden block">
+			<div className={cn(showAsDropdown ? "block" : "lg:hidden block")}>
 				<SelectDropdown
 					value={selectedFilter}
 					defaultValue={options[0]}
 					options={options}
+					isArrowDown={isArrowDown}
 					placeholder={placeholder}
 					onChangeHandler={handleClick}
 				/>
 			</div>
 
-			<div className="sm:row-flex-start gap-3.5 max-[430px]:gap-1.5 hidden cursor-pointer">
+			<div
+				className={cn(
+					" gap-3.5 max-[430px]:gap-1.5 cursor-pointer",
+					showAsDropdown ? "hidden" : "lg:row-flex-start hidden"
+				)}
+			>
 				{options?.map((option) => (
 					<div
 						key={option.value}

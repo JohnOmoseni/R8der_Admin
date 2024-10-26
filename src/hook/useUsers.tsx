@@ -1,6 +1,7 @@
 import {
 	ApproveDriverDocument,
 	DriverDetailsType,
+	DriverStandingParams,
 	DriverType,
 	GetByIdParams,
 	GetDriversResponse,
@@ -57,12 +58,11 @@ export const useGetRiders = () => {
 // GET RIDER BY ID
 export const useGetRiderDetails = ({
 	riderId,
-	page,
-	size,
+	periodType,
 }: Omit<GetByIdParams, "driverId">) => {
 	return useQuery({
 		queryKey: ["getRiderDetails", riderId],
-		queryFn: () => usersApi.getRiderById({ riderId, page, size }),
+		queryFn: () => usersApi.getRiderById({ riderId, periodType }),
 
 		select: (data) => {
 			if (!data) return {};
@@ -79,10 +79,10 @@ export const useGetRiderDetails = ({
 // DRIVERS ----------------------------------------------------------------
 // GET ALL DRIVERS
 
-export const useGetDrivers = () => {
+export const useGetDrivers = (standing?: DriverStandingParams) => {
 	return useQuery({
 		queryKey: ["getDrivers"],
-		queryFn: () => usersApi.getDrivers(),
+		queryFn: () => usersApi.getDrivers(standing),
 
 		select: (data) => {
 			const response: GetDriversResponse = data.data;
@@ -93,6 +93,7 @@ export const useGetDrivers = () => {
 					totalDrivers: 0,
 					unverifiedDrivers: 0,
 					verifiedDrivers: 0,
+					owingDrivers: 0,
 				};
 
 			const driversData = {
@@ -110,6 +111,7 @@ export const useGetDrivers = () => {
 				totalDrivers: response.totalDrivers,
 				unverifiedDrivers: response.unverifiedDrivers,
 				verifiedDrivers: response.verifiedDrivers,
+				owingDrivers: response.owningDrivers,
 			};
 
 			return driversData;
@@ -120,12 +122,10 @@ export const useGetDrivers = () => {
 // GET DRIVER BY ID
 export const useGetDriverDetails = ({
 	driverId,
-	page,
-	size,
 }: Omit<GetByIdParams, "riderId">) => {
 	return useQuery({
 		queryKey: ["getDriverDetails", driverId],
-		queryFn: () => usersApi.getDriverById({ driverId, page, size }),
+		queryFn: () => usersApi.getDriverById({ driverId }),
 
 		select: (data) => {
 			if (!data) return {};

@@ -17,9 +17,7 @@ export const driverTripsColumn: ColumnDef<TripsType>[] = [
 	{
 		accessorKey: "tripId",
 		header: "Trip ID",
-		cell: ({ row }) => (
-			<p className="table-data-sm !text-center">{row.original?.tripId}</p>
-		),
+		cell: ({ row }) => <p className="table-data-sm">{row.original?.tripId}</p>,
 	},
 
 	{
@@ -33,6 +31,7 @@ export const driverTripsColumn: ColumnDef<TripsType>[] = [
 		accessorKey: "date",
 		header: "Date",
 		cell: ({ row }) => <p className="table-data-sm">{row.original?.date}</p>,
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: "status",
@@ -59,7 +58,13 @@ export const driverTripsColumn: ColumnDef<TripsType>[] = [
 			return (
 				<SheetMenu
 					trigger={<div className="badge-long">View receipt</div>}
-					content={<Receipt details={trip} />}
+					content={
+						<Receipt
+							details={trip}
+							type="tripReceipt"
+							specificType="driver_receipt"
+						/>
+					}
 				/>
 			);
 		},

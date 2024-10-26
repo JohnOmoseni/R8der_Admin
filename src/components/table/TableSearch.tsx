@@ -20,7 +20,7 @@ function TableSearch({
 	const taskName =
 		columnFilters?.find((filter: any) => filter.id === filterBy)?.value || "";
 
-	const onFIlterChange = (columnId: string, value: string) => {
+	const onFilterChange = (columnId: string, value: string) => {
 		setColumnFilters((prev: any) =>
 			prev
 				?.filter((filter: any) => filter.id !== columnId)
@@ -40,7 +40,7 @@ function TableSearch({
 				value={taskName}
 				placeholder={placeholder ?? "Search..."}
 				className="i-reset h-8"
-				onChange={(e) => onFIlterChange(filterBy, e.target.value)}
+				onChange={(e) => onFilterChange(filterBy, e.target.value)}
 			/>
 		</div>
 	);

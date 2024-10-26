@@ -34,7 +34,7 @@ export function PopoverWrapper({
 				)}
 			</PopoverTrigger>
 			<PopoverContent className={cn("", containerStyles)}>
-				<div className="flex-column gap-2 text-sm">
+				<div className="flex-column gap-2.5 text-sm">
 					{list &&
 						list?.map((item, idx) => (
 							<Fragment key={idx}>

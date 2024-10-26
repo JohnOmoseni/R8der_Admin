@@ -19,6 +19,7 @@ export const tripsColumn: ColumnDef<TripType>[] = [
 		cell: ({ row }) => (
 			<p className="table-data-sm !text-center">{row.original?.amount}</p>
 		),
+		enableColumnFilter: true,
 	},
 	{
 		accessorKey: "date",
@@ -34,11 +35,11 @@ export const tripsColumn: ColumnDef<TripType>[] = [
 			</div>
 		),
 		enableColumnFilter: true,
-		filterFn: (row, columnId, filterStatuses) => {
-			if (filterStatuses.length === 0) true;
-			const status = row.getValue(columnId);
+		filterFn: (row, columnId, filterValue) => {
+			const status = row.getValue(columnId) as string;
+			if (filterValue.toLowerCase() === "all") return true;
 
-			return filterStatuses.includes(status);
+			return status?.toLowerCase() === filterValue?.toLowerCase();
 		},
 	},
 	{
@@ -49,7 +50,13 @@ export const tripsColumn: ColumnDef<TripType>[] = [
 			return (
 				<SheetMenu
 					trigger={<div className="badge-long">View receipt</div>}
-					content={<Receipt details={trip} />}
+					content={
+						<Receipt
+							details={trip}
+							type="tripReceipt"
+							specificType="customer_receipt"
+						/>
+					}
 				/>
 			);
 		},

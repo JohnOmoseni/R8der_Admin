@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 import { useNavigate } from "react-router-dom";
 import { SelectItem } from "../ui/select";
+import { useCreateCoupon, useUpdateDiscount } from "@/hook/useSettings";
 import { CouponResponseType } from "@/types/server";
-import { useCreateCoupon, useUpdateDiscount } from "@/hook/usePostQuery";
 import CustomFormField, { FormFieldType } from "./CustomFormField";
 import DatePicker from "./DatePicker";
 import FormWrapper from "./FormWrapper";

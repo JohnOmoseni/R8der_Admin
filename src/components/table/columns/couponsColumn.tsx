@@ -39,7 +39,9 @@ export const couponsColumn: ColumnDef<CouponResponseType>[] = [
 	{
 		accessorKey: "amount",
 		header: "Amount",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.amount}</p>,
+		cell: ({ row }) => (
+			<p className="table-data-sm !text-center">{row.original?.amount}</p>
+		),
 	},
 	{
 		accessorKey: "expiryDate",

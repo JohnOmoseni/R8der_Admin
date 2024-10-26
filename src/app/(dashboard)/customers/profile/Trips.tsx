@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 import { DataTable } from "@/components/table/DataTable";
 import { Calendar, Volume, Wallet } from "@/constants/icons";
 import { cn } from "@/lib/utils";
 import { tripsColumn } from "@/components/table/columns/driverTripColumn";
+import { PeriodTypeParams } from "@/types/server";
 
 import clsx from "clsx";
 import TableSearch from "@/components/table/TableSearch";
 import SelectDropdown from "@/components/ui/components/SelectDropdown";
+import Filters from "@/components/table/filters";
 
 const statusOptions = [
-	{ label: "Completed", value: "completed" },
+	{ label: "All", value: "all" },
+	{ label: "Requested", value: "requested" },
+	{ label: "In-progress", value: "in-progress" },
 	{ label: "Cancelled", value: "cancelled" },
 ];
 
@@ -18,17 +22,25 @@ const selectOptions = [
 	{ label: "Yesterday", value: "yesterday" },
 	{ label: "Last 7 days", value: "week" },
 	{ label: "Last 30 days", value: "month" },
-	{ label: "This Year", value: "year" },
+	{ label: "All time", value: "alltime" },
 ];
 
-function Trips({ riderData }: { riderData: any }) {
-	const [selectedDateRange, setSelectedDateRange] = useState("today");
+function Trips({
+	riderData,
+	setPeriodType,
+}: {
+	riderData: any;
+	setPeriodType: Dispatch<React.SetStateAction<PeriodTypeParams>>;
+}) {
+	const [selectedPeriodType, setSelectedPeriodType] = useState("month");
 	const [columnFilters, setColumnFilters] = useState([]);
+	const [selectedFilter, setSelectedFilter] = useState("all");
 
-	const handleDateChange = (value: string | Date) => {
-		console.log(value);
+	const handleDateChange = (value: string) => {
+		if (!value) return;
+		setSelectedPeriodType(value);
+		setPeriodType(value.toUpperCase() as PeriodTypeParams);
 	};
-	const handleSelectClick = () => {};
 
 	const tripsStats = [
 		{
@@ -82,24 +94,27 @@ function Trips({ riderData }: { riderData: any }) {
 				/>
 
 				<div className="row-flex gap-2">
-					<SelectDropdown
+					<Filters
 						placeholder="Status"
+						columnId="status"
+						showAsDropdown={true}
 						options={statusOptions}
-						onChangeHandler={handleSelectClick}
-						isArrowDown={true}
+						selectedFilter={selectedFilter}
+						setSelectedFilter={setSelectedFilter}
+						setColumnFilters={setColumnFilters}
 					/>
 
 					<SelectDropdown
 						trigger={
 							<div className="row-flex gap-2 leading-3">
 								<Calendar className="size-4" />
-								{selectedDateRange}
+								{selectedPeriodType}
 							</div>
 						}
 						placeholder="Custom"
-						defaultValue={selectOptions[0]}
+						defaultValue={selectOptions[3]}
 						options={selectOptions}
-						onChangeHandler={handleSelectClick}
+						onChangeHandler={handleDateChange}
 						isArrowDown={true}
 					/>
 				</div>

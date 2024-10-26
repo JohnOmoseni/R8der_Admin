@@ -3,7 +3,7 @@ import { DataTable } from "@/components/table/DataTable";
 import { useState } from "react";
 import { driverColumn } from "@/components/table/columns/driverColumn";
 import { ColumnFiltersState } from "@tanstack/react-table";
-import { DriverType } from "@/types/server";
+import { DriverStandingParams, DriverType } from "@/types/server";
 import { toast } from "sonner";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import {
@@ -18,12 +18,23 @@ import SectionWrapper from "@/layouts/SectionWrapper";
 import TableSearch from "@/components/table/TableSearch";
 import Filters from "@/components/table/filters";
 
+const options = [
+	{ label: "All", value: "all" },
+	{ label: "Verified", value: "verified" },
+	{ label: "Not-verified", value: "unverified" },
+	{ label: "Owing", value: "owing" },
+];
 function Drivers() {
 	const [selectedRows, setSelectedRows] = useState<DriverType[]>([]);
 	const [selectedFilter, setSelectedFilter] = useState("all");
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-	const { data: driverData, isError, isLoading, refetch } = useGetDrivers();
+	const {
+		data: driverData,
+		isError,
+		isLoading,
+		refetch,
+	} = useGetDrivers(selectedFilter?.toUpperCase() as DriverStandingParams);
 	const approveMutation = useApproveDriver();
 	const rejectMutation = useRejectDriver();
 
@@ -43,6 +54,11 @@ function Drivers() {
 		{
 			label: "Total unverified drivers",
 			value: driverData?.unverifiedDrivers,
+			status: "low",
+		},
+		{
+			label: "Total owing drivers",
+			value: driverData?.owingDrivers,
 			status: "low",
 		},
 	];
@@ -108,6 +124,7 @@ function Drivers() {
 								selectedFilter={selectedFilter}
 								setSelectedFilter={setSelectedFilter}
 								columnId="status"
+								options={options}
 								setColumnFilters={setColumnFilters}
 								placeholder="Filter by status"
 							/>

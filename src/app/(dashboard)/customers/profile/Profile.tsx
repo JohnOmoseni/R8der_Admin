@@ -5,11 +5,11 @@ function Profile({ profileInfo }: { profileInfo?: GetRiderByIdResponse }) {
 	const profile = [
 		{
 			label: "First name",
-			value: profileInfo?.fullName?.split(" ")[0],
+			value: profileInfo?.firstName,
 		},
 		{
 			label: "Last name",
-			value: profileInfo?.fullName?.split(" ")[-1] || "",
+			value: profileInfo?.lastName,
 		},
 		{
 			label: "Email address",
@@ -47,7 +47,11 @@ function Profile({ profileInfo }: { profileInfo?: GetRiderByIdResponse }) {
 						<p className="flex-1 font-light text-foreground-100">
 							{info?.label}
 						</p>
-						<p className={cn("font-semibold")}>{info?.value || "-"}</p>
+						<p
+							className={cn("font-semibold min-w-[12ch] break-words  text-end")}
+						>
+							{info?.value || "-"}
+						</p>
 					</div>
 				))}
 			</div>
