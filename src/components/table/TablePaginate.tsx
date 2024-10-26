@@ -1,7 +1,6 @@
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@/constants/icons";
-import { Input } from "../ui/input";
-import { Table } from "@tanstack/react-table";
 import SelectDropdown from "../ui/components/SelectDropdown";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@/constants/icons";
+import { Table } from "@tanstack/react-table";
 
 type Props = {
 	table: Table<any>;

@@ -7,6 +7,12 @@ import { staffColumn } from "@/components/table/columns/staffColumn";
 import { toast } from "sonner";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
+import { APP_ROLES } from "@/types";
+import {
+	useActivateStaff,
+	useDeactivateStaff,
+	useGetStaffs,
+} from "@/hook/useStaffs";
 
 import TableSearch from "@/components/table/TableSearch";
 import SectionWrapper from "@/layouts/SectionWrapper";
@@ -14,14 +20,7 @@ import Filters from "@/components/table/filters";
 import AddStaff from "./AddStaff";
 import useStaffHeader from "@/hook/useStaffHeader";
 
-// @ts-ignore
 import withAuthAndRoleProtection from "@/hoc/withAuthAndRoleProtection";
-import { APP_ROLES } from "@/types";
-import {
-	useActivateStaff,
-	useDeactivateStaff,
-	useGetStaffs,
-} from "@/hook/useStaffs";
 
 const options = [
 	{ label: "All", value: "all" },
