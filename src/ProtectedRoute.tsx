@@ -12,18 +12,15 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 
 	useLayoutEffect(() => {
 		if (user === null || token === null) {
-			// Redirect to login page
 			navigate(routes.LOGIN, { replace: true });
-			return;
-		}
-
-		if (user?.otpVerified !== true) {
+		} else if (!user?.otpVerified) {
 			navigate(routes.VERIFY_OTP, { replace: true });
-			return;
 		}
 	}, [navigate, user, token]);
 
-	if (user === undefined) return <FallbackLoader />;
+	if (user === undefined) {
+		return <FallbackLoader />;
+	}
 
 	return children;
 }

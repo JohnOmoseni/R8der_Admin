@@ -224,7 +224,7 @@ export const customerInfoMapper = (profileInfo: any) => ({
 export const driverInfoMapper = (profileInfo: any) => ({
 	walletNo: profileInfo?.wallet,
 	status: profileInfo?.status,
-	rating: profileInfo?.averageRating,
+	rating: profileInfo?.rating,
 	totalEarnings: profileInfo?.earnings,
 	totalTrips: profileInfo?.totalTrips,
 	vehicleBrand: profileInfo?.vehicleBrand,
@@ -255,7 +255,6 @@ export const keyMappings: Record<
 		{ key: "rating", label: "Rating" },
 		{ key: "totalTrips", label: "Total trips" },
 		{ key: "totalEarnings", label: "Total Earnings" },
-		{ key: "balance", label: "Balance" },
 	],
 	vehicleInfo: [
 		{ key: "vehicleBrand", label: "Vehicle brand" },

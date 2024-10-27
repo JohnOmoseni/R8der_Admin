@@ -9,7 +9,7 @@ export default function AuthLayout() {
 				<Logo className="h-fit w-16 object-contain text-center" />
 			</Link>
 
-			<div className="absolute left-1/2 top-1/2 mt-10 min-h-[320px] min-w-[300px] max-w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-background px-5 py-6 shadow-sm min-[450px]:w-full">
+			<div className="absolute left-1/2 top-1/2 mt-6 min-h-[320px] min-w-[300px] max-w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-background px-5 py-6 shadow-sm min-[450px]:w-full">
 				<div className="flex-column gap-4">
 					<Outlet />
 				</div>

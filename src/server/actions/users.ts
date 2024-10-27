@@ -55,11 +55,11 @@ const getDrivers = async (
 
 const getDriverById = async ({
 	driverId,
-	periodType,
+	periodType = "ALL",
 }: Omit<GetByIdParams, "riderId">): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(
-			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}??periodType=${periodType}`
+			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}?periodType=${periodType}&withdrawStatus=${periodType}`
 		);
 		console.log("[DRIVER BY ID RESPONSE]", response);
 

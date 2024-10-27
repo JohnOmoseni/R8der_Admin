@@ -93,7 +93,7 @@ export const useGetDrivers = (standing?: DriverStandingParams) => {
 					totalDrivers: 0,
 					unverifiedDrivers: 0,
 					verifiedDrivers: 0,
-					owingDrivers: 0,
+					owningDrivers: 0,
 				};
 
 			const driversData = {
@@ -103,7 +103,7 @@ export const useGetDrivers = (standing?: DriverStandingParams) => {
 					email: driver?.email,
 					phone: driver?.phone,
 					dateCreated: driver?.dateCreated,
-					trips: driver?.trips === 0 ? "N/A" : driver?.trips,
+					trips: driver?.trips ?? "N/A",
 					driverId: driver?.driverId,
 					status: driver?.status,
 					rating: driver?.averageRating,
@@ -111,7 +111,7 @@ export const useGetDrivers = (standing?: DriverStandingParams) => {
 				totalDrivers: response.totalDrivers,
 				unverifiedDrivers: response.unverifiedDrivers,
 				verifiedDrivers: response.verifiedDrivers,
-				owingDrivers: response.owningDrivers,
+				owningDrivers: response.owningDrivers,
 			};
 
 			return driversData;
@@ -131,6 +131,7 @@ export const useGetDriverDetails = ({
 			if (!data) return {};
 
 			const {
+				dateJoined,
 				status,
 				fullName,
 				emailAddress,
@@ -151,9 +152,15 @@ export const useGetDriverDetails = ({
 				inspectionDocumentImage,
 				driverWithdraws,
 				driverTrips,
+				vehicleImagesApproved,
+				driversLicenseApproved,
+				driversPhotoApproved,
+				insuranceDocumentApproved,
+				otherInspectionDocumentApproved,
 			}: DriverDetailsType = data.data;
 
 			return {
+				dateJoined,
 				status,
 				fullName,
 				emailAddress,
@@ -175,6 +182,12 @@ export const useGetDriverDetails = ({
 				inspectionDocumentImage,
 				driverTrips,
 				driverWithdraws,
+
+				vehicleImagesApproved,
+				driversLicenseApproved,
+				driversPhotoApproved,
+				insuranceDocumentApproved,
+				otherInspectionDocumentApproved,
 			};
 		},
 		enabled: Boolean(driverId),

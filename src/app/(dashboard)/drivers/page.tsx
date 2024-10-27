@@ -21,7 +21,7 @@ import Filters from "@/components/table/filters";
 const options = [
 	{ label: "All", value: "all" },
 	{ label: "Verified", value: "verified" },
-	{ label: "Not-verified", value: "unverified" },
+	{ label: "Not-verified", value: "not verified" },
 	{ label: "Owing", value: "owing" },
 ];
 function Drivers() {
@@ -32,7 +32,7 @@ function Drivers() {
 	const {
 		data: driverData,
 		isError,
-		isLoading,
+		isFetching,
 		refetch,
 	} = useGetDrivers(selectedFilter?.toUpperCase() as DriverStandingParams);
 	const approveMutation = useApproveDriver();
@@ -58,7 +58,7 @@ function Drivers() {
 		},
 		{
 			label: "Total owing drivers",
-			value: driverData?.owingDrivers,
+			value: driverData?.owningDrivers,
 			status: "low",
 		},
 	];
@@ -88,7 +88,7 @@ function Drivers() {
 
 	return (
 		<SectionWrapper headerTitle="Drivers">
-			{isLoading ? (
+			{isFetching ? (
 				<SkeletonLoader />
 			) : (
 				<>

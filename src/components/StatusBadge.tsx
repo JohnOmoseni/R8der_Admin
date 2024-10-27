@@ -1,11 +1,13 @@
 import clsx from "clsx";
 
 import { Status } from "@/types";
+import { toTitleCase } from "@/utils";
 
 export const StatusBadge = ({ status }: { status: Status }) => {
 	const green = [
 		"VERIFIED",
 		"COMPLETED",
+		"APPROVED",
 		"REQUESTED",
 		"ACCEPTED",
 		"SUCCESS",
@@ -26,9 +28,9 @@ export const StatusBadge = ({ status }: { status: Status }) => {
 	return (
 		<div
 			className={clsx("row-flex rounded-full bg-blue-200 px-3 py-1.5", {
-				"bg-green-300": green.includes(status),
-				"bg-red-200": error.includes(status),
-				"bg-yellow-200": yellow.includes(status),
+				"bg-green-200": green.includes(status),
+				"bg-red-100": error.includes(status),
+				"bg-yellow-100": yellow.includes(status),
 			})}
 		>
 			<p
@@ -41,7 +43,7 @@ export const StatusBadge = ({ status }: { status: Status }) => {
 					}
 				)}
 			>
-				{status || "Unknown"}
+				{toTitleCase(status || "") || "Unknown"}
 			</p>
 		</div>
 	);

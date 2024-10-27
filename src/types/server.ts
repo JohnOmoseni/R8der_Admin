@@ -108,6 +108,12 @@ export interface DriverDetailsType {
 	inspectionDocumentImage: string | null;
 	driverTrips: TripType[];
 	driverWithdraws: WithdrawType[];
+	dateJoined: string | null;
+	vehicleImagesApproved: Status | null;
+	driversLicenseApproved: Status | null;
+	driversPhotoApproved: Status | null;
+	insuranceDocumentApproved: Status | null;
+	otherInspectionDocumentApproved: Status | null;
 }
 
 // APPROVE / REJECT DRIVERS

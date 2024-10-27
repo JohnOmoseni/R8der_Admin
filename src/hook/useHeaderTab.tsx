@@ -56,21 +56,23 @@ function useHeaderTab({
 
 	const deactivate = (
 		<div className={cn(action, "error")} onClick={handleDeactivate}>
-			<Cancel className="size-4 text-red-600" />
-			<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
-			{isLoading?.type === "deactivate" && (
+			{isLoading?.type === "deactivate" && isLoading?.loading ? (
 				<BtnLoader isLoading={isLoading?.loading} />
+			) : (
+				<Cancel className="size-4 text-red-600" />
 			)}
+			<p className="mt-0.5 font-semibold text-red-600">Deactivate</p>
 		</div>
 	);
 
 	const approve = (
 		<div className={cn(action, "!bg-foreground")} onClick={handleApprove}>
-			<Check className="size-4 text-white" />
-			<p className="mt-0.5 font-semibold text-background">Approve</p>
-			{isLoading?.type === "approve" && (
+			{isLoading?.type === "approve" && isLoading?.loading ? (
 				<BtnLoader isLoading={isLoading?.loading} />
+			) : (
+				<Check className="size-4 text-white" />
 			)}
+			<p className="mt-0.5 font-semibold text-background">Approve</p>
 		</div>
 	);
 

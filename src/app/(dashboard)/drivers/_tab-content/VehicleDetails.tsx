@@ -7,22 +7,43 @@ import { useState } from "react";
 import { useApproveDriverDocument } from "@/hook/useUsers";
 import { toast } from "sonner";
 import { DOCUMENT_TYPE } from "@/types/server";
+import { StatusBadge } from "@/components/StatusBadge";
+import { toTitleCase } from "@/utils";
 
 const popoverList = ["Approve", "Reject"];
+const approve = ["Approve"];
+const reject = ["Reject"];
 
 function VehicleDetails({
 	profileInfo,
 	driverId,
+	refetch,
 }: {
 	profileInfo: any;
+	refetch: any;
 	driverId: string;
 }) {
 	const info: Record<string, any> = {
-		vehicleImage: profileInfo?.vehicleImage,
-		driverPhotoImage: profileInfo?.driverPhotoImage,
-		driverLicenceImage: profileInfo?.driverLicenseImage,
-		insuranceDocumentImage: profileInfo?.insuranceDocumentImage,
-		inspectionDocumentImage: profileInfo?.inspectionDocumentImage,
+		vehicleImage: {
+			value: profileInfo?.vehicleImage,
+			status: profileInfo?.vehicleImagesApproved,
+		},
+		driverPhotoImage: {
+			value: profileInfo?.driverPhotoImage,
+			status: profileInfo?.driversPhotoApproved,
+		},
+		driverLicenceImage: {
+			value: profileInfo?.driverLicenseImage,
+			status: profileInfo?.driversLicenseApproved,
+		},
+		insuranceDocumentImage: {
+			value: profileInfo?.insuranceDocumentImage,
+			status: profileInfo?.insuranceDocumentApproved,
+		},
+		inspectionDocumentImage: {
+			value: profileInfo?.inspectionDocumentImage,
+			status: profileInfo?.otherInspectionDocumentApproved,
+		},
 	};
 	const approveDocumentMutation = useApproveDriverDocument();
 
@@ -62,11 +83,16 @@ function VehicleDetails({
 			handleApproveDocument(id, type),
 	};
 
-	const handleItemClick = async (idx: number, id: string, value: string) => {
+	const handleItemClick = async (
+		idx: number,
+		id: string,
+		type: "approve" | "reject",
+		value: string
+	) => {
 		if (!onClickHandlers || typeof onClickHandlers[idx] !== "function") return;
 
 		if (!value) {
-			toast.info("No document");
+			toast.info(`No document to ${type || "approve"}`);
 			return;
 		}
 
@@ -76,7 +102,6 @@ function VehicleDetails({
 			return newStates;
 		});
 
-		const type = idx === 0 ? "approve" : "reject";
 		try {
 			await onClickHandlers[idx](id, type);
 		} finally {
@@ -92,6 +117,7 @@ function VehicleDetails({
 		id: string,
 		type: "approve" | "reject"
 	) => {
+		console.log("TEST", id, type);
 		const data = {
 			id: driverId,
 			documentType: id as DOCUMENT_TYPE,
@@ -99,16 +125,26 @@ function VehicleDetails({
 		};
 
 		try {
-			await approveDocumentMutation.mutateAsync(data);
+			const res = await approveDocumentMutation.mutateAsync(data);
+			const message =
+				res?.message
+					.split("_")
+					.map((word: string) => word)
+					.join(" ") || "";
+
 			if (type === "approve") {
-				toast.success("Document approved successfully");
-			} else {
-				toast.error("Document rejected successfully");
+				toast.success(toTitleCase(message) || "Document approved successfully");
+			} else if (type === "reject") {
+				toast.error(toTitleCase(message) || "Document rejected successfully");
 			}
+
+			refetch();
 		} catch {
-			console.log("Something went wrong");
+			toast.error("Something went wrong");
 		}
 	};
+
+	console.log("INFO", info, profileInfo);
 
 	return (
 		<div className="flex-column gap-5">
@@ -119,7 +155,7 @@ function VehicleDetails({
 			/>
 
 			<div className="rounded-sm border border-border text-base">
-				<div className="grid w-full items-center grid-cols-[2fr_1fr_1fr] gap-4 bg-background-200 px-3 py-3 brightness-105">
+				<div className="grid w-full items-center grid-cols-[1fr_1fr_auto] gap-4 bg-background-200 px-3 py-3 brightness-105">
 					<p className="font-semibold">Documents</p>
 
 					<p className="font-semibold">Status</p>
@@ -129,14 +165,16 @@ function VehicleDetails({
 				<>
 					{keys.map(({ key, label, id }) => (
 						<div
-							className="group items-center grid w-full grid-cols-[2fr_1fr_1fr] gap-4 border-t border-border px-4 py-3.5"
+							className="group items-center grid w-full grid-cols-[1fr_1fr_auto] gap-4 border-t border-border px-4 py-3.5"
 							key={key}
 						>
 							<p className="flex-1 font-medium tracking-tight text-foreground-100">
 								{label}
 							</p>
 
-							<p className={cn("font-semibold")}>{info[key]}</p>
+							<div className={cn("font-semibold overflow-hidden w-max")}>
+								<StatusBadge status={info[key]?.status} />
+							</div>
 
 							<PopoverWrapper
 								trigger={
@@ -145,14 +183,18 @@ function VehicleDetails({
 										<KeyboardArrowDown className="size-4" />
 									</p>
 								}
-								list={popoverList}
+								list={info[key]?.status === "NOT_VERIFIED" ? approve : reject}
 								containerStyles=""
 								renderItem={(item, index) => {
+									const type =
+										info[key]?.status === "NOT_VERIFIED" ? "approve" : "reject";
 									return (
 										<>
 											<div
 												className="row-flex-btwn w-full gap-2 cursor-pointer"
-												onClick={() => handleItemClick(index, id, info[key])}
+												onClick={() =>
+													handleItemClick(index, id, type, info[key]?.value)
+												}
 											>
 												{item?.icon && <item.icon className="mr-2 size-4" />}
 

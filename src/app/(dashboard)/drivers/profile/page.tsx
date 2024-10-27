@@ -22,9 +22,10 @@ import FallbackLoader from "@/components/fallback/FallbackLoader";
 const tabIDs = ["Profile", "Vehicle and KYC Details", "Trips", "Withdrawals"];
 
 function DriverProfile() {
-	const [activeTab, setActiveTab] = useState(0);
 	const { id } = useParams();
+	const [activeTab, setActiveTab] = useState(0);
 	const [exportData, setExportData] = useState<any>([]);
+	const [filename, setFilename] = useState("");
 	const approveMutation = useApproveDriver();
 	const rejectMutation = useRejectDriver();
 
@@ -36,7 +37,7 @@ function DriverProfile() {
 	const {
 		data: driverData,
 		isError,
-		isLoading,
+		isFetching,
 		refetch,
 	} = useGetDriverDetails({ driverId: id! });
 
@@ -67,6 +68,7 @@ function DriverProfile() {
 		onApprove,
 		onDeactivate,
 		tableData: exportData,
+		filename,
 	});
 
 	if (isError) toast.error("Error fetching driver details");
@@ -82,12 +84,17 @@ function DriverProfile() {
 		switch (id) {
 			case 1:
 				setExportData(dataArray);
+				setFilename("Vehicle Details.xlsx");
 				break;
 			case 2:
 				setExportData(driverData?.driverTrips || []);
+				setFilename("Trips.xlsx");
+
 				break;
 			case 3:
 				setExportData(driverData?.driverWithdraws || []);
+				setFilename("Withdrawals.xlsx");
+
 				break;
 			default:
 				setExportData([]);
@@ -117,7 +124,7 @@ function DriverProfile() {
 				</div>
 
 				<div className="w-full mt-1.5">
-					{isLoading ? (
+					{isFetching ? (
 						<div className="loader-container">
 							<FallbackLoader />
 						</div>
@@ -131,7 +138,11 @@ function DriverProfile() {
 								/>
 							</TabsPanel>
 							<TabsPanel activeTab={activeTab} id={tabIDs[1]} idx={1}>
-								<VehicleDetails profileInfo={driverData} driverId={id} />
+								<VehicleDetails
+									profileInfo={driverData}
+									driverId={id}
+									refetch={refetch}
+								/>
 							</TabsPanel>
 							<TabsPanel activeTab={activeTab} id={tabIDs[2]} idx={2}>
 								<DataTable
