@@ -9,7 +9,7 @@ const login = async (params: {
 }): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await axios.post(
-			"http://tripiee.com/trip/account/auth/signin",
+			"https://tripiee.com/trip/account/auth/signin",
 			params
 		);
 		console.log("LOGIN RESPONSE", response);
