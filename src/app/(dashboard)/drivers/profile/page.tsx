@@ -9,8 +9,8 @@ import {
 	useGetDriverDetails,
 	useRejectDriver,
 } from "@/hook/useUsers";
+import { LoadingState } from "@/types";
 
-import useHeaderTab from "@/hook/useHeaderTab";
 import BackArrow from "@/components/BackArrow";
 import TabsPanel from "@/components/tabs/TabsPanel";
 import VehicleDetails from "../_tab-content/VehicleDetails";
@@ -18,6 +18,7 @@ import Withdrawals from "../_tab-content/Withdrawals";
 import ProfileContent from "../_tab-content/Profile";
 import SectionWrapper from "@/layouts/SectionWrapper";
 import FallbackLoader from "@/components/fallback/FallbackLoader";
+import HeaderContent from "./HeaderContent";
 
 const tabIDs = ["Profile", "Vehicle and KYC Details", "Trips", "Withdrawals"];
 
@@ -26,6 +27,11 @@ function DriverProfile() {
 	const [activeTab, setActiveTab] = useState(0);
 	const [exportData, setExportData] = useState<any>([]);
 	const [filename, setFilename] = useState("");
+	const [isLoading, setIsLoading] = useState<LoadingState>({
+		type: "",
+		loading: false,
+	});
+
 	const approveMutation = useApproveDriver();
 	const rejectMutation = useRejectDriver();
 
@@ -42,6 +48,10 @@ function DriverProfile() {
 	} = useGetDriverDetails({ driverId: id! });
 
 	const onApprove = async () => {
+		if (isLoading?.type === "deactivate" && isLoading?.loading) return;
+
+		setIsLoading({ type: "approve", loading: true });
+
 		try {
 			await approveMutation.mutateAsync([id!]);
 			toast.success("Driver approved successfully");
@@ -49,27 +59,27 @@ function DriverProfile() {
 			refetch();
 		} catch (error) {
 			toast.error("Error processing request");
+		} finally {
+			setIsLoading({ type: "approve", loading: false });
 		}
 	};
 
 	const onDeactivate = async () => {
+		if (isLoading?.type === "approve" && isLoading?.loading) return;
+
+		setIsLoading({ type: "deactivate", loading: true });
+
 		try {
 			await rejectMutation.mutateAsync([id!]);
-			toast.success("Driver rejected successfully");
+			toast.success("Driver deactivated successfully");
 
 			refetch();
 		} catch (error) {
 			toast.error("Error processing request");
+		} finally {
+			setIsLoading({ type: "deactivate", loading: false });
 		}
 	};
-
-	let headerContent = useHeaderTab({
-		activeTab,
-		onApprove,
-		onDeactivate,
-		tableData: exportData,
-		filename,
-	});
 
 	if (isError) toast.error("Error fetching driver details");
 
@@ -111,8 +121,14 @@ function DriverProfile() {
 					<h3 className="w-full text-xl md:text-[1.35rem] capitalize">
 						{driverData?.fullName || "Driver"} details
 					</h3>
-
-					{headerContent}
+					<HeaderContent
+						activeTab={activeTab}
+						tableData={exportData}
+						filename={filename}
+						onApprove={onApprove}
+						onDeactivate={onDeactivate}
+						isLoading={isLoading}
+					/>{" "}
 				</div>
 
 				<div className="row-flex-start mt-3 gap-4 border-b border-border-100">

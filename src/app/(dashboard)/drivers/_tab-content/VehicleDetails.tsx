@@ -117,7 +117,6 @@ function VehicleDetails({
 		id: string,
 		type: "approve" | "reject"
 	) => {
-		console.log("TEST", id, type);
 		const data = {
 			id: driverId,
 			documentType: id as DOCUMENT_TYPE,
@@ -143,8 +142,6 @@ function VehicleDetails({
 			toast.error("Something went wrong");
 		}
 	};
-
-	console.log("INFO", info, profileInfo);
 
 	return (
 		<div className="flex-column gap-5">

@@ -16,7 +16,7 @@ const SectionWrapper = ({
 	mainContainerStyles,
 }: Props) => {
 	return (
-		<div className={cn("")}>
+		<>
 			<Header
 				title={headerTitle}
 				customContent={() => customHeaderContent && customHeaderContent}
@@ -24,14 +24,14 @@ const SectionWrapper = ({
 
 			<main
 				className={cn(
-					"h-full w-full overflow-y-auto py-3 pb-4",
+					"min-h-[80vh] w-full overflow-y-auto py-3 pb-4",
 					mainContainerStyles,
 					!mainContainerStyles && "px-6 max-[430px]:px-3"
 				)}
 			>
 				{children}
 			</main>
-		</div>
+		</>
 	);
 };
 

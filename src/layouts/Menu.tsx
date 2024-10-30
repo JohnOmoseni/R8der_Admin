@@ -63,11 +63,14 @@ function Menu() {
 
 				<nav className="flex-1 pl-[4%] pt-[max(5rem,_22%)] flex-column gap-4">
 					<ul className="flex-column gap-5 overflow-y-auto text-lg">
-						{sidebarLinks.map((link, idx) =>
-							link.allowedRoles.includes(role!) ? (
+						{sidebarLinks.map((link, idx) => {
+							const isLinkAllowed =
+								link.showAlways || (role && link.allowedRoles?.includes(role));
+
+							return isLinkAllowed ? (
 								<NavLinks key={idx} {...link} idx={idx} />
-							) : null
-						)}
+							) : null;
+						})}
 					</ul>
 
 					<div

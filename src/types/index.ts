@@ -39,6 +39,11 @@ export type User = {
 	role: (typeof APP_ROLES)[keyof typeof APP_ROLES];
 };
 
+export type LoadingState = {
+	type: "approve" | "deactivate" | "";
+	loading: boolean;
+};
+
 export type SidebarLinksProp = {
 	icon: any;
 	label: string;

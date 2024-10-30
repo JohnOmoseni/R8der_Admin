@@ -24,6 +24,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
 import ErrorBoundary from "./components/fallback/Error";
 import NotFound from "./layouts/NotFound";
+import AuthProtectedRoute from "./AuthProtectedRoute";
 
 const AppRouter = () => {
 	return (
@@ -35,7 +36,13 @@ const AppRouter = () => {
 						<Route path="/" element={<Navigate to={"/dashboard"} />} />
 						<Route path="*" element={<NotFound />} />
 
-						<Route element={<AuthLayout />}>
+						<Route
+							element={
+								<AuthProtectedRoute>
+									<AuthLayout />
+								</AuthProtectedRoute>
+							}
+						>
 							<Route path="/signin" element={<SignIn />} />
 							<Route path="/verify-otp" element={<VerifyOTP />} />
 						</Route>

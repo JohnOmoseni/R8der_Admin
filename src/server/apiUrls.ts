@@ -1,6 +1,9 @@
 export const API_DOMAIN =
 	import.meta.env.VITE_API_ENDPOINT || "http://tripiee.com";
 
+export const SOCKET_URL =
+	import.meta.env.VITE_SOCKET_URL || "ws://localhost:8224";
+
 if (!API_DOMAIN) {
 	throw new Error("API_DOMAIN is not defined in the environment variables.");
 }
