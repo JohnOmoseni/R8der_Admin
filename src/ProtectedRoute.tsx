@@ -12,7 +12,7 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 
 	useLayoutEffect(() => {
 		if (user === null || token === null) {
-			// navigate(routes.LOGIN, { replace: true });
+			navigate(routes.LOGIN, { replace: true });
 		} else if (!user?.otpVerified && token) {
 			navigate(routes.VERIFY_OTP, { replace: true });
 		}
