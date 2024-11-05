@@ -48,7 +48,7 @@ function Dashboard() {
 		PeriodTypeParams | undefined
 	>("YEAR");
 
-	const { data, isError, isLoading, status } = useGetOverview({
+	const { data, isLoading, isError, status } = useGetOverview({
 		startDate: dateRange.startDate,
 		endDate: dateRange.endDate,
 	});
@@ -155,7 +155,14 @@ function Dashboard() {
 									key={idx}
 								>
 									<div className="flex-column gap-1">
-										<span className="grey-text">{label}</span>
+										<span
+											className={cn(
+												"grey-text max-md:max-w-[10ch]",
+												idx === revenueStats.length - 1 && "max-md:max-w-[8ch]"
+											)}
+										>
+											{label}
+										</span>
 										<h3
 											className={clsx(
 												"font-bold !leading-6 text-xl sm:text-2xl xl:text-3xl"
@@ -168,14 +175,14 @@ function Dashboard() {
 									{idx !== revenueStats.length - 1 && (
 										<div
 											className={cn(
-												"icon-div !size-10 sm:!size-12 !border-none shadow-sm !cursor-default",
+												"icon-div !size-8 min-[500px]:!size-12 !border-none shadow-sm !cursor-default",
 												idx === 0 ? "!bg-[#EBF4FF]" : "!bg-[#FAF3FF]"
 											)}
 										>
 											{idx === 0 ? (
-												<Volume className="size-5" />
+												<Volume className="size-4 min-[500px]:size-5" />
 											) : (
-												<Wallet className="size-5" />
+												<Wallet className="size-4 min-[500px]:size-5" />
 											)}
 										</div>
 									)}
@@ -209,7 +216,7 @@ function Dashboard() {
 						<div className="card card-inner">
 							{trips?.map(({ label, volume, value, status }, idx) => (
 								<div className="flex-column gap-3" key={idx}>
-									<span className="label">{label || "Total trips"} </span>
+									<span className="label ">{label || "Total trips"} </span>
 
 									<div>
 										<span className="grey-text">Volume</span>
@@ -241,7 +248,9 @@ function Dashboard() {
 									key={idx}
 								>
 									<div className="flex-column gap-3">
-										<span className="label">{label || "Total stats"}</span>
+										<span className="label max-[430px]:max-w-[8ch]">
+											{label || "Total stats"}
+										</span>
 										<p
 											className={clsx("font-semibold uppercase", {
 												"text-green-500": status === "high",

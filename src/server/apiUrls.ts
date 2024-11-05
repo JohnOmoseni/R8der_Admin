@@ -34,6 +34,9 @@ export default {
 	GET_WITHDRAWALS: `/trip/dashboard/withdrawals/summary`,
 	GET_WITHDRAWAL_DETAILS: `/trip/dashboard/withdrawaldetails`,
 
+	GET_SETTLEMENTS: `/trip/dashboard/settlement`,
+	GET_SETTLEMENT_DETAILS: `/trip/dashboard/settlement`,
+
 	GET_ALL_ROLES: `/api/staffs/all_roles`,
 	GET_STAFFS_ADMINS: `/trip/dashboard/staff-and-admin`,
 	GET_ALL_ADMINS: `/trip/dashboard/admin`,

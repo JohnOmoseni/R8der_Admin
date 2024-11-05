@@ -26,7 +26,7 @@ export default function useStaffHeader(setShowModal: Props, refetch: any) {
 	const { user } = useAuth();
 	const updateRoleMutation = useUpdateRole();
 
-	const topAction = "badge small-text min-w-[125px] gap-2  !pl-2.5 !pr-3";
+	const topAction = "badge small-text min-w-[125px] gap-2 !pl-2.5 !pr-3";
 
 	const [loadingStates, setLoadingStates] = useState<boolean[]>(
 		rolesDropdown!?.map(() => false)

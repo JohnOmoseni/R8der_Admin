@@ -74,7 +74,7 @@ function Menu() {
 					</ul>
 
 					<div
-						className="row-flex-start self-end mt-auto cursor-pointer gap-3"
+						className="row-flex-start pr-1.5 self-end mt-auto cursor-pointer gap-3"
 						onClick={onLogout}
 					>
 						<span className="text-base mt-0.5">

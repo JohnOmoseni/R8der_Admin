@@ -1,5 +1,6 @@
 import { APP_ROLES } from "@/types";
 import {
+	Announcement,
 	Banknote,
 	Car,
 	Dashboard,
@@ -84,6 +85,14 @@ export const sidebarLinks = [
 		href: "/dashboard/staffs",
 		tag: "staffs",
 		icon: User,
+		allowedRoles: [APP_ROLES.Admin],
+	},
+	{
+		label: "Announcements",
+		href: "/dashboard/announcements",
+		tag: "announcements",
+		icon: Announcement,
+		showAlways: true,
 		allowedRoles: [APP_ROLES.Admin],
 	},
 	{

@@ -14,9 +14,10 @@ import DriverProfile from "./app/(dashboard)/drivers/profile/page";
 import Trips from "./app/(dashboard)/trips/page";
 import CouponSuccess from "./app/(dashboard)/settings/success/page";
 import Settlements from "./app/(dashboard)/settlements/page";
+import Announcements from "./app/(dashboard)/announcements/page";
+import CreateAnnouncement from "./app/(dashboard)/announcements/CreateAnnouncement";
 
 import LayoutProvider from "./providers/LayoutProvider";
-
 import DashboardLayout from "./layouts/DashboardLayout";
 import AuthLayout from "./layouts/AuthLayout";
 
@@ -81,9 +82,13 @@ const AppRouter = () => {
 									/>
 								</Route>
 
+								<Route path="withdrawals" element={<Withdrawals />} />
 								<Route path="settlements" element={<Settlements />} />
 
-								<Route path="withdrawals" element={<Withdrawals />} />
+								<Route path="announcements">
+									<Route index element={<Announcements />} />
+									<Route path="create" element={<CreateAnnouncement />} />
+								</Route>
 
 								<Route path="settings">
 									<Route index element={<Settings />} />

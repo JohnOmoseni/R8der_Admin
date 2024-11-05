@@ -6,17 +6,19 @@ import Receipt from "@/app/(dashboard)/_sections/Receipt";
 
 export const settlementColumn: ColumnDef<SettlementType>[] = [
 	{
-		accessorKey: "customerName",
-		header: "Customer Name",
+		accessorKey: "driverName",
+		header: "Driver Name",
 		cell: ({ row }) => (
 			<p className="table-data-sm line-clamp-2">{row.original?.driverName}</p>
 		),
 	},
 	{
-		accessorKey: "amount",
+		accessorKey: "tripAmount",
 		header: "Trip amount",
 		cell: ({ row }) => (
-			<p className="table-data-sm !text-center">{row.original?.amount}</p>
+			<p className="table-data-sm !text-center">
+				&#8358;{row.original?.tripAmount}
+			</p>
 		),
 	},
 	{
@@ -35,17 +37,17 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		cell: ({ row }) => <p className="table-data-sm">{row.original?.date}</p>,
 	},
 	{
-		accessorKey: "commission",
+		accessorKey: "driverCommission",
 		header: "Driver Commission",
 		cell: ({ row }) => (
-			<p className="table-data-sm">{row.original?.commission}</p>
+			<p className="table-data-sm">&#8358;{row.original?.driverCommission}</p>
 		),
 	},
 	{
 		accessorKey: "percentage",
-		header: "Percentagee",
+		header: "Percentage",
 		cell: ({ row }) => (
-			<p className="table-data-sm">{row.original?.percentage}</p>
+			<p className="table-data-sm">{row.original?.percentage}%</p>
 		),
 	},
 	{

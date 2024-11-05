@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
 
 @font-face {
 	font-family: "Sora";
@@ -166,6 +166,11 @@
 	/* Data Table */
 	.shad-table-row-header {
 		@apply whitespace-nowrap py-4 font-semibold capitalize text-foreground max-[430px]:px-3 max-[430px]:text-sm;
+	}
+
+	/* TABLE OVERRIDE */
+	.shad-table-row-header th:has(.select-field) {
+		padding-left: 0 !important;
 	}
 	.shad-table-row {
 		@apply py-2 transition-colors data-[state=selected]:bg-muted hover:bg-background-200 hover:brightness-110 !important;

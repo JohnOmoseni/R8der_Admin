@@ -5,6 +5,7 @@ import { FocusEventHandler, KeyboardEventHandler, useState } from "react";
 import {
 	Select,
 	SelectContent,
+	SelectItem,
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
@@ -30,6 +31,8 @@ interface CustomProps {
 	containerStyles?: string;
 	fieldType: FormFieldType;
 	label?: string;
+	labelStyles?: string;
+	selectList?: Array<any>;
 	tag?: string;
 	iconSrc?: any;
 	dir?: "left" | "right";
@@ -56,6 +59,7 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 		onChange,
 		inputStyles,
 		iconSrc: IconSrc,
+		selectList,
 	} = props;
 	const placeholder = field?.placeholder ?? "";
 
@@ -115,6 +119,17 @@ const RenderInput = ({ props }: { props: CustomProps }) => {
 					</SelectTrigger>
 					<SelectContent className="shad-select-content">
 						{props.children}
+
+						{(selectList === undefined ||
+							(selectList && selectList?.length === 0)) && (
+							<SelectItem
+								disabled={true}
+								value="no-option"
+								className="flex-1 w-full"
+							>
+								No option
+							</SelectItem>
+						)}
 					</SelectContent>
 				</Select>
 			);
@@ -149,6 +164,7 @@ const CustomFormField = (props: CustomProps) => {
 	const {
 		name,
 		label,
+		labelStyles,
 		errors,
 		touched,
 		containerStyles,
@@ -156,18 +172,28 @@ const CustomFormField = (props: CustomProps) => {
 		fieldType,
 	} = props;
 
-	const result = (
-		<div
-			className={cn(
-				"relative w-full row-flex-start gap-0.5 overflow-hidden",
-				containerStyles,
-				fieldType !== FormFieldType.CHECKBOX &&
-					"rounded-lg border border-border bg-background shadow-sm",
-				errors?.[name] && touched?.[name] && "border-red-400"
-			)}
-		>
+	const result = ![
+		FormFieldType.SKELETON,
+		FormFieldType.CHECKBOX,
+		FormFieldType.SELECT,
+	].includes(fieldType) ? (
+		<>
+			<div
+				className={cn(
+					"relative w-full row-flex-start gap-0.5 overflow-hidden",
+					containerStyles,
+					fieldType !== FormFieldType.CHECKBOX &&
+						"rounded-lg border border-border-100 bg-background",
+					errors?.[name] && touched?.[name] && "border-red-400"
+				)}
+			>
+				<RenderInput props={props} />
+			</div>
+		</>
+	) : (
+		<>
 			<RenderInput props={props} />
-		</div>
+		</>
 	);
 
 	return (
@@ -179,7 +205,12 @@ const CustomFormField = (props: CustomProps) => {
 			)}
 		>
 			{label && fieldType !== FormFieldType.CHECKBOX && (
-				<Label className="relative mb-2.5 ml-0.5 inline-flex after:absolute after:-right-6 after:top-0 after:text-sm after:text-red-500 after:content-[*]">
+				<Label
+					className={cn(
+						"relative mb-2 ml-0.5 inline-flex after:absolute after:-right-6 after:top-0 after:text-sm after:text-red-500 after:content-[*]",
+						labelStyles
+					)}
+				>
 					{label}
 				</Label>
 			)}

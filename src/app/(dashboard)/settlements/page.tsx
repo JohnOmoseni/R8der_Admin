@@ -7,28 +7,29 @@ import { ColumnFiltersState } from "@tanstack/react-table";
 import { FileDownload } from "@/constants/icons";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import { settlementColumn } from "@/components/table/columns/settlementColumn";
+import { useGetSettlements } from "@/hook/useTransactions";
 
 import SectionWrapper from "@/layouts/SectionWrapper";
-import TableSearch from "@/components/table/TableSearch";
-import SelectDropdown from "@/components/ui/components/SelectDropdown";
+import Filters from "@/components/table/filters";
+import DownloadReport from "@/components/DownloadReport";
+import TableGlobalSearch from "@/components/table/TableGlobalSearch";
 
 const options = [
 	{ label: "All", value: "all" },
-	{ label: "Success", value: "successful" },
+	{ label: "Paid", value: "paid" },
 	{ label: "Pending", value: "pending" },
 	{ label: "Failed", value: "failed" },
 ];
 
 function Settlements() {
+	const { data: settlementData, isLoading, isError } = useGetSettlements();
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [selectedFilter, setSelectedFilter] = useState("");
+	const [globalFilter, setGlobalFilter] = useState("");
 
-	const isError = false;
-	const isLoading = false;
-
-	if (isError) toast.error("Error fetching information");
 	const isDownloading = false;
 
-	const handleClick = () => {};
+	if (isError) toast.error("Error fetching information");
 
 	return (
 		<SectionWrapper headerTitle="Settlements">
@@ -37,37 +38,49 @@ function Settlements() {
 			) : (
 				<>
 					<div className="mt-5 row-flex-btwn gap-4">
-						<TableSearch
-							placeholder="Search by customer name, amount, txn ID"
-							filterBy="fullName"
-							columnFilters={columnFilters}
-							setColumnFilters={setColumnFilters}
+						<TableGlobalSearch
+							placeholder="Search by customer name, amount, ID"
+							globalValue={globalFilter}
+							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
 						<div className="row-flex gap-2">
-							<SelectDropdown
-								defaultValue={options[0]}
+							<Filters
+								placeholder="Status"
+								columnId="status"
+								showAsDropdown={true}
 								options={options}
-								onChangeHandler={handleClick}
 								isArrowDown={true}
+								selectedFilter={selectedFilter}
+								setSelectedFilter={setSelectedFilter}
+								setColumnFilters={setColumnFilters}
 							/>
 
-							<div className="shad-select-trigger capitalize !px-4">
-								{isDownloading ? "downloading" : "Download report"}
-								{isDownloading ? (
-									<BtnLoader isLoading={isDownloading} />
-								) : (
-									<FileDownload className="size-4" />
-								)}
-							</div>
+							<DownloadReport
+								data={settlementData || []}
+								filename={"Settlement Transactions.xlsx"}
+								trigger={
+									<>
+										<p className="mt-0.5 font-semibold capitalize">
+											{isDownloading ? "Downloading" : "Download report"}
+										</p>
+										{isDownloading ? (
+											<BtnLoader isLoading={isDownloading} />
+										) : (
+											<FileDownload className="size-4" />
+										)}
+									</>
+								}
+							/>
 						</div>
 					</div>
 
 					<div className="mt-6">
 						<DataTable
 							columns={settlementColumn}
-							tableData={[]}
+							tableData={settlementData || []}
 							columnFilters={columnFilters}
+							globalFilter={globalFilter}
 						/>
 					</div>
 				</>

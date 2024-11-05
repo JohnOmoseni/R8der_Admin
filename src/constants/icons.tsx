@@ -56,9 +56,11 @@ export { default as User } from "../assets/svgs/user.svg?react";
 export { default as Car } from "../assets/svgs/car.svg?react";
 export { default as Dashboard } from "../assets/svgs/dashboard.svg?react";
 export { default as Success } from "../assets/svgs/success.svg?react";
+export { default as Success_2 } from "../assets/svgs/success-green.svg?react";
 export { default as Volume } from "../assets/svgs/volume.svg?react";
 export { default as Wallet } from "../assets/svgs/wallet.svg?react";
 export { default as Logo } from "../assets/svgs/Logo.svg?react";
+export { default as Announcement } from "../assets/svgs/announcement.svg?react";
 
 import logo from "/images/logo.png";
 

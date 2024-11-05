@@ -12,6 +12,7 @@ export const StatusBadge = ({ status }: { status: Status }) => {
 		"ACCEPTED",
 		"SUCCESS",
 		"ACTIVE",
+		"PAID",
 		"Verified",
 		"Active",
 	];

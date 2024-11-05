@@ -38,7 +38,13 @@ export const useGetAllTrips = () => {
 	});
 };
 
-export const useGetTripById = ({ tripId }: { tripId: string }) => {
+export const useGetTripById = ({
+	tripId,
+	enabled,
+}: {
+	tripId: string;
+	enabled?: boolean;
+}) => {
 	return useQuery({
 		queryKey: ["getTripById", tripId],
 		queryFn: () => tripsApi.getTripById(tripId),
@@ -49,6 +55,6 @@ export const useGetTripById = ({ tripId }: { tripId: string }) => {
 
 			return response;
 		},
-		enabled: !!tripId,
+		enabled: !!tripId && enabled,
 	});
 };

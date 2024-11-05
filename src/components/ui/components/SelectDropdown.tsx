@@ -47,7 +47,11 @@ const SelectDropdown = ({
 				{trigger ? (
 					trigger
 				) : (
-					<SelectValue placeholder={placeholder || "Select"} />
+					<SelectValue
+						placeholder={
+							<span className="font-semibold">{placeholder || "Select"}</span>
+						}
+					/>
 				)}
 			</SelectTrigger>
 			<SelectContent className="shad-select-content">

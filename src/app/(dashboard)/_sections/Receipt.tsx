@@ -1,7 +1,10 @@
 import { Button } from "@/components/CustomButton";
 import { StatusBadge } from "@/components/StatusBadge";
 import { SheetClose } from "@/components/ui/sheet";
-import { useGetWithdrawalById } from "@/hook/useTransactions";
+import {
+	useGetSettlementById,
+	useGetWithdrawalById,
+} from "@/hook/useTransactions";
 import { useGetTripById } from "@/hook/useTrips";
 import { Status } from "@/types";
 import { toTitleCase } from "@/utils";
@@ -23,27 +26,42 @@ type ReceiptProps = {
 function Receipt({ details, type, specificType }: ReceiptProps) {
 	const {
 		data: tripReceipt,
-		isLoading: isFetchingTripReceipt,
-		isError: isTripReceiptError,
-	} = useGetTripById({ tripId: details?.tripId });
+		isLoading: loadingTrip,
+		isError: errorTrip,
+	} = useGetTripById({
+		tripId: details?.tripId,
+		enabled: type === "tripReceipt",
+	});
 	const {
 		data: withdrawalReceipt,
-		isLoading: isFetchingTxnReceipt,
-		isError: isTxnReceiptError,
+		isLoading: loadingWithdrawal,
+		isError: errorWithdrawal,
 	} = useGetWithdrawalById({
 		transactionId: details?.transactionId,
 		enabled: specificType === "withdrawal_receipt",
 	});
+	const {
+		data: settlementReceipt,
+		isLoading: loadingSettlement,
+		isError: errorSettlement,
+	} = useGetSettlementById({
+		transactionId: details?.transactionId,
+		enabled: specificType === "settlement_receipt",
+	});
 
-	const isLoading = isFetchingTripReceipt || isFetchingTxnReceipt;
-	const isError = isTripReceiptError || isTxnReceiptError;
+	const isLoading = loadingTrip || loadingWithdrawal || loadingSettlement;
+	const isError = errorTrip || errorWithdrawal || errorSettlement;
 
 	if (isError) {
 		toast.error("Error fetching receipt details");
 	}
 
 	const receiptData =
-		type === "transactionReceipt" ? withdrawalReceipt : tripReceipt;
+		specificType === "withdrawal_receipt"
+			? withdrawalReceipt
+			: specificType === "settlement_receipt"
+			? settlementReceipt
+			: tripReceipt;
 
 	const isStatusField = (key: string) => key.toLowerCase().includes("status");
 
@@ -59,6 +77,9 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		}
 		if (specificType === "driver_receipt" && key === "plate_number") {
 			return null; // remove plate_number when showing driver trip
+		}
+		if (specificType === "settlement_receipt" && key === "id") {
+			return null; // remove id when showing settlement receipt
 		}
 
 		if (value === 0) {
@@ -100,7 +121,9 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 			<div>
 				<h2 className="text-3xl">
 					{type === "transactionReceipt"
-						? "Withdrawal Details"
+						? specificType === "settlement_receipt"
+							? "Settlement Details"
+							: "Withdrawal Details"
 						: "Trip Details"}
 				</h2>
 				<p className="text-foreground-100 mt-0.5">Your transaction receipt</p>

@@ -34,7 +34,40 @@ const getWithdrawalById = async (
 	}
 };
 
+// SETTLEMENTS
+const getSettlements = async (): Promise<AxiosResponse["data"]> => {
+	const payload = {
+		status: "ALL",
+		periodType: "ALL",
+	};
+	try {
+		const response = await api.post(`${APIURLS.GET_SETTLEMENTS}`, payload);
+		console.log("[SETTLEMENTS RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
+const getSettlementById = async (
+	transactionId: string
+): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.get(
+			`${APIURLS.GET_SETTLEMENT_DETAILS}/${transactionId}`
+		);
+		console.log("[SETTLEMENTS DETAILS (RECEIPT) RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
 export const transactionApi = {
 	getWithdrawals,
 	getWithdrawalById,
+	getSettlements,
+	getSettlementById,
 };

@@ -184,12 +184,11 @@ export interface WithdrawalType {
 
 export interface SettlementType {
 	driverName: string;
-	type: string;
-	refId: string;
+	id: string;
+	tripAmount: number;
 	transactionId: string;
-	amount: number;
-	date: string;
-	commission: string;
+	date: string | null;
+	driverCommission: string;
 	percentage: string;
 	status: Status;
 }

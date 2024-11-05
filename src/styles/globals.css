@@ -19,7 +19,7 @@ html {
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	text-size-adjust: none;
-	text-wrap: balance;
+	text-wrap: pretty;
 	text-decoration-skip-ink: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -89,12 +89,12 @@ input:-internal-autofill-selected {
 	color: fieldtext !important;
 }
 
-.wrapper ::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: 3px;
 	height: 100%;
 }
 
-.wrapper ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background: var(--scroll-track);
 }
 

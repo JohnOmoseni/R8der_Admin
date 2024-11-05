@@ -62,7 +62,7 @@ function Withdrawals() {
 								trigger={
 									<>
 										<p className="mt-0.5 font-semibold capitalize">
-											{isDownloading ? "downloading" : "Download report"}
+											{isDownloading ? "Downloading" : "Download report"}
 										</p>
 										{isDownloading ? (
 											<BtnLoader isLoading={isDownloading} />
