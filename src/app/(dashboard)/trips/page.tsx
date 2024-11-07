@@ -91,7 +91,7 @@ function Trips() {
 							))}
 					</div>
 
-					<div className="mt-10 flex-column sm:row-flex-btwn gap-y-3 gap-x-4">
+					<div className="mt-10 flex-column min-[500px]:row-flex-btwn gap-y-3 gap-x-4">
 						<TableGlobalSearch
 							placeholder={`Search by ${
 								isDriver ? "driver" : "customer"

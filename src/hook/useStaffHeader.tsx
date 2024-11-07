@@ -1,6 +1,6 @@
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
 import { PopoverWrapper } from "@/components/ui/components/PopoverWrapper";
-import { Plus, Setting } from "@/constants/icons";
+import { ManageAccounts, Plus, Setting } from "@/constants/icons";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -79,20 +79,18 @@ export default function useStaffHeader(setShowModal: Props, refetch: any) {
 	let headerContent;
 	headerContent = (
 		<>
-			<div
-				title="Add Staff"
-				className="icon-div !bg-secondary sm:hidden -mr-2"
-				onClick={() => setShowModal(true)}
-			>
-				<Plus className="size-5 font-semibold text-secondary-foreground" />
-			</div>
-
-			<div className="max-sm:hidden row-flex-start gap-3 md:border-r border-border-100 md:pr-4">
+			<div className="row-flex-start gap-3 md:border-r border-border-100 md:pr-3">
 				<PopoverWrapper
 					trigger={
-						<div className={cn("badge-long", "sm:!px-4")}>
-							<Setting className="size-4" />
-							<p className="mt-0.5 font-semibold text-base">Manage Roles</p>
+						<div title="Manage Roles">
+							<div className="icon-div !bg-foreground sm:hidden">
+								<ManageAccounts className="size-5 font-semibold text-secondary-foreground" />
+							</div>
+
+							<div className={cn("badge-long max-sm:hidden !px-4")}>
+								<Setting className="size-4" />
+								<p className="mt-0.5 font-semibold text-base">Manage Roles</p>
+							</div>
 						</div>
 					}
 					list={rolesDropdown}
@@ -120,9 +118,17 @@ export default function useStaffHeader(setShowModal: Props, refetch: any) {
 				/>
 
 				<div
+					title="Add Staff"
+					className="icon-div !bg-secondary sm:hidden"
+					onClick={() => setShowModal(true)}
+				>
+					<Plus className="size-5 font-semibold text-secondary-foreground" />
+				</div>
+
+				<div
 					className={cn(
 						topAction,
-						"!border-border-variant !bg-secondary !text-secondary-foreground"
+						"!border-border-variant max-sm:hidden !bg-secondary !text-secondary-foreground"
 					)}
 					onClick={() => setShowModal(true)}
 				>

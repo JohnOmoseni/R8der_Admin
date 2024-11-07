@@ -33,6 +33,7 @@ import {
 } from "react-icons/ci";
 import { FaCheck as Check } from "react-icons/fa6";
 import { GoArrowUpRight as ArrowUpRight } from "react-icons/go";
+import { MdManageAccounts as ManageAccounts } from "react-icons/md";
 
 export {
 	ArrowDownToLine as Download,
@@ -91,6 +92,7 @@ export {
 	Eye,
 	Bell,
 	EyeOff,
+	ManageAccounts,
 	Lock,
 	logo,
 };

@@ -16,6 +16,7 @@ function VerifyOTP() {
 	const [resendCountdown, setResendCountdown] = useState(180);
 	const [isResendingOtp, setIsResendingOtp] = useState(false);
 	const [isCountdownActive, setIsCountdownActive] = useState(false);
+	// @ts-ignore
 	const [isResendRequested, setIsResendRequested] = useState(false);
 	const [hasMounted, setIsMounted] = useState(false);
 
