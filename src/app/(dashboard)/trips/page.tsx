@@ -23,7 +23,7 @@ const statusOptions = [
 	{ label: "Cancelled", value: "cancelled" },
 ];
 function Trips() {
-	const { data: tripsData, isError } = useGetAllTrips();
+	const { data: tripsData, isError, error } = useGetAllTrips();
 	const [selectedFilter, setSelectedFilter] = useState("");
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [columnFilters, setColumnFilters] = useState([]);
@@ -32,7 +32,11 @@ function Trips() {
 	const isDriver = location?.state === "Driver";
 	const isDownloading = false;
 
-	if (isError) toast.error("Error fetching trips");
+	if (isError)
+		toast.error(
+			(error as any)?.response?.data?.message ||
+				"Error fetching trips information"
+		);
 
 	const tripsStats = [
 		{
@@ -91,7 +95,7 @@ function Trips() {
 							))}
 					</div>
 
-					<div className="mt-10 flex-column min-[500px]:row-flex-btwn gap-y-3 gap-x-4">
+					<div className="mt-10 flex-column min-[450px]:row-flex-btwn gap-y-3 gap-x-4">
 						<TableGlobalSearch
 							placeholder={`Search by ${
 								isDriver ? "driver" : "customer"
@@ -100,7 +104,7 @@ function Trips() {
 							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
-						<div className="row-flex max-[500px]:!justify-end gap-2">
+						<div className="row-flex max-[450px]:!justify-end gap-2">
 							<Filters
 								placeholder="Status"
 								columnId="status"

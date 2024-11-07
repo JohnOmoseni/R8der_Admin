@@ -37,7 +37,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		isLoading: loadingWithdrawal,
 		isError: errorWithdrawal,
 	} = useGetWithdrawalById({
-		transactionId: details?.transactionId,
+		transactionId: details?.transaction_id,
 		enabled: specificType === "withdrawal_receipt",
 	});
 	const {
@@ -45,7 +45,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		isLoading: loadingSettlement,
 		isError: errorSettlement,
 	} = useGetSettlementById({
-		transactionId: details?.transactionId,
+		transactionId: details?.id,
 		enabled: specificType === "settlement_receipt",
 	});
 
@@ -119,7 +119,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 	return (
 		<div className="pt-4 md:px-2 flex-column gap-3">
 			<div>
-				<h2 className="text-3xl">
+				<h2 className="text-2xl">
 					{type === "transactionReceipt"
 						? specificType === "settlement_receipt"
 							? "Settlement Details"
@@ -129,18 +129,25 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 				<p className="text-foreground-100 mt-0.5">Your transaction receipt</p>
 			</div>
 
-			<div className="my-5 px-1 grid place-items-center min-h-[63vh]">
+			<div className="my-5 px-1 grid min-h-[63vh]">
 				{isLoading ? (
-					<div className="loader-container">
+					<div className="loader-container h-full">
 						<FallbackLoader />
 					</div>
-				) : receiptData ? (
+				) : receiptData && Object.keys(receiptData)?.length > 0 ? (
 					<div className="flex-column gap-3.5">
 						{Object.entries(receiptData || []).map(([key, value], idx) => {
 							const formattedValue = formatValue(key, value);
 
 							// If formattedValue is null, skip this field
-							if (formattedValue === null) return null;
+							// if (formattedValue === null) return null;
+
+							if (
+								formattedValue === null ||
+								typeof formattedValue === "object"
+							) {
+								return null;
+							}
 
 							return (
 								<div
@@ -163,7 +170,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 					</div>
 				) : (
 					<EmptyList
-						emptyTitle="No data"
+						emptyTitle="No data available"
 						emptySubText=""
 						containerStyles="h-full"
 					/>

@@ -25,11 +25,15 @@ export function getInitials(name: string) {
 		.join("");
 }
 
-export function toTitleCase(value: string): string {
+export function toTitleCase(value: unknown): string {
+	if (typeof value !== "string") {
+		return "";
+	}
+
 	return value
-		.split("_")
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
-		.join(" ");
+		?.split("_")
+		?.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+		?.join(" ");
 }
 
 export const getDateRange = (value: string | Date) => {

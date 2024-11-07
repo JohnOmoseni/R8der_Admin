@@ -9,7 +9,7 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		accessorKey: "driverName",
 		header: "Driver Name",
 		cell: ({ row }) => (
-			<p className="table-data-sm line-clamp-2">{row.original?.driverName}</p>
+			<p className="table-data-sm line-clamp-2">{row.original?.driver_name}</p>
 		),
 	},
 	{
@@ -17,7 +17,7 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		header: "Trip amount",
 		cell: ({ row }) => (
 			<p className="table-data-sm !text-center">
-				&#8358;{row.original?.tripAmount}
+				&#8358;{row.original?.trip_amount}
 			</p>
 		),
 	},
@@ -26,7 +26,7 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		header: "Transaction ID",
 		cell: ({ row }) => (
 			<p className="table-data-sm !text-center">
-				{row.original?.transactionId}
+				{row.original?.transaction_id}
 			</p>
 		),
 	},
@@ -40,7 +40,7 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		accessorKey: "driverCommission",
 		header: "Driver Commission",
 		cell: ({ row }) => (
-			<p className="table-data-sm">&#8358;{row.original?.driverCommission}</p>
+			<p className="table-data-sm">&#8358;{row.original?.driver_commission}</p>
 		),
 	},
 	{

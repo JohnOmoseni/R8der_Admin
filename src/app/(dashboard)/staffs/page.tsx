@@ -72,7 +72,7 @@ function Staffs() {
 				<SkeletonLoader />
 			) : (
 				<>
-					<div className="flex-column mt-3 gap-4">
+					<div className="flex-column gap-4">
 						<div className="row-flex-btwn gap-3.5">
 							<TableSearch
 								columnFilters={columnFilters}

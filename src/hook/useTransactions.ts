@@ -1,6 +1,8 @@
 import { transactionApi } from "@/server/actions/transactions";
 import { SettlementType, WithdrawalType } from "@/types/server";
+import { Item } from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 // WITHDRAWALS ----------------------------------------------------------------
 // GET ALL WITHDRAWALS
@@ -51,7 +53,12 @@ export const useGetSettlements = () => {
 			const response = data.data;
 
 			const settlements: SettlementType[] = response;
-			return settlements;
+			return settlements?.map((item) => ({
+				...item,
+				date: item?.date
+					? dayjs(item?.date).format("DD-MM-YYYY h:mmA")
+					: undefined,
+			}));
 		},
 	});
 };
@@ -68,10 +75,15 @@ export const useGetSettlementById = ({
 		queryFn: () => transactionApi.getSettlementById(transactionId),
 
 		select: (data) => {
-			const response: SettlementType = data.data;
+			const response: SettlementType = data.data?.body;
 			// SETTLEMENT RECEIPT
 
-			return response;
+			return {
+				...response,
+				date: response?.date
+					? dayjs(response?.date).format("DD-MM-YYYY h:mmA")
+					: undefined,
+			};
 		},
 		enabled: !!transactionId && enabled,
 	});

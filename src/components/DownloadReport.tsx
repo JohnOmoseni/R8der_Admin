@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { PropsWithChildren, ReactNode } from "react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx/xlsx.mjs";
+import { toast } from "sonner";
 
 type Props = {
 	data: any;
@@ -24,6 +25,7 @@ function DownloadReport({
 	const onDownload = async () => {
 		if (!Array.isArray(data) || data?.length === 0) {
 			console.error("Invalid data for table export");
+			toast.info("No data available for table export");
 			return;
 		}
 		const worksheet = XLSX.utils.json_to_sheet(data);

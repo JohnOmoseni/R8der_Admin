@@ -31,7 +31,7 @@ function TableSearch({
 	return (
 		<div
 			className={cn(
-				"row-flex-start w-48 rounded-md border border-border px-3.5 py-1 max-[430px]:px-2.5 sm:w-[250px] lg:w-[300px]",
+				"row-flex-start w-full rounded-md border border-border px-3.5 py-1 max-[450px]:px-2.5 min-[450px]:w-[250px] lg:w-[300px]",
 				containerStyles
 			)}
 		>

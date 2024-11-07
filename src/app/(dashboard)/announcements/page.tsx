@@ -50,7 +50,7 @@ function Announcements() {
 					<SkeletonLoader />
 				) : (
 					<>
-						<div className="mt-6">
+						<div className="mt-2">
 							<DataTable columns={announcementsColumn} tableData={data || []} />
 						</div>
 

@@ -31,7 +31,7 @@ function TableGlobalSearch({
 	return (
 		<div
 			className={cn(
-				"row-flex-start w-full rounded-md border border-border px-3.5 py-1 max-[430px]:px-2.5 min-[460px]:w-[250px] lg:w-[300px]",
+				"row-flex-start w-full rounded-md border border-border py-1 px-2.5 min-[450px]:w-[250px] lg:w-[300px]",
 				containerStyles
 			)}
 		>
@@ -39,7 +39,7 @@ function TableGlobalSearch({
 			<Input
 				value={value}
 				placeholder={placeholder ?? "Search..."}
-				className="i-reset h-8"
+				className="i-reset h-8 !pr-1.5"
 				onChange={(e) => setValue(e.target.value)}
 			/>
 		</div>

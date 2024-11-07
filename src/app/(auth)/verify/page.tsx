@@ -16,7 +16,6 @@ function VerifyOTP() {
 	const [resendCountdown, setResendCountdown] = useState(180);
 	const [isResendingOtp, setIsResendingOtp] = useState(false);
 	const [isCountdownActive, setIsCountdownActive] = useState(false);
-	// @ts-ignore
 	const [isResendRequested, setIsResendRequested] = useState(false);
 	const [hasMounted, setIsMounted] = useState(false);
 
@@ -119,7 +118,7 @@ function VerifyOTP() {
 					)}
 
 					<div className="">
-						{resendCountdown === 0 ? (
+						{resendCountdown === 0 || !isResendRequested ? (
 							<span
 								className="font-semibold text-secondary cursor-pointer"
 								onClick={handleResend}
