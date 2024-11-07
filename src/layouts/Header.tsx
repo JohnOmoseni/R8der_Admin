@@ -42,7 +42,7 @@ function Header({
 	// }, [setHasUnread]);
 
 	return (
-		<div className="flex-column relative z-10 min-h-[60px] w-full justify-center border-b border-border-100 px-6 py-3">
+		<div className="flex-column relative z-10 sm:min-h-[60px] w-full justify-center border-b border-border-100 px-3.5 sm:px-6 py-3">
 			<div className="row-flex-btwn gap-6">
 				<h2 className="capitalize">{title || "Overview"}</h2>
 
@@ -53,7 +53,7 @@ function Header({
 						className={cn("place-items-center grid", customContent && "pl-2")}
 					>
 						<PopoverWrapper
-							containerStyles="rounded-xl border-border-100 min-w-[360px] max-h-[540px] py-6 scrollbar-thin overflow-y-auto"
+							containerStyles="rounded-xl border-border-100 min-w-[320px] max-sm:mr-1 max-h-[540px] py-6 scrollbar-thin overflow-y-auto"
 							trigger={
 								<span
 									className="icon-div !bg-background-100 relative"

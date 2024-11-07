@@ -32,7 +32,7 @@ export function Modal({
 
 			<AlertDialogContent
 				className={cn(
-					"shad-alert-dialog block scrollbar-thin mx-auto max-h-[600px] min-h-[200px] max-w-lg overflow-y-auto rounded-2xl p-4 shadow-lg max-sm:w-[85%] sm:min-w-[400px] sm:p-6 sm:px-5",
+					"shad-alert-dialog block scrollbar-thin mx-auto max-h-[600px] min-h-[200px] max-w-lg overflow-y-auto rounded-2xl p-4 shadow-lg max-sm:w-[90%] sm:min-w-[400px] sm:p-6 sm:px-5",
 					modalStyles
 				)}
 			>
@@ -52,7 +52,7 @@ export function Modal({
 						{title}
 					</AlertDialogTitle>
 
-					<AlertDialogDescription className="text-foreground-100">
+					<AlertDialogDescription className="text-foreground-100 leading-4 mt-1">
 						{description}
 					</AlertDialogDescription>
 				</AlertDialogHeader>

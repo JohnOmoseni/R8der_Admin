@@ -277,7 +277,9 @@ function Dashboard() {
 									key={idx}
 								>
 									<div className="flex-column gap-3">
-										<span className="label">{label || "Total stats"}</span>
+										<span className="label max-[500px]:max-w-[7ch]">
+											{label || "Total stats"}
+										</span>
 										<p
 											className={clsx("font-semibold uppercase", {
 												"text-green-500": status === "high",
@@ -296,51 +298,49 @@ function Dashboard() {
 					</div>
 
 					<div>
-						<div className="card !block">
-							<div className="flex-column gap-7 px-4 pt-3.5 pb-2">
-								<div className="row-flex-start gap-4">
-									<h3>Trips Performance</h3>
+						<div className="flex-column gap-7 pb-2">
+							<div className="row-flex-start gap-4">
+								<h3>Trips Performance</h3>
 
-									<DropdownList
-										trigger={
-											<div className="shad-select-trigger !min-w-fit !capitalize">
-												{selectOptions?.find(
-													(option) =>
-														option.value === periodTypeTripPerf?.toLowerCase()
-												)?.label || "This Year"}{" "}
-												<KeyboardArrowDown className="size-4" />
-											</div>
-										}
-										list={selectOptions}
-										renderItem={(item) => {
-											return (
-												<div
-													className={cn(
-														"row-flex-btwn w-full cursor-pointer",
-														item?.value === periodTypeTripPerf?.toLowerCase() &&
-															"text-secondary font-semibold"
-													)}
-													onClick={() =>
-														handlePeriodTypeChange(item?.value, "tripPerf")
-													}
-												>
-													{item?.label}
-												</div>
-											);
-										}}
-									/>
-								</div>
-
-								{/* charts */}
-								<div className="min-h-[20vh]">
-									{isFetchingPerf ? (
-										<div className="loader-container">
-											<FallbackLoader />
+								<DropdownList
+									trigger={
+										<div className="shad-select-trigger !min-w-fit !capitalize">
+											{selectOptions?.find(
+												(option) =>
+													option.value === periodTypeTripPerf?.toLowerCase()
+											)?.label || "This Year"}{" "}
+											<KeyboardArrowDown className="size-4" />
 										</div>
-									) : (
-										<BarChartComponent data={tripsPerf || []} />
-									)}
-								</div>
+									}
+									list={selectOptions}
+									renderItem={(item) => {
+										return (
+											<div
+												className={cn(
+													"row-flex-btwn w-full cursor-pointer",
+													item?.value === periodTypeTripPerf?.toLowerCase() &&
+														"text-secondary font-semibold"
+												)}
+												onClick={() =>
+													handlePeriodTypeChange(item?.value, "tripPerf")
+												}
+											>
+												{item?.label}
+											</div>
+										);
+									}}
+								/>
+							</div>
+
+							{/* charts */}
+							<div className="">
+								{isFetchingPerf ? (
+									<div className="loader-container !h-[200px]">
+										<FallbackLoader />
+									</div>
+								) : (
+									<BarChartComponent data={tripsPerf || []} />
+								)}
 							</div>
 						</div>
 					</div>

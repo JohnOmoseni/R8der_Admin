@@ -78,49 +78,59 @@ export default function useStaffHeader(setShowModal: Props, refetch: any) {
 
 	let headerContent;
 	headerContent = (
-		<div className="max-[450px]:hidden row-flex-start gap-3 md:border-r border-border-100 md:pr-4">
-			<PopoverWrapper
-				trigger={
-					<div className={cn("badge-long", "sm:!px-4")}>
-						<Setting className="size-4" />
-						<p className="mt-0.5 font-semibold text-base">Manage Roles</p>
-					</div>
-				}
-				list={rolesDropdown}
-				containerStyles="w-44"
-				renderItem={({ label, desc, role }, index) => {
-					return (
-						<>
-							<div
-								className="row-flex-btwn w-full gap-2 first:mb-2 cursor-pointer"
-								onClick={() => handleItemClick(index, role)}
-							>
-								<div className="">
-									<p className="font-semibold">{label}</p>
-									<p className="mt-1 text-xs">{desc}</p>
-								</div>
-								{loadingStates[index] && (
-									<div className="flex-1 w-full">
-										<BtnLoader isLoading={loadingStates[index]} />
-									</div>
-								)}
-							</div>
-						</>
-					);
-				}}
-			/>
-
+		<>
 			<div
-				className={cn(
-					topAction,
-					"!border-border-variant !bg-secondary !text-secondary-foreground"
-				)}
+				title="Add Staff"
+				className="icon-div !bg-secondary sm:hidden -mr-2"
 				onClick={() => setShowModal(true)}
 			>
-				<Plus className="size-4 text-secondary-foreground" />
-				<p className="mt-0.5 font-semibold">Add Staff</p>
+				<Plus className="size-5 font-semibold text-secondary-foreground" />
 			</div>
-		</div>
+
+			<div className="max-sm:hidden row-flex-start gap-3 md:border-r border-border-100 md:pr-4">
+				<PopoverWrapper
+					trigger={
+						<div className={cn("badge-long", "sm:!px-4")}>
+							<Setting className="size-4" />
+							<p className="mt-0.5 font-semibold text-base">Manage Roles</p>
+						</div>
+					}
+					list={rolesDropdown}
+					containerStyles="w-44"
+					renderItem={({ label, desc, role }, index) => {
+						return (
+							<>
+								<div
+									className="row-flex-btwn w-full gap-2 first:mb-2 cursor-pointer"
+									onClick={() => handleItemClick(index, role)}
+								>
+									<div className="">
+										<p className="font-semibold">{label}</p>
+										<p className="mt-1 text-xs">{desc}</p>
+									</div>
+									{loadingStates[index] && (
+										<div className="flex-1 w-full">
+											<BtnLoader isLoading={loadingStates[index]} />
+										</div>
+									)}
+								</div>
+							</>
+						);
+					}}
+				/>
+
+				<div
+					className={cn(
+						topAction,
+						"!border-border-variant !bg-secondary !text-secondary-foreground"
+					)}
+					onClick={() => setShowModal(true)}
+				>
+					<Plus className="size-4 text-secondary-foreground" />
+					<p className="mt-0.5 font-semibold">Add Staff</p>
+				</div>
+			</div>
+		</>
 	);
 
 	return headerContent;

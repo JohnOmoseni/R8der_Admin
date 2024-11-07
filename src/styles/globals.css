@@ -39,7 +39,7 @@ body {
 	height: 100dvh;
 	min-height: 100dvh;
 	margin: 0 auto;
-	overflow: auto;
+	overflow: hidden auto;
 }
 
 .wrapper :is(a, .icon, button) {

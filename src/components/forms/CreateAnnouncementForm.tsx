@@ -66,61 +66,91 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 			onSubmit={handleSubmit}
 			isSubmitting={isLoading}
 		>
-			<div className="relative grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-16 max-w-[1000px]">
-				<div className="flex-column gap-5">
-					<CustomFormField
-						fieldType={FormFieldType.INPUT}
-						name="title"
-						label="Subject Title"
-						field={{ value: values.title, placeholder: "Enter title" }}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						errors={errors}
-						touched={touched}
-					/>
+			<div className="relative  max-w-[1000px]">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-16">
+					<div className="flex-column gap-5">
+						<CustomFormField
+							fieldType={FormFieldType.INPUT}
+							name="title"
+							label="Subject Title"
+							field={{ value: values.title, placeholder: "Enter title" }}
+							onChange={handleChange}
+							onBlur={handleBlur}
+							errors={errors}
+							touched={touched}
+						/>
 
-					<div className="flex-column sm:grid grid-cols-2 gap-y-5 gap-x-4">
+						<div className="flex-column sm:grid grid-cols-2 gap-y-5 gap-x-4">
+							<CustomFormField
+								fieldType={FormFieldType.SELECT}
+								name="target"
+								label="Target Audience"
+								labelStyles="opacity-70"
+								onBlur={handleBlur}
+								errors={errors}
+								touched={touched}
+								field={{
+									value: values.target,
+								}}
+								onChange={(value: any) => {
+									setFieldValue("target", value);
+								}}
+								selectList={questionTypes}
+								inputStyles="!bg-background-100"
+							>
+								{questionTypes?.map((item, index) => (
+									<SelectItem
+										key={index}
+										value={item?.value}
+										className="shad-select-item"
+									>
+										{item?.label}
+									</SelectItem>
+								))}
+							</CustomFormField>
+
+							<CustomFormField
+								fieldType={FormFieldType.SELECT}
+								name="sub_target"
+								label="Sub-Target Audience"
+								labelStyles="opacity-70"
+								onBlur={handleBlur}
+								errors={errors}
+								touched={touched}
+								field={{
+									value: values.sub_target,
+								}}
+								onChange={(value: any) => {
+									setFieldValue("sub_target", value);
+								}}
+								selectList={questionTypes}
+								inputStyles="!bg-background-100"
+							>
+								{questionTypes?.map((item, index) => (
+									<SelectItem
+										key={index}
+										value={item?.value}
+										className="shad-select-item"
+									>
+										{item?.label}
+									</SelectItem>
+								))}
+							</CustomFormField>
+						</div>
+
 						<CustomFormField
 							fieldType={FormFieldType.SELECT}
-							name="target"
-							label="Target Audience"
+							name="channel"
+							label="Channel"
 							labelStyles="opacity-70"
 							onBlur={handleBlur}
 							errors={errors}
 							touched={touched}
 							field={{
-								value: values.target,
+								value: values.channel,
 							}}
 							onChange={(value: any) => {
-								setFieldValue("target", value);
-							}}
-							selectList={questionTypes}
-							inputStyles="!bg-background-100"
-						>
-							{questionTypes?.map((item, index) => (
-								<SelectItem
-									key={index}
-									value={item?.value}
-									className="shad-select-item"
-								>
-									{item?.label}
-								</SelectItem>
-							))}
-						</CustomFormField>
-
-						<CustomFormField
-							fieldType={FormFieldType.SELECT}
-							name="sub_target"
-							label="Sub-Target Audience"
-							labelStyles="opacity-70"
-							onBlur={handleBlur}
-							errors={errors}
-							touched={touched}
-							field={{
-								value: values.sub_target,
-							}}
-							onChange={(value: any) => {
-								setFieldValue("sub_target", value);
+								setFieldValue("channel", value);
 							}}
 							selectList={questionTypes}
 							inputStyles="!bg-background-100"
@@ -137,34 +167,41 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 						</CustomFormField>
 					</div>
 
-					<CustomFormField
-						fieldType={FormFieldType.SELECT}
-						name="channel"
-						label="Channel"
-						labelStyles="opacity-70"
-						onBlur={handleBlur}
-						errors={errors}
-						touched={touched}
-						field={{
-							value: values.channel,
-						}}
-						onChange={(value: any) => {
-							setFieldValue("channel", value);
-						}}
-						selectList={questionTypes}
-						inputStyles="!bg-background-100"
-					>
-						{questionTypes?.map((item, index) => (
-							<SelectItem
-								key={index}
-								value={item?.value}
-								className="shad-select-item"
-							>
-								{item?.label}
-							</SelectItem>
-						))}
-					</CustomFormField>
+					<div className="flex-column gap-1.5">
+						<p className="font-semibold text-base mb-2">Published Details</p>
 
+						<CustomFormField
+							fieldType={FormFieldType.SELECT}
+							name="published_by"
+							label="Published by"
+							labelStyles="opacity-70"
+							onBlur={handleBlur}
+							errors={errors}
+							touched={touched}
+							field={{
+								value: values.published_by,
+								placeholder: "John Omoseni",
+							}}
+							onChange={(value: any) => {
+								setFieldValue("published_by", value);
+							}}
+							selectList={questionTypes}
+							inputStyles="!bg-background-100"
+						>
+							{questionTypes?.map((item, index) => (
+								<SelectItem
+									key={index}
+									value={item?.value}
+									className="shad-select-item"
+								>
+									{item?.label}
+								</SelectItem>
+							))}
+						</CustomFormField>
+					</div>
+				</div>
+
+				<div className="mt-6">
 					<CustomFormField
 						fieldType={FormFieldType.SKELETON}
 						name="message"
@@ -180,39 +217,6 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 							/>
 						)}
 					/>
-				</div>
-
-				<div className="flex-column gap-1.5">
-					<p className="font-semibold text-base mb-2">Published Details</p>
-
-					<CustomFormField
-						fieldType={FormFieldType.SELECT}
-						name="published_by"
-						label="Published by"
-						labelStyles="opacity-70"
-						onBlur={handleBlur}
-						errors={errors}
-						touched={touched}
-						field={{
-							value: values.published_by,
-							placeholder: "John Omoseni",
-						}}
-						onChange={(value: any) => {
-							setFieldValue("published_by", value);
-						}}
-						selectList={questionTypes}
-						inputStyles="!bg-background-100"
-					>
-						{questionTypes?.map((item, index) => (
-							<SelectItem
-								key={index}
-								value={item?.value}
-								className="shad-select-item"
-							>
-								{item?.label}
-							</SelectItem>
-						))}
-					</CustomFormField>
 				</div>
 			</div>
 		</FormWrapper>

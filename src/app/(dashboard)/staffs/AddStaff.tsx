@@ -3,8 +3,8 @@ import { Close } from "@/constants/icons";
 
 function AddStaff({ setOpenModal }: { setOpenModal: () => void }) {
 	return (
-		<div className="">
-			<div className=" px-4 pb-4">
+		<>
+			<div className="pb-4">
 				<div className="badge" onClick={setOpenModal}>
 					<Close className="icon size-4" />
 					<p className="mt-[1px] text-sm font-medium capitalize transition">
@@ -13,11 +13,11 @@ function AddStaff({ setOpenModal }: { setOpenModal: () => void }) {
 				</div>
 			</div>
 
-			<div className="flex-1 border-t border-border px-6 pb-6 pt-8">
+			<div className="flex-1 border-t border-border pt-5 sm:px-2 sm:pt-6">
 				<h3 className="">Add staff</h3>
 				<AddStaffForm />
 			</div>
-		</div>
+		</>
 	);
 }
 

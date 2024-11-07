@@ -17,7 +17,7 @@ const TextEditor = ({ onHandleChange, value }: TextEditorProps) => {
 			value={value}
 			onChange={handleEditorChange}
 			placeholder="Write something awesome..."
-			style={{ height: "200px", marginBlock: "0.6rem 3rem" }}
+			style={{ height: "200px", marginBlock: "0.6rem" }}
 		/>
 	);
 };

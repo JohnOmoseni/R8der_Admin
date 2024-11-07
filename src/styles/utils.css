@@ -4,8 +4,12 @@
 	padding: 0.8rem 1rem;
 }
 
-.card-inner > div:nth-child(2) {
+.dashboard-main .card-inner > div:nth-child(2) {
 	border-inline: 1px solid var(--border);
+}
+
+.card-inner > div:not(:last-of-type) {
+	border-right: 1px solid var(--border);
 }
 
 .card-inner > div:not(:first-child) {
@@ -24,7 +28,7 @@
 
 @media (max-width: 430px) {
 	.dashboard-main > div:not(:first-of-type) {
-		padding: 1.2rem 0.8rem;
+		padding: 1.2rem 1rem;
 	}
 	.dashboard-main > div:first-of-type {
 		padding: 0.4rem 0.8rem 1.2rem;
@@ -69,6 +73,15 @@
 
 .disabled-btn {
 	background: #000 !important;
+}
+
+/* TEXT EDITOR */
+.quill {
+	height: 340px !important;
+}
+
+.ql-container.ql-snow {
+	height: 300px;
 }
 
 /* Remove scrollbar */

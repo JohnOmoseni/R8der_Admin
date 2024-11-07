@@ -37,14 +37,14 @@ function Settlements() {
 				<SkeletonLoader loaderVariant />
 			) : (
 				<>
-					<div className="mt-5 row-flex-btwn gap-4">
+					<div className="mt-3.5 flex-column sm:row-flex-btwn gap-y-3 gap-x-4">
 						<TableGlobalSearch
 							placeholder="Search by customer name, amount, ID"
 							globalValue={globalFilter}
 							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
-						<div className="row-flex gap-2">
+						<div className="row-flex  max-[500px]:!justify-end  gap-2">
 							<Filters
 								placeholder="Status"
 								columnId="status"

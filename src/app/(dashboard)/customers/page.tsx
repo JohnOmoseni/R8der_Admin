@@ -12,9 +12,13 @@ import DownloadReport from "@/components/DownloadReport";
 
 function Customers() {
 	const [columnFilters, setColumnFilters] = useState([]);
-	const { data: ridersData, isError, isLoading } = useGetRiders();
+	const { data: ridersData, isError, isLoading, error } = useGetRiders();
 
-	if (isError) toast.error("Error fetching customers details");
+	if (isError)
+		toast.error(
+			(error as any)?.response?.data?.message ||
+				"Error fetching customers details"
+		);
 
 	const customerStats = [
 		{

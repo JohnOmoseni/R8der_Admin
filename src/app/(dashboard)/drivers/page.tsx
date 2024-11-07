@@ -33,12 +33,17 @@ function Drivers() {
 		data: driverData,
 		isError,
 		isFetching,
+		error,
 		refetch,
 	} = useGetDrivers(selectedFilter?.toUpperCase() as DriverStandingParams);
 	const approveMutation = useApproveDriver();
 	const rejectMutation = useRejectDriver();
 
-	if (isError) toast.error("Error fetching customers details");
+	if (isError)
+		toast.error(
+			(error as any)?.response?.data?.message ||
+				"Error fetching drivers details"
+		);
 
 	const driverStats = [
 		{

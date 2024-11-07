@@ -23,7 +23,7 @@ const statusOptions = [
 	{ label: "Cancelled", value: "cancelled" },
 ];
 function Trips() {
-	const { data: tripsData, isError, isLoading } = useGetAllTrips();
+	const { data: tripsData, isError } = useGetAllTrips();
 	const [selectedFilter, setSelectedFilter] = useState("");
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [columnFilters, setColumnFilters] = useState([]);
@@ -44,6 +44,8 @@ function Trips() {
 			value: tripsData?.totalTripsValue || "NGN 0",
 		},
 	];
+
+	const isLoading = false;
 
 	return (
 		<SectionWrapper
@@ -89,7 +91,7 @@ function Trips() {
 							))}
 					</div>
 
-					<div className="mt-10 row-flex-btwn gap-4">
+					<div className="mt-10 flex-column sm:row-flex-btwn gap-y-3 gap-x-4">
 						<TableGlobalSearch
 							placeholder={`Search by ${
 								isDriver ? "driver" : "customer"
@@ -98,7 +100,7 @@ function Trips() {
 							onChange={(value: string) => setGlobalFilter(value)}
 						/>
 
-						<div className="row-flex gap-2">
+						<div className="row-flex max-[500px]:!justify-end gap-2">
 							<Filters
 								placeholder="Status"
 								columnId="status"

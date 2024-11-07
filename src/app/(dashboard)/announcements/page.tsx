@@ -6,15 +6,18 @@ import { Modal } from "@/components/ui/components/Modal";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Plus } from "@/constants/icons";
+import { useNavigate } from "react-router-dom";
 
 import SectionWrapper from "@/layouts/SectionWrapper";
 import Preview from "./Preview";
 
 function Announcements() {
+	const navigate = useNavigate();
 	const [openPreview, setOpenPreview] = useState(false);
 	const isError = false;
 	const isLoading = false;
 	const data: any = [];
+
 	if (isError) toast.error("Error fetching trips");
 
 	return (
@@ -22,15 +25,25 @@ function Announcements() {
 			<SectionWrapper
 				headerTitle="Announcements"
 				customHeaderContent={
-					<div
-						className={cn(
-							"badge small-text min-w-[125px] gap-2 !pl-2.5 !pr-3 !border-border-variant !bg-secondary !text-secondary-foreground"
-						)}
-						onClick={() => setOpenPreview(true)}
-					>
-						<Plus className="size-4 text-secondary-foreground" />
-						<p className="mt-0.5 font-semibold">New Broadcast</p>
-					</div>
+					<>
+						<div
+							title="New Announcement"
+							className="icon-div !bg-secondary sm:hidden -mr-2"
+							onClick={() => navigate("/dashboard/announcements/create")}
+						>
+							<Plus className="size-5 font-semibold text-secondary-foreground" />
+						</div>
+
+						<div
+							className={cn(
+								"badge max-sm:!hidden small-text min-w-[125px] gap-2 !pl-2.5 !pr-3 !border-border-variant !bg-secondary !text-secondary-foreground"
+							)}
+							onClick={() => navigate("/dashboard/announcements/create")}
+						>
+							<Plus className="size-4 text-secondary-foreground" />
+							<p className="mt-0.5 font-semibold">New Broadcast</p>
+						</div>
+					</>
 				}
 			>
 				{isLoading ? (

@@ -118,7 +118,7 @@ function VerifyOTP() {
 					)}
 
 					<div className="">
-						{!isResendRequested ? (
+						{resendCountdown === 0 ? (
 							<span
 								className="font-semibold text-secondary cursor-pointer"
 								onClick={handleResend}

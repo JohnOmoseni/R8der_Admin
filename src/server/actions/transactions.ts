@@ -36,12 +36,8 @@ const getWithdrawalById = async (
 
 // SETTLEMENTS
 const getSettlements = async (): Promise<AxiosResponse["data"]> => {
-	const payload = {
-		status: "ALL",
-		periodType: "ALL",
-	};
 	try {
-		const response = await api.post(`${APIURLS.GET_SETTLEMENTS}`, payload);
+		const response = await api.get(`${APIURLS.GET_SETTLEMENTS}`);
 		console.log("[SETTLEMENTS RESPONSE]", response);
 
 		return response.data;
