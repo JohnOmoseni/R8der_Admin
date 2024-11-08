@@ -58,7 +58,8 @@ function Coupons() {
 						<Modal
 							openModal={showModal}
 							setOpenModal={() => setShowModal(false)}
-							modalStyles="overflow-hidden"
+							modalStyles=""
+							hideClose={true}
 						>
 							<CouponModal
 								type="create"

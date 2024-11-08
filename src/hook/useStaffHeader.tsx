@@ -11,12 +11,12 @@ type Props = Dispatch<SetStateAction<boolean>>;
 
 const rolesDropdown = [
 	{
-		label: "Admin",
+		label: "Set User to Admin",
 		desc: "Can manage everything on the platform",
 		role: "admin-user",
 	},
 	{
-		label: "Staff",
+		label: "Set User to Staff",
 		desc: "Can only view items on the platform",
 		role: "staff-user",
 	},

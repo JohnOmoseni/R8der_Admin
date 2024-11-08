@@ -4,12 +4,16 @@
 	padding: 0.8rem 1rem;
 }
 
-.dashboard-main .card-inner > div:nth-child(2) {
-	border-inline: 1px solid var(--border);
-}
-
 .card-inner > div:not(:last-of-type) {
 	border-right: 1px solid var(--border);
+}
+
+.dashboard-main .card-inner > div:not(:last-of-type) {
+	border-right: none;
+}
+
+.dashboard-main .card-inner > div:nth-child(2) {
+	border-inline: 1px solid var(--border);
 }
 
 .card-inner > div:not(:first-child) {

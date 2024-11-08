@@ -23,7 +23,7 @@ const statusOptions = [
 	{ label: "Cancelled", value: "cancelled" },
 ];
 function Trips() {
-	const { data: tripsData, isError, error } = useGetAllTrips();
+	const { data: tripsData, isLoading, isError, error } = useGetAllTrips();
 	const [selectedFilter, setSelectedFilter] = useState("");
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [columnFilters, setColumnFilters] = useState([]);
@@ -48,8 +48,6 @@ function Trips() {
 			value: tripsData?.totalTripsValue || "NGN 0",
 		},
 	];
-
-	const isLoading = false;
 
 	return (
 		<SectionWrapper

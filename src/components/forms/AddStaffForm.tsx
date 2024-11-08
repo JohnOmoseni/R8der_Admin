@@ -15,6 +15,14 @@ const AddStaffForm = () => {
 	const newStaffMutation = useAddStaff();
 	const navigate = useNavigate();
 
+	const roles = [
+		{
+			value: "ADMIN",
+			label: "Admin",
+		},
+		{ value: "STAFF", label: "STAFF" },
+	];
+
 	const onSubmit = async (values: InferType<typeof AddStaffSchema>) => {
 		console.log(values);
 
@@ -108,13 +116,17 @@ const AddStaffForm = () => {
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
+				selectList={roles}
 			>
-				<SelectItem value="ADMIN" className="shad-select-item">
-					Admin
-				</SelectItem>
-				<SelectItem value="STAFF" className="shad-select-item">
-					Staff
-				</SelectItem>
+				{roles?.map((role) => (
+					<SelectItem
+						key={role.value}
+						value={role.value}
+						className="shad-select-item"
+					>
+						{role.label}
+					</SelectItem>
+				))}
 			</CustomFormField>
 		</FormWrapper>
 	);

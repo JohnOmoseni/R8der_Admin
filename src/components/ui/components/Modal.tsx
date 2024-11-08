@@ -16,6 +16,7 @@ type ModalProps = {
 	openModal: boolean;
 	modalStyles?: string;
 	setOpenModal: () => void;
+	hideClose?: boolean;
 };
 
 export function Modal({
@@ -25,6 +26,7 @@ export function Modal({
 	openModal,
 	modalStyles,
 	setOpenModal,
+	hideClose,
 }: ModalProps) {
 	return (
 		<AlertDialog open={openModal} onOpenChange={setOpenModal}>
@@ -36,16 +38,18 @@ export function Modal({
 					modalStyles
 				)}
 			>
-				<span
-					className="icon-div !size-7 !bg-background-100 group absolute right-4 top-3 active:scale-95"
-					onClick={setOpenModal}
-					title="close"
-				>
-					<Close
-						size="18"
-						className="z-[1000] text-grey transition-colors group-hover:text-foreground"
-					/>
-				</span>
+				{!hideClose && (
+					<span
+						className="icon-div !size-7 !bg-background-100 group absolute right-4 top-3 active:scale-95"
+						onClick={setOpenModal}
+						title="close"
+					>
+						<Close
+							size="18"
+							className="z-[1000] text-grey transition-colors group-hover:text-foreground"
+						/>
+					</span>
+				)}
 
 				<AlertDialogHeader>
 					<AlertDialogTitle className="text-xl font-bold capitalize">

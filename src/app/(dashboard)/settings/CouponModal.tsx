@@ -13,7 +13,7 @@ function CouponModal({
 }) {
 	return (
 		<div className="">
-			<div className=" px-4 pb-4">
+			<div className="pb-4">
 				<div className="badge" onClick={setOpenModal}>
 					<Close className="icon size-4" />
 					<p className="mt-[1px] text-sm font-medium capitalize transition">
@@ -22,7 +22,7 @@ function CouponModal({
 				</div>
 			</div>
 
-			<div className="flex-1 border-t border-border px-6 pb-6 pt-8">
+			<div className="flex-1 border-t border-border px-2 py-6">
 				<h3 className="capitalize text-[1.2rem]">
 					{type === "create" ? "Create A Discount" : "Edit Discount"}
 				</h3>

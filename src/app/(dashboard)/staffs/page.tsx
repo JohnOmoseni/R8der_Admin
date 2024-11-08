@@ -137,7 +137,7 @@ function Staffs() {
 				<Modal
 					openModal={showModal}
 					setOpenModal={() => setShowModal(false)}
-					modalStyles="overflow-hidden"
+					hideClose={true}
 				>
 					<AddStaff setOpenModal={() => setShowModal(false)} />
 				</Modal>
