@@ -13,7 +13,6 @@ const getOverview = async (
 	};
 	try {
 		const response = await api.post(APIURLS.GET_SUMMARY, payload);
-		console.log("[SUMMARY RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -25,7 +24,6 @@ const getOverview = async (
 const getRiders = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(APIURLS.GET_RIDERS);
-		console.log("[RIDERS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -38,7 +36,6 @@ const getRiderById = async ({
 }: Omit<GetByIdParams, "driverId">): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_RIDER_DETAILS}/${riderId}`);
-		console.log("[RIDER BY ID RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -50,7 +47,6 @@ const getRiderById = async ({
 const getDrivers = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(APIURLS.GET_DRIVERS);
-		console.log("[DRIVERS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -63,7 +59,6 @@ const getDriverById = async ({
 }: Omit<GetByIdParams, "riderId">): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_DRIVER_DETAILS}/${driverId}`);
-		console.log("[DRIVER BY ID RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -81,7 +76,6 @@ const getTripsOverview = async (
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_TRIP}`, payload);
-		console.log("[TRIPS OVERVIEW RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -92,7 +86,6 @@ const getTripsOverview = async (
 const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_ALL_TRIPS}`);
-		console.log("[ALL TRIPS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -104,7 +97,6 @@ const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
 const getWithdrawals = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_WITHDRAWALS}`);
-		console.log("[WITHDRAWALS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -116,7 +108,6 @@ const getWithdrawals = async (): Promise<AxiosResponse["data"]> => {
 const getAllRoles = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_ALL_ROLES}`);
-		console.log("[ALL ROLES RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -127,7 +118,6 @@ const getAllRoles = async (): Promise<AxiosResponse["data"]> => {
 const getAllEmployee = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_STAFFS_ADMINS}`);
-		console.log("[ALL STAFFS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -138,7 +128,6 @@ const getAllEmployee = async (): Promise<AxiosResponse["data"]> => {
 const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_ALL_ADMINS}`);
-		console.log("[ALL ADMINS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -149,7 +138,6 @@ const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
 const getStaff = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_STAFF_DETAILS}`);
-		console.log("[STAFF DETAILS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -161,7 +149,6 @@ const getStaff = async (): Promise<AxiosResponse["data"]> => {
 const getSettingsList = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_SETTINGS}`);
-		console.log("[SETTINGS LIST RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -176,7 +163,6 @@ const getSettingByType = async ({
 }): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_SETTINGS}/${settingType}`);
-		console.log("[SETTING TYPE RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -187,7 +173,6 @@ const getSettingByType = async ({
 const getAllCouponCodes = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_COUPON_CODES}`);
-		console.log("[COUPON CODES RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -206,7 +191,6 @@ const getAllCouponCodesById = async ({
 		id === "target" ? APIURLS.GET_COUPON_BYTARGET : APIURLS.GET_COUPON_BYCODE;
 	try {
 		const response = await api.get(`${url}/${value}`);
-		console.log(`[COUPON CODES BY ${id}]`, response);
 
 		return response.data;
 	} catch (error) {

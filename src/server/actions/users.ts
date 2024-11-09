@@ -13,7 +13,6 @@ import {
 const getRiders = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(APIURLS.GET_RIDERS);
-		console.log("[RIDERS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -29,7 +28,6 @@ const getRiderById = async ({
 		const response = await api.get(
 			`${APIURLS.GET_RIDER_DETAILS}/${riderId}?periodType=${periodType}`
 		);
-		console.log("[RIDER BY ID RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -45,7 +43,6 @@ const getDrivers = async (
 		const response = await api.get(
 			`${APIURLS.GET_DRIVERS}?standing=${standing}`
 		);
-		console.log("[DRIVERS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -61,7 +58,6 @@ const getDriverById = async ({
 		const response = await api.get(
 			`${APIURLS.GET_DRIVER_DETAILS}/${driverId}?periodType=${periodType}&withdrawStatus=${periodType}`
 		);
-		console.log("[DRIVER BY ID RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -79,7 +75,6 @@ const approveDriverPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_APPROVE_DRIVER, payload);
-		console.log("[APPROVE DRIVER RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -95,7 +90,6 @@ const rejectDriverPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_REJECT_DRIVER, payload);
-		console.log("[REJECT DRIVER RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -113,7 +107,6 @@ const approveDriverDocument = async (
 			`${APIURLS.PUT_APPROVE_DOCUMENT}/${id}`,
 			body
 		);
-		console.log("[APPROVE DRIVER RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

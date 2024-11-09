@@ -17,6 +17,12 @@ export const handleApiError = (error: any, message?: string) => {
 	throw error;
 };
 
+export const stripHtmlTags = (html: string) => {
+	if (!html) return;
+	const doc = new DOMParser().parseFromString(html, "text/html");
+	return doc.body.textContent || "";
+};
+
 export function getInitials(name: string) {
 	if (!name) return "TA";
 	return name

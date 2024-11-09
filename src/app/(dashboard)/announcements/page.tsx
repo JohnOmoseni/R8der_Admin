@@ -1,12 +1,14 @@
 import { DataTable } from "@/components/table/DataTable";
 import { SkeletonLoader } from "@/components/fallback/SkeletonLoader";
 import { toast } from "sonner";
-import { announcementsColumn } from "@/components/table/columns/announcementColumn";
+import { useAnnouncementsColumn } from "@/components/table/columns/announcementColumn";
 import { Modal } from "@/components/ui/components/Modal";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Plus } from "@/constants/icons";
 import { useNavigate } from "react-router-dom";
+import { useGetAllAnnouncements } from "@/hook/useAnnouncement";
+import { AnnouncementType } from "@/types/server";
 
 import SectionWrapper from "@/layouts/SectionWrapper";
 import Preview from "./Preview";
@@ -14,11 +16,22 @@ import Preview from "./Preview";
 function Announcements() {
 	const navigate = useNavigate();
 	const [openPreview, setOpenPreview] = useState(false);
-	const isError = false;
-	const isLoading = false;
-	const data: any = [];
+	const {
+		data: announcementData,
+		isError,
+		isFetching,
+		error,
+	} = useGetAllAnnouncements();
+	const [previewInfo, setPreviewInfo] = useState<AnnouncementType>();
+	const announcementColumn = useAnnouncementsColumn({
+		setPreviewInfo,
+		setOpenPreview,
+	});
 
-	if (isError) toast.error("Error fetching trips");
+	if (isError)
+		toast.error(
+			(error as any)?.response?.data?.message || "Error fetching information"
+		);
 
 	return (
 		<>
@@ -46,12 +59,15 @@ function Announcements() {
 					</>
 				}
 			>
-				{isLoading ? (
+				{isFetching ? (
 					<SkeletonLoader />
 				) : (
 					<>
 						<div className="mt-2">
-							<DataTable columns={announcementsColumn} tableData={data || []} />
+							<DataTable
+								columns={announcementColumn}
+								tableData={announcementData || []}
+							/>
 						</div>
 
 						<Modal
@@ -62,19 +78,12 @@ function Announcements() {
 							description="This is a preview of this broadcast content"
 						>
 							<div className="mt-4">
-								<Preview closeModal={() => setOpenPreview(false)} />
+								<Preview
+									preview={previewInfo}
+									closeModal={() => setOpenPreview(false)}
+								/>
 							</div>
 						</Modal>
-
-						{/* <Modal
-							openModal={openPreview}
-							setOpenModal={() => setOpenPreview(false)}
-							modalStyles="max-w-md"
-						>
-							<div className="mt-3 mb-2 px-4">
-								<Success closeModal={() => setOpenPreview(false)} />
-							</div>
-						</Modal> */}
 					</>
 				)}
 			</SectionWrapper>

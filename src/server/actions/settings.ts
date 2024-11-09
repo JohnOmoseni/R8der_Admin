@@ -14,7 +14,6 @@ import { SettingsDataType } from "@/types";
 const getSettingsList = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_SETTINGS}`);
-		console.log("[SETTINGS LIST RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -29,7 +28,6 @@ const getSettingByType = async ({
 }): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_SETTINGS}/${settingType}`);
-		console.log("[SETTING TYPE RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -40,7 +38,6 @@ const getSettingByType = async ({
 const getAllCouponCodes = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_COUPON_CODES}`);
-		console.log("[COUPON CODES RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -59,7 +56,6 @@ const getAllCouponCodesById = async ({
 		id === "target" ? APIURLS.GET_COUPON_BYTARGET : APIURLS.GET_COUPON_BYCODE;
 	try {
 		const response = await api.get(`${url}/${value}`);
-		console.log(`[COUPON CODES BY ${id}]`, response);
 
 		return response.data;
 	} catch (error) {
@@ -94,7 +90,6 @@ const updateSetting = async (
 
 	try {
 		const response = await api.put(`${APIURLS.PUT_UPDATE_SETTINGS}`, payload);
-		console.log("[UPDATE SETTING RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -107,7 +102,6 @@ const updatePassword = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.patch(`${APIURLS.PATCH_UPDATE_SETTINGS}`, data);
-		console.log("[UPDATE PASSWORD RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -125,7 +119,6 @@ const createCoupon = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_CREATE_COUPON, payload);
-		console.log("[CREATE COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -141,7 +134,6 @@ const updateDiscount = async (
 			`${APIURLS.PUT_UPDATE_COUPON}/${data?.target}`,
 			data
 		);
-		console.log("[UPDATED DISCOUNT RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -154,7 +146,6 @@ const deactivateCouponById = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(`${APIURLS.PUT_DEACTIVATE_COUPON}/${id}`);
-		console.log("[DEACTIVATED COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -165,7 +156,6 @@ const deactivateCouponById = async (
 const deleteCouponById = async (id: string): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.delete(`${APIURLS.DELETE_COUPON}/${id}`);
-		console.log("[DLETED COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

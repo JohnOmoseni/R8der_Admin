@@ -71,9 +71,7 @@ export default function useStaffHeader(setShowModal: Props, refetch: any) {
 			await updateRoleMutation.mutateAsync(data);
 			toast.success("User role updated successfully");
 			refetch();
-		} catch {
-			console.log("Something went wrong");
-		}
+		} catch {}
 	};
 
 	let headerContent;

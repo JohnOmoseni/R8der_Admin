@@ -93,7 +93,6 @@ function Dashboard() {
 		}
 
 		const range = getDateRange(value);
-		console.log("[DATE VALUE]", value, range);
 
 		setDateRange(range);
 	};

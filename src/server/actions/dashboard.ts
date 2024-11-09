@@ -13,7 +13,6 @@ const getOverview = async (
 	};
 	try {
 		const response = await api.post(APIURLS.GET_SUMMARY, payload);
-		console.log("[SUMMARY RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -30,7 +29,6 @@ const getTripsOverview = async (
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_TRIP}`, payload);
-		console.log("[TRIPS OVERVIEW RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -45,7 +43,6 @@ const getTripsPerformance = async (
 		const response = await api.get(
 			`${APIURLS.GET_TRIP_PERFORMANCE}/${periodType}`
 		);
-		console.log("[TRIPS PERFORMANCE RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -60,7 +57,6 @@ const getRevenueStats = async (
 		const response = await api.get(
 			`${APIURLS.GET_REVENUE_STATS}?periodType=${periodType}`
 		);
-		console.log("[REVENUE STATS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

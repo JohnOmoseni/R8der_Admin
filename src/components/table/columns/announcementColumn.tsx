@@ -1,48 +1,67 @@
+import { AnnouncementType } from "@/types/server";
+import { stripHtmlTags } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
 
-export const announcementsColumn: ColumnDef<any>[] = [
-	{
-		accessorKey: "broadcasts",
-		header: "Broadcasts",
-		cell: ({ row }) => (
-			<p className="table-data-sm line-clamp-2">{row.original?.broadcasts}</p>
-		),
-		size: 100,
-	},
-	{
-		accessorKey: "target",
-		header: "Target",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.target}</p>,
-	},
-	{
-		accessorKey: "sub_target",
-		header: "Sub-Target",
-		cell: ({ row }) => (
-			<p className="table-data-sm">{row.original?.sub_target}</p>
-		),
-	},
-	{
-		accessorKey: "date",
-		header: "Date",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.date}</p>,
-	},
-	{
-		id: "actions",
-		header: "Action",
-		cell: ({ row }) => {
-			const announcement = row.original;
+type ColumnsProps = {
+	setOpenPreview: React.Dispatch<React.SetStateAction<boolean>>;
+	setPreviewInfo: React.Dispatch<
+		React.SetStateAction<AnnouncementType | undefined>
+	>;
+};
 
-			return (
-				<div className="max-sm:px-2">
-					<Link
-						to={`/dashboard/customers/profile/${announcement?.riderId}`}
-						className="w-full"
+export const useAnnouncementsColumn = ({
+	setOpenPreview,
+	setPreviewInfo,
+}: ColumnsProps): ColumnDef<any>[] => {
+	return [
+		{
+			accessorKey: "content",
+			header: "Broadcasts",
+			cell: ({ row }) => (
+				<p className="table-data-sm line-clamp-3">
+					{stripHtmlTags(row.original?.content)}
+				</p>
+			),
+		},
+		{
+			accessorKey: "targetAudience",
+			header: "Target",
+			cell: ({ row }) => (
+				<p className="table-data-sm">{row.original?.targetAudience}</p>
+			),
+		},
+		{
+			accessorKey: "subTargetAudience",
+			header: "Sub-Target",
+			cell: ({ row }) => (
+				<p className="table-data-sm">{row.original?.subTargetAudience}</p>
+			),
+		},
+		{
+			accessorKey: "publishDate",
+			header: "Date",
+			cell: ({ row }) => (
+				<p className="table-data-sm">{row.original?.publishDate}</p>
+			),
+		},
+		{
+			id: "actions",
+			header: "Action",
+			cell: ({ row }) => {
+				const announcement = row.original;
+
+				return (
+					<div
+						className="max-sm:px-2"
+						onClick={() => {
+							setOpenPreview(true);
+							setPreviewInfo(announcement);
+						}}
 					>
 						<div className="badge !px-5 py-2 sm:min-w-[100px]">View</div>
-					</Link>
-				</div>
-			);
+					</div>
+				);
+			},
 		},
-	},
-];
+	];
+};

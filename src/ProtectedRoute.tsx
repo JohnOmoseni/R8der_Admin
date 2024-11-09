@@ -8,8 +8,6 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 	const { user, token } = useAuth();
 	const navigate = useNavigate();
 
-	console.log("[Current user]", user);
-
 	useLayoutEffect(() => {
 		if (user === null || token === null) {
 			navigate(routes.LOGIN, { replace: true });

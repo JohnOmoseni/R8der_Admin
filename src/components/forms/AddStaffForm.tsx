@@ -24,8 +24,6 @@ const AddStaffForm = () => {
 	];
 
 	const onSubmit = async (values: InferType<typeof AddStaffSchema>) => {
-		console.log(values);
-
 		try {
 			const data = {
 				firstName: values.firstName,

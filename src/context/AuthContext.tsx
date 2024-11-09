@@ -48,8 +48,8 @@ export default function AuthProvider({
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const storedUser = sessionStorage.getItem("currentUser");
-				const token = sessionStorage.getItem("token");
+				const storedUser = sessionStorage.getItem("currentUser_ryder");
+				const token = sessionStorage.getItem("token_ryder");
 				if (!token) {
 					setToken(null);
 					setUser(null);
@@ -95,8 +95,8 @@ export default function AuthProvider({
 			setToken(authToken);
 			setUser(currentUser);
 			setRole(currentUser?.role);
-			sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
-			sessionStorage.setItem("token", JSON.stringify(authToken));
+			sessionStorage.setItem("currentUser_ryder", JSON.stringify(currentUser));
+			sessionStorage.setItem("token_ryder", JSON.stringify(authToken));
 
 			toast.success(data?.message || "Login successful. Please verify OTP.");
 			navigate("/verify-otp");
@@ -144,7 +144,7 @@ export default function AuthProvider({
 
 			setUser(updatedUser as User);
 			toast.success("OTP verified successfully. Redirecting to dashboard...");
-			sessionStorage.setItem("currentUser", JSON.stringify(updatedUser));
+			sessionStorage.setItem("currentUser_ryder", JSON.stringify(updatedUser));
 
 			navigate("/dashboard");
 		} catch (error: any) {
@@ -177,8 +177,8 @@ export default function AuthProvider({
 			setToken(null);
 			setUser(null);
 			setIsAuthenticated(false);
-			sessionStorage.removeItem("currentUser");
-			sessionStorage.removeItem("token");
+			sessionStorage.removeItem("currentUser_ryder");
+			sessionStorage.removeItem("token_ryder");
 
 			toast.success("Logged out successfully");
 			navigate(routes.LOGIN);

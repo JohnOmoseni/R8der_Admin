@@ -26,7 +26,6 @@ function Config() {
 		toast.error(`${error?.message || "Error fetching Settings list"}`);
 
 	const onSubmit = async (values: InferType<typeof ConfigSchema>) => {
-		console.log("Form values", values);
 		try {
 			const payload = {
 				basicTripFee: values.customerBasicFee,

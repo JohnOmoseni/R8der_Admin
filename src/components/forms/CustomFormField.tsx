@@ -207,7 +207,7 @@ const CustomFormField = (props: CustomProps) => {
 			{label && fieldType !== FormFieldType.CHECKBOX && (
 				<Label
 					className={cn(
-						"relative mb-2 ml-0.5 inline-flex after:absolute after:-right-6 after:top-0 after:text-sm after:text-red-500 after:content-[*]",
+						"relative mb-2 leading-4 ml-0.5 inline-flex after:absolute after:-right-6 after:top-0 after:text-sm after:text-red-500 after:content-[*]",
 						labelStyles
 					)}
 				>

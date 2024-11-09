@@ -5,33 +5,62 @@ import { SelectItem } from "@/components/ui/select";
 import CustomFormField, {
 	FormFieldType,
 } from "@/components/forms/CustomFormField";
+import { CreateAnnouncementSchema } from "@/schema/validation";
+import { useBroadcastAnnouncement } from "@/hook/useAnnouncement";
 
 import FormWrapper from "@/components/forms/FormWrapper";
 import TextEditor from "./TextEditor";
 
 type CreateAnnouncementProps = {
 	announcement?: any;
+	setOpenModal: React.Dispatch<
+		React.SetStateAction<{
+			isOpen: boolean;
+			data: any;
+		}>
+	>;
 };
 
-const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
+const CreateAnnouncementForm = ({ setOpenModal }: CreateAnnouncementProps) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const broadcastMutation = useBroadcastAnnouncement();
 
-	const questionTypes = [
-		{ value: "MultiChoice", label: "Multiple Choice" },
-		{ value: "MultiSelect", label: "Multiple Select" },
+	const targetAudience = [
+		{ value: "all", label: "All" },
+		{ value: "rider", label: "Riders" },
+		{ value: "driver", label: "Drivers" },
+	];
+
+	const subTargetAudience = [
+		{ value: "general", label: "General announcement" },
+		{ value: "pending_registration", label: "Pending registration" },
+		{ value: "completed_registration", label: "Completed registration" },
+	];
+
+	const channels = [
+		{ value: "email", label: "Email" },
+		{ value: "push", label: "Push Notification" },
 	];
 
 	const onSubmit = async (values: any) => {
 		setIsLoading(true);
 
-		console.log("FORM VALUES", values);
+		const data = {
+			subject: values.title,
+			content: values.message,
+			targetAudience: values.target?.toUpperCase(),
+			subTargetAudience: values.sub_target?.toUpperCase(),
+			channel: values?.channel?.toUpperCase(),
+		};
+
 		try {
+			await broadcastMutation.mutateAsync(data);
+
+			toast.success("Announcement Broadcast Successful");
+			setOpenModal({ isOpen: true, data });
 		} catch (error: any) {
-			toast.error(
-				error?.response?.data?.message ||
-					error.message ||
-					"Error uploading question"
-			);
+			const message = error?.response?.data?.message || error.message;
+			toast.error(message || "Error creating announcement");
 		} finally {
 			setIsLoading(false);
 		}
@@ -54,7 +83,7 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 			message: "",
 			published_by: "",
 		},
-		validationSchema: "",
+		validationSchema: CreateAnnouncementSchema,
 		onSubmit,
 	});
 
@@ -62,7 +91,7 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 		<FormWrapper
 			btnStyles="!w-max"
 			containerStyles="max-w-full"
-			buttonLabel="Add question"
+			buttonLabel="Broadcast"
 			onSubmit={handleSubmit}
 			isSubmitting={isLoading}
 		>
@@ -78,6 +107,7 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 							onBlur={handleBlur}
 							errors={errors}
 							touched={touched}
+							labelStyles="opacity-70"
 						/>
 
 						<div className="flex-column sm:grid grid-cols-2 gap-y-5 gap-x-4">
@@ -85,7 +115,7 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 								fieldType={FormFieldType.SELECT}
 								name="target"
 								label="Target Audience"
-								labelStyles="opacity-70"
+								labelStyles="opacity-70 max-lg:w-[10ch]"
 								onBlur={handleBlur}
 								errors={errors}
 								touched={touched}
@@ -95,10 +125,10 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 								onChange={(value: any) => {
 									setFieldValue("target", value);
 								}}
-								selectList={questionTypes}
+								selectList={targetAudience}
 								inputStyles="!bg-background-100"
 							>
-								{questionTypes?.map((item, index) => (
+								{targetAudience?.map((item, index) => (
 									<SelectItem
 										key={index}
 										value={item?.value}
@@ -113,7 +143,7 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 								fieldType={FormFieldType.SELECT}
 								name="sub_target"
 								label="Sub-Target Audience"
-								labelStyles="opacity-70"
+								labelStyles="opacity-70 max-lg:w-[10ch]"
 								onBlur={handleBlur}
 								errors={errors}
 								touched={touched}
@@ -123,10 +153,10 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 								onChange={(value: any) => {
 									setFieldValue("sub_target", value);
 								}}
-								selectList={questionTypes}
+								selectList={subTargetAudience}
 								inputStyles="!bg-background-100"
 							>
-								{questionTypes?.map((item, index) => (
+								{subTargetAudience?.map((item, index) => (
 									<SelectItem
 										key={index}
 										value={item?.value}
@@ -148,14 +178,15 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 							touched={touched}
 							field={{
 								value: values.channel,
+								placeholder: "E.g push notification, email",
 							}}
 							onChange={(value: any) => {
 								setFieldValue("channel", value);
 							}}
-							selectList={questionTypes}
+							selectList={channels}
 							inputStyles="!bg-background-100"
 						>
-							{questionTypes?.map((item, index) => (
+							{channels?.map((item, index) => (
 								<SelectItem
 									key={index}
 									value={item?.value}
@@ -171,33 +202,19 @@ const CreateAnnouncementForm = ({}: CreateAnnouncementProps) => {
 						<p className="font-semibold text-base mb-2">Published Details</p>
 
 						<CustomFormField
-							fieldType={FormFieldType.SELECT}
+							fieldType={FormFieldType.INPUT}
 							name="published_by"
 							label="Published by"
 							labelStyles="opacity-70"
+							field={{
+								value: values.published_by,
+								placeholder: "e.g. John Doe",
+							}}
+							onChange={handleChange}
 							onBlur={handleBlur}
 							errors={errors}
 							touched={touched}
-							field={{
-								value: values.published_by,
-								placeholder: "John Omoseni",
-							}}
-							onChange={(value: any) => {
-								setFieldValue("published_by", value);
-							}}
-							selectList={questionTypes}
-							inputStyles="!bg-background-100"
-						>
-							{questionTypes?.map((item, index) => (
-								<SelectItem
-									key={index}
-									value={item?.value}
-									className="shad-select-item"
-								>
-									{item?.label}
-								</SelectItem>
-							))}
-						</CustomFormField>
+						/>
 					</div>
 				</div>
 

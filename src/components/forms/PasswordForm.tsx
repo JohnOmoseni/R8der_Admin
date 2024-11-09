@@ -14,8 +14,6 @@ function PasswordForm({ user }: { user?: any }) {
 	const changePasswordMutation = useUpdatePassword();
 
 	const onSubmit = async (values: InferType<typeof PasswordSchema>) => {
-		console.log("Form submitted", values);
-
 		try {
 			const payload = {
 				oldPassword: values.current_password!,

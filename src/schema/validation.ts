@@ -81,3 +81,38 @@ export const ConfigSchema = yup.object().shape({
 	driverCommissionAmount: yup.number().min(2, "Too low").max(5000, "Too high"),
 	driverCommissionType: yup.string(),
 });
+
+export const CreateAnnouncementSchema = yup.object().shape({
+	title: yup
+		.string()
+		.required("Field is required")
+		.min(2, "Field must be at least 2 characters"),
+	target: yup
+		.string()
+		.oneOf(
+			["all", "rider", "driver"],
+			"Field can either be All, Customers or Drivers"
+		)
+		.required("Field is required"),
+	sub_target: yup
+		.string()
+		.oneOf(
+			["general", "pending_registration", "completed_registration"],
+			"Field can either be Customers or Drivers"
+		)
+		.required("Field is required"),
+	channel: yup
+		.string()
+		.oneOf(["email", "push"], "Field can either be Email or Push Notification")
+		.required("Field is required"),
+	message: yup
+		.string()
+		.required("Field is required")
+		.min(5, "Field must be at least 5 characters"),
+	published_by: yup
+		.string()
+		.required("Field is required")
+		.test("is-full-name", "Enter Full name", (value: any) => {
+			return value && value.trim().split(" ").length >= 2;
+		}),
+});

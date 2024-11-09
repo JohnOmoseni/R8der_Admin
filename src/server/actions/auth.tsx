@@ -12,7 +12,6 @@ const login = async (params: {
 			"https://tripiee.com/trip/account/auth/signin",
 			params
 		);
-		console.log("LOGIN RESPONSE", response);
 
 		return response.data;
 	} catch (error) {
@@ -31,7 +30,6 @@ const verifyOtp = async (params: {
 
 	try {
 		const response = await api.post(APIURLS.VERIFY_OTP, payload);
-		console.log("VERIFY OTP RESPONSE", response);
 
 		return response.data;
 	} catch (error) {
@@ -44,7 +42,6 @@ const resendOtp = async (params: {
 }): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.post(APIURLS.RESEND_OTP, params);
-		console.log("RESEND OTP RESPONSE", response);
 
 		return response.data;
 	} catch (error) {
@@ -56,7 +53,6 @@ const logout = async (): Promise<AxiosResponse["data"]> => {
 	const params = { email: "admin@rider.com" };
 	try {
 		const response = await api.delete(APIURLS.LOGOUT, { data: params });
-		console.log("LOGOUT RESPONSE", response);
 
 		return response.data;
 	} catch (error) {
@@ -69,7 +65,6 @@ const refreshAccessToken = async (params?: {
 }): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.post(APIURLS.REFRESH_TOKEN, params);
-		console.log("REFRESH TOKEN RESPONSE", response);
 
 		return response.data;
 	} catch (error) {

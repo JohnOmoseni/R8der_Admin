@@ -23,8 +23,6 @@ const CouponForm = ({
 	const navigate = useNavigate();
 
 	const onSubmit = async (values: InferType<typeof CouponSchema>) => {
-		console.log("Form Submitted", values);
-
 		try {
 			const data = {
 				code: values.title,

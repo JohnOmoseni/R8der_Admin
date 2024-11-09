@@ -193,6 +193,32 @@ export interface SettlementType {
 	status: Status;
 }
 
+// ANNOUNCEMENTS
+export type AnnouncementType = {
+	id: number | string;
+	subject: string;
+	content: string;
+	targetAudience: "DRIVER" | "CUSTOMER";
+	subTargetAudience:
+		| "PENDING_REGISTRATION"
+		| "GENERAL"
+		| "COMPLETED_REGISTRATION";
+	publishDate: Date | null;
+	channel: "EMAIL" | "PUSH";
+};
+
+export type AnnouncementParams = {
+	id?: string;
+	subject: string;
+	content: string;
+	targetAudience: "DRIVER" | "CUSTOMER";
+	subTargetAudience:
+		| "PENDING_REGISTRATION"
+		| "GENERAL"
+		| "COMPLETED_REGISTRATION";
+	channel: "EMAIL" | "PUSH";
+};
+
 // SETTINGS - Settings List
 export type CommissionType = "FLAT" | "PERCENTAGE";
 

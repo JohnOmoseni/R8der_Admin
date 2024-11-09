@@ -49,12 +49,16 @@ export default {
 	GET_COUPON_BYTARGET: `/trip/dashboard/coupon-target`,
 	GET_COUPON_BYCODE: `/trip/dashboard/coupon-code`,
 
+	GET_ANNOUNCEMENTS: `/trip/dashboard/announcement`,
+
 	// POST Requests
 	POST_APPROVE_DRIVER: `/trip/dashboard/driver/verify/accept`,
 	POST_REJECT_DRIVER: `/trip/dashboard/driver/verify/reject`,
 	POST_ADD_STAFF: `/trip/dashboard/add/staff`,
 
 	POST_CREATE_COUPON: `/trip/dashboard/new-coupon`,
+
+	POST_ANNOUNCEMENT: `/trip/dashboard/broadcast/announcement`,
 
 	// UPDATE Requests
 	PUT_ACTIVATE_STAFF: `/trip/dashboard/staff/activate`,
