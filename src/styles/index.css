@@ -185,7 +185,7 @@
 		@apply row-flex absolute bottom-4 right-3 gap-2 sm:gap-4 md:bottom-7 md:right-7;
 	}
 	.table-data-sm {
-		@apply mx-auto sm:text-left capitalize text-foreground-100 min-w-[10ch] max-sm:break-words text-center md:whitespace-nowrap;
+		@apply mx-auto sm:text-left capitalize text-foreground-100 max-sm:min-w-[10ch] max-sm:break-words text-center md:whitespace-nowrap;
 	}
 
 	/* SKELETON LOADER */

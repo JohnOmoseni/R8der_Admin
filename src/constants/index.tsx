@@ -40,7 +40,7 @@ export const sidebarLinks = [
 	{
 		label: "Dashboard",
 		href: "/dashboard",
-		tag: "dashboard",
+		tag: "dashboard_home",
 		icon: Dashboard,
 		allowedRoles: [APP_ROLES.Admin, APP_ROLES.User, APP_ROLES.Staff],
 		showAlways: true,

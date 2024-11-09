@@ -62,7 +62,9 @@ export const driverColumn: ColumnDef<DriverType>[] = [
 	{
 		accessorKey: "totalTrips",
 		header: "Total trips",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.trips}</p>,
+		cell: ({ row }) => (
+			<p className="table-data-sm  !text-center">{row.original?.trips}</p>
+		),
 	},
 	{
 		id: "actions",

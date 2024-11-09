@@ -25,7 +25,9 @@ const LinkRow = ({ href, icon: Icon, label, tag, idx }: SidebarProps) => {
 	const activeLink = cn(link, "text-foreground-variant brightness-100");
 
 	const { pathname } = useLocation();
-	const isActive = pathname === href || pathname.startsWith(`${href}/`);
+	const isActive =
+		pathname === href ||
+		(pathname.startsWith(`${href}/`) && pathname.includes(tag!));
 
 	return (
 		<div title={tag} className={link}>
