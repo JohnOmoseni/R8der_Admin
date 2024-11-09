@@ -74,7 +74,7 @@ export const useGetSettlementById = ({
 		queryFn: () => transactionApi.getSettlementById(transactionId),
 
 		select: (data) => {
-			const response: SettlementType = data.data?.body;
+			const response: SettlementType = data.data;
 			// SETTLEMENT RECEIPT
 
 			return {

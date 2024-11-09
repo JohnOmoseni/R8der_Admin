@@ -131,7 +131,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 
 			<div className="my-5 px-1 grid min-h-[63vh]">
 				{isLoading ? (
-					<div className="loader-container h-full">
+					<div className="loader-container !h-full ">
 						<FallbackLoader />
 					</div>
 				) : receiptData && Object.keys(receiptData)?.length > 0 ? (
