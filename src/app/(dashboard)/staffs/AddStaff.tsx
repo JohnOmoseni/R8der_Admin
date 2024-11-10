@@ -4,7 +4,7 @@ import { Close } from "@/constants/icons";
 function AddStaff({ setOpenModal }: { setOpenModal: () => void }) {
 	return (
 		<>
-			<div className="pb-4">
+			<div className="pb-3.5 sm:pb-4">
 				<div className="badge" onClick={setOpenModal}>
 					<Close className="icon size-4" />
 					<p className="mt-[1px] text-sm font-medium capitalize transition">
@@ -13,7 +13,7 @@ function AddStaff({ setOpenModal }: { setOpenModal: () => void }) {
 				</div>
 			</div>
 
-			<div className="flex-1 border-t border-border pt-5 sm:px-2 sm:pt-6">
+			<div className="flex-1 border-t border-border pt-4 sm:px-1.5 sm:pt-6">
 				<h3 className="">Add staff</h3>
 				<AddStaffForm />
 			</div>

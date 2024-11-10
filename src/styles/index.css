@@ -106,7 +106,7 @@
 		@apply relative overflow-hidden before:absolute after:absolute after:inset-0 after:rounded-lg after:bg-secondary after:mix-blend-soft-light;
 	}
 	.badge {
-		@apply row-flex leading-3 line-clamp-1 w-max cursor-pointer gap-1 rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold capitalize transition focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 sm:whitespace-nowrap;
+		@apply row-flex leading-3 line-clamp-1 w-max cursor-pointer gap-1 rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-semibold capitalize transition focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 sm:whitespace-nowrap;
 	}
 	.icon-div {
 		@apply grid size-8 cursor-pointer place-items-center rounded-full border border-border-100 bg-background p-1 clip-circle;

@@ -46,9 +46,7 @@ function DownloadReport({
 
 	return (
 		<div
-			className={cn(
-				children ? "" : "badge !grid grid-cols-[max-content,_1fr] leading-3"
-			)}
+			className={cn(children ? "" : "badge self-center leading-3")}
 			onClick={onDownload}
 		>
 			{children ? (
@@ -58,7 +56,7 @@ function DownloadReport({
 			) : (
 				<>
 					<ArrowUpRight className="size-4" />
-					<p className="mt-0.5 font-semibold">{title || "Export"}</p>
+					<p className=" font-semibold">{title || "Export"}</p>
 				</>
 			)}
 		</div>

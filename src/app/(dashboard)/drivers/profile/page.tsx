@@ -117,7 +117,7 @@ function DriverProfile() {
 			<div className="flex-column gap-6">
 				<BackArrow />
 
-				<div className="row-flex-btwn gap-4 pr-1">
+				<div className="grid grid-cols-[1fr_auto] gap-4 pr-1">
 					<h3 className="w-full text-xl md:text-[1.35rem] capitalize">
 						{driverData?.fullName || "Driver"} details
 					</h3>

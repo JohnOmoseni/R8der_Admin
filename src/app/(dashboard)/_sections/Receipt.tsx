@@ -117,7 +117,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		}));
 
 	return (
-		<div className="pt-4 md:px-2 flex-column gap-3">
+		<div className="py-1.5 flex-column gap-3">
 			<div>
 				<h2 className="text-2xl">
 					{type === "transactionReceipt"
@@ -129,13 +129,13 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 				<p className="text-foreground-100 mt-0.5">Your transaction receipt</p>
 			</div>
 
-			<div className="my-5 px-1 grid min-h-[63vh]">
+			<div className="my-5 px-1 grid min-h-[64vh] sm:min-h-[63vh]">
 				{isLoading ? (
 					<div className="loader-container !h-full ">
 						<FallbackLoader />
 					</div>
 				) : receiptData && Object.keys(receiptData)?.length > 0 ? (
-					<div className="flex-column gap-3.5">
+					<div className="flex-column gap-2.5 sm:gap-3.5">
 						{Object.entries(receiptData || []).map(([key, value], idx) => {
 							const formattedValue = formatValue(key, value);
 
@@ -154,7 +154,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 									key={idx}
 									className="row-flex-btwn gap-4 py-2.5 px-0.5 border-b border-grey-100 last:border-none"
 								>
-									<span className="font-semibold capitalize min-w-[10ch]">
+									<span className="font-semibold capitalize sm:min-w-[10ch]">
 										{formatKey(key || "")}
 									</span>
 									{isStatusField(key) ? (
