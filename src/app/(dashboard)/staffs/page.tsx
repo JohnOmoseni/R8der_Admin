@@ -11,6 +11,7 @@ import { APP_ROLES } from "@/types";
 import {
 	useActivateStaff,
 	useDeactivateStaff,
+	useDeleteStaff,
 	useGetStaffs,
 } from "@/hook/useStaffs";
 
@@ -37,12 +38,13 @@ function Staffs() {
 
 	const activateMutation = useActivateStaff();
 	const deactivateMutation = useDeactivateStaff();
+	const deleteStaffMutation = useDeleteStaff();
 
 	const headerContent = useStaffHeader(setShowModal, refetch);
 
 	if (isError) toast.error("Something went wrong");
 
-	const handleAction = async (id: "activate" | "deactivate") => {
+	const handleAction = async (id: "activate" | "deactivate" | "delete") => {
 		const selectedIds = selectedRows.map((row) => row.userId);
 
 		if (selectedIds.length === 0) {
@@ -58,6 +60,9 @@ function Staffs() {
 			} else if (id === "deactivate") {
 				await deactivateMutation.mutateAsync(selectedIds);
 				toast.success(`${res} deactivated successfully`);
+			} else if (id === "delete") {
+				await deleteStaffMutation.mutateAsync("");
+				toast.success(`${res} deleted successfully`);
 			}
 
 			refetch();
@@ -117,6 +122,16 @@ function Staffs() {
 										Deactivate
 										{deactivateMutation.isPending && (
 											<BtnLoader isLoading={deactivateMutation.isPending} />
+										)}
+									</div>
+
+									<div
+										className={cn("badge-long !bg-red-600")}
+										onClick={() => handleAction("delete")}
+									>
+										Delete
+										{deleteStaffMutation.isPending && (
+											<BtnLoader isLoading={deleteStaffMutation.isPending} />
 										)}
 									</div>
 								</div>

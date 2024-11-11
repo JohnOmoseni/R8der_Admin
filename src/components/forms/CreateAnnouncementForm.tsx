@@ -51,6 +51,7 @@ const CreateAnnouncementForm = ({ setOpenModal }: CreateAnnouncementProps) => {
 			targetAudience: values.target?.toUpperCase(),
 			subTargetAudience: values.sub_target?.toUpperCase(),
 			channel: values?.channel?.toUpperCase(),
+			publishedBy: values.published_by,
 		};
 
 		try {

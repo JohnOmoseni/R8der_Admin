@@ -68,6 +68,19 @@ export const useDeactivateStaff = (): UseMutationResult<
 	});
 };
 
+// DELETE STAFF
+export const useDeleteStaff = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (staffEmail: string) => staffApi.deleteStaff(staffEmail),
+		onError: (error) => console.error("[Error deleting Staff]", error),
+		onSuccess: (_values) => {
+			queryClient.invalidateQueries({ queryKey: ["getStaffsAndAdmins"] });
+		},
+	});
+};
+
 // ADD STAFF
 export const useAddStaff = () => {
 	const queryClient = useQueryClient();

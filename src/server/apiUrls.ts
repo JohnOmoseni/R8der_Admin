@@ -2,7 +2,7 @@ export const API_DOMAIN =
 	import.meta.env.VITE_API_ENDPOINT || "http://tripiee.com";
 
 export const SOCKET_URL =
-	import.meta.env.VITE_SOCKET_URL || "ws://localhost:8224";
+	import.meta.env.VITE_SOCKET_URL || "wss://tripiee.com:8443";
 
 if (!API_DOMAIN) {
 	throw new Error("API_DOMAIN is not defined in the environment variables.");
@@ -76,4 +76,5 @@ export default {
 
 	// DELETE Requests
 	DELETE_COUPON: `/trip/dashboard/delete`,
+	DELETE_STAFF: `/account/profile/delete`,
 };

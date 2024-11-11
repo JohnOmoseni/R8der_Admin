@@ -21,7 +21,7 @@ export const useGetAllTrips = () => {
 			const response = data.data;
 
 			const tripsData = {
-				trips: response?.trip?.map((trip: TripsType) => ({
+				trips: response?.trips?.map((trip: TripsType) => ({
 					riderName: trip?.riderName,
 					driverName: trip?.driverName,
 					tripId: trip?.tripId,

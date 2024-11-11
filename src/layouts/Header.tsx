@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { cn } from "@/lib/utils";
 import { PopoverWrapper } from "@/components/ui/components/PopoverWrapper";
 import { SOCKET_URL } from "@/server/apiUrls";
-import useWebSocket from "react-use-websocket";
 
 type NotificationType = {
 	message: string;
@@ -25,7 +24,32 @@ function Header({
 	const dispatch = useDispatch();
 	const [hasUnread, setHasUnread] = useState(false);
 	const [notifications, setNotifications] = useState<Notifications>([]);
-	const { lastJsonMessage } = useWebSocket(SOCKET_URL);
+	// const { lastJsonMessage, readyState } = useWebSocket(SOCKET_URL, {
+	// 	// @ts-ignore
+	// 	shouldReconnect: (closeEvent) => true, // Auto-reconnect
+	// 	onError: (error) => console.error("WebSocket error:", error),
+	// });
+
+	const lastJsonMessage = "";
+
+	// useEffect(() => {
+	// 	// const socket = io(SOCKET_URL);
+	// 	const socket = "";
+
+	// 	// Listen for events from the server
+	// 	socket.on("connect", () => {
+	// 		console.log("Connected to socket");
+	// 	});
+
+	// 	socket.on("message", (message: any) => {
+	// 		setNotifications((prevMessages) => [...prevMessages, message]);
+	// 	});
+
+	// 	// Cleanup on component unmount
+	// 	return () => {
+	// 		socket.disconnect();
+	// 	};
+	// }, []);
 
 	// useEffect(() => {
 	// 	const interval = setInterval(() => {
@@ -104,6 +128,13 @@ const Notification = ({
 	const [expanded, setExpanded] = useState(false);
 
 	useEffect(() => {
+		// if (lastJsonMessage !== null) {
+		// 	const data = lastJsonMessage
+
+		// 	if (data.message && data.event === "AdminNotification") {
+		// 		console.log("Admin Notification:", data.message);
+		// 	}
+		// }
 		if (lastJsonMessage) {
 			const newNotification: NotificationType = {
 				...lastJsonMessage,

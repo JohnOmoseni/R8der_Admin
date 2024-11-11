@@ -61,6 +61,7 @@ export const driverTripsColumn: ColumnDef<TripsType>[] = [
 					content={
 						<Receipt
 							details={trip}
+							id={trip?.tripId}
 							type="tripReceipt"
 							specificType="driver_receipt"
 						/>

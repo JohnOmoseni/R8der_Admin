@@ -67,6 +67,7 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 					content={
 						<Receipt
 							details={withdrawal}
+							id={withdrawal.transactionId}
 							type="transactionReceipt"
 							specificType="withdrawal_receipt"
 						/>

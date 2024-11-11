@@ -14,6 +14,7 @@ import DownloadReport from "@/components/DownloadReport";
 import EmptyList from "@/components/EmptyList";
 
 type ReceiptProps = {
+	id: string;
 	type?: "transactionReceipt" | "tripReceipt";
 	details?: any;
 	specificType?:
@@ -23,13 +24,13 @@ type ReceiptProps = {
 		| "settlement_receipt";
 };
 
-function Receipt({ details, type, specificType }: ReceiptProps) {
+function Receipt({ id, type, specificType }: ReceiptProps) {
 	const {
 		data: tripReceipt,
 		isLoading: loadingTrip,
 		isError: errorTrip,
 	} = useGetTripById({
-		tripId: details?.tripId,
+		tripId: id,
 		enabled: type === "tripReceipt",
 	});
 	const {
@@ -37,7 +38,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		isLoading: loadingWithdrawal,
 		isError: errorWithdrawal,
 	} = useGetWithdrawalById({
-		transactionId: details?.transaction_id,
+		transactionId: id,
 		enabled: specificType === "withdrawal_receipt",
 	});
 	const {
@@ -45,7 +46,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 		isLoading: loadingSettlement,
 		isError: errorSettlement,
 	} = useGetSettlementById({
-		transactionId: details?.id,
+		transactionId: id,
 		enabled: specificType === "settlement_receipt",
 	});
 
@@ -129,7 +130,7 @@ function Receipt({ details, type, specificType }: ReceiptProps) {
 				<p className="text-foreground-100 mt-0.5">Your transaction receipt</p>
 			</div>
 
-			<div className="my-5 px-1 grid min-h-[64vh] sm:min-h-[63vh]">
+			<div className="my-5 px-1 grid min-h-[63vh]">
 				{isLoading ? (
 					<div className="loader-container !h-full ">
 						<FallbackLoader />

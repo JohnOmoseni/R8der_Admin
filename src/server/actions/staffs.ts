@@ -101,6 +101,22 @@ const deactivateStaff = async (
 	}
 };
 
+// DELETE STAFF
+const deleteStaff = async (
+	staffEmail: string
+): Promise<AxiosResponse["data"]> => {
+	try {
+		const response = await api.delete(
+			`${APIURLS.DELETE_STAFF}?staffEmail=${staffEmail}`
+		);
+		console.log("[DELETED STAFF RESPONSE]", response);
+
+		return response.data;
+	} catch (error) {
+		handleApiError(error);
+	}
+};
+
 // UPDATE ROLE
 const updateRole = async (
 	data: UpdateRoleParams
@@ -126,4 +142,6 @@ export const staffApi = {
 	deactivateStaff,
 
 	updateRole,
+
+	deleteStaff,
 };

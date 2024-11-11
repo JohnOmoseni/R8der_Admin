@@ -1,8 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 import { SettlementType } from "@/types/server";
-import { SheetMenu } from "@/components/ui/components/SheetMenu";
-import Receipt from "@/app/(dashboard)/_sections/Receipt";
+import SettlementActions from "@/app/(dashboard)/settlements/settlement-actions";
 
 export const settlementColumn: ColumnDef<SettlementType>[] = [
 	{
@@ -40,14 +39,16 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		accessorKey: "driverCommission",
 		header: "Driver Commission",
 		cell: ({ row }) => (
-			<p className="table-data-sm">&#8358;{row.original?.driver_commission}</p>
+			<p className="table-data-sm !text-center">
+				&#8358;{row.original?.driver_commission}
+			</p>
 		),
 	},
 	{
 		accessorKey: "percentage",
 		header: "Percentage",
 		cell: ({ row }) => (
-			<p className="table-data-sm">{row.original?.percentage}%</p>
+			<p className="table-data-sm !text-center">{row.original?.percentage}%</p>
 		),
 	},
 	{
@@ -74,18 +75,7 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 		cell: ({ row }) => {
 			const settlement = row.original;
 
-			return (
-				<SheetMenu
-					trigger={<div className="badge-long">View receipt</div>}
-					content={
-						<Receipt
-							details={settlement}
-							type="transactionReceipt"
-							specificType="settlement_receipt"
-						/>
-					}
-				/>
-			);
+			return <SettlementActions settlement={settlement} />;
 		},
 	},
 ];

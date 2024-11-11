@@ -186,6 +186,7 @@ export interface SettlementType {
 	driver_name: string;
 	id: string;
 	trip_amount: number;
+	trip_id: string;
 	transaction_id: string;
 	date: string | null | undefined;
 	driver_commission: string;
@@ -205,6 +206,7 @@ export type AnnouncementType = {
 		| "COMPLETED_REGISTRATION";
 	publishDate: Date | null;
 	channel: "EMAIL" | "PUSH";
+	publishedBy?: string;
 };
 
 export type AnnouncementParams = {
@@ -217,6 +219,7 @@ export type AnnouncementParams = {
 		| "GENERAL"
 		| "COMPLETED_REGISTRATION";
 	channel: "EMAIL" | "PUSH";
+	publishedBy: string;
 };
 
 // SETTINGS - Settings List
