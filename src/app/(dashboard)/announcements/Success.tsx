@@ -21,14 +21,13 @@ function Success({
 					<h3 className="text-center text-lg">Broadcast Sent</h3>
 
 					<p className="max-w-[50ch] text-center leading-7">
-						<span className="text-grey">
-							You have successfully shared a broadcast to:
+						<span className="text-grey block leading-5">
+							You have successfully shared a broadcast to:{" "}
 						</span>
 
-						<span className="font-semibold inline-block ">
-							[{data?.targetAudience || "target"}]{" "}
-							<span className="text-grey">to</span> [
-							{data?.subTargetAudience || "sub-target"}]
+						<span className="font-semibold inline-block mt-2 leading-5 ">
+							Target: [{data?.targetAudience || "target"}] <br />
+							Sub-Target: [{data?.subTargetAudience || "sub-target"}]
 						</span>
 					</p>
 

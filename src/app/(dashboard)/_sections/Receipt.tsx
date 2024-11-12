@@ -130,7 +130,7 @@ function Receipt({ id, type, specificType }: ReceiptProps) {
 				<p className="text-foreground-100 mt-0.5">Your transaction receipt</p>
 			</div>
 
-			<div className="my-5 px-1 grid min-h-[63vh]">
+			<div className="my-5 px-1 grid min-h-[58vh] sm:min-h-[63vh]">
 				{isLoading ? (
 					<div className="loader-container !h-full ">
 						<FallbackLoader />

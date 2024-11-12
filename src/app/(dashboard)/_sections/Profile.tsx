@@ -75,7 +75,9 @@ function Profile({
 							<p
 								className={cn(
 									"font-semibold",
-									key === "email" && info[key] && "text-sm italic underline"
+									key === "email" &&
+										info[key] &&
+										"text-sm italic underline break-words max-sm:max-w-[15ch]"
 								)}
 							>
 								{Array.isArray(info[key])

@@ -22,6 +22,28 @@ const CouponForm = ({
 	const editCouponMutation = useUpdateDiscount();
 	const navigate = useNavigate();
 
+	const discountTypes = [
+		{
+			label: "Percentage",
+			value: "PERCENTAGE",
+		},
+		{
+			label: "Fixed",
+			value: "FIXED",
+		},
+	];
+
+	const targets = [
+		{
+			label: "Customers",
+			value: "CUSTOMERS",
+		},
+		{
+			label: "Drivers",
+			value: "DRIVERS",
+		},
+	];
+
 	const onSubmit = async (values: InferType<typeof CouponSchema>) => {
 		try {
 			const data = {
@@ -123,15 +145,17 @@ const CouponForm = ({
 				onBlur={handleBlur}
 				errors={errors}
 				touched={touched}
+				selectList={discountTypes}
 			>
-				<>
-					<SelectItem value="PERCENTAGE" className="shad-select-item">
-						Percentage
+				{discountTypes?.map((type) => (
+					<SelectItem
+						key={type.value}
+						value={type.value}
+						className="shad-select-item"
+					>
+						{type.label}
 					</SelectItem>
-					<SelectItem value="FIXED" className="shad-select-item">
-						Fixed
-					</SelectItem>
-				</>
+				))}
 			</CustomFormField>
 
 			<CustomFormField
@@ -158,13 +182,17 @@ const CouponForm = ({
 				errors={errors}
 				touched={touched}
 				inputStyles="!justify-between"
+				selectList={targets}
 			>
-				<SelectItem value="CUSTOMERS" className="shad-select-item">
-					Customers
-				</SelectItem>
-				<SelectItem value="DRIVERS" className="shad-select-item">
-					Drivers
-				</SelectItem>
+				{targets?.map((target) => (
+					<SelectItem
+						key={target.value}
+						value={target.value}
+						className="shad-select-item"
+					>
+						{target.label}
+					</SelectItem>
+				))}
 			</CustomFormField>
 
 			<CustomFormField

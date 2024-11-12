@@ -22,7 +22,7 @@ function CouponModal({
 				</div>
 			</div>
 
-			<div className="flex-1 border-t border-border px-2 py-6">
+			<div className="flex-1 border-t border-border px-0.5 pt-5 pb-4">
 				<h3 className="capitalize text-[1.2rem]">
 					{type === "create" ? "Create A Discount" : "Edit Discount"}
 				</h3>

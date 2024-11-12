@@ -66,6 +66,7 @@ function Config() {
 				placeholder={"\u20A6100"}
 				name1="customerBasicFee"
 				name2="customerLuxuryFee"
+				inputType="number"
 			/>
 
 			<Section
@@ -108,6 +109,7 @@ type SectionType = {
 	showCheckbox?: boolean;
 	handleChange?: any;
 	setFieldValue?: any;
+	inputType?: string;
 };
 
 const Section = ({
@@ -122,6 +124,7 @@ const Section = ({
 	handleChange,
 	name1,
 	name2,
+	inputType,
 }: SectionType) => {
 	return (
 		<div className="flex-column gap-3">
@@ -164,6 +167,7 @@ const Section = ({
 							field={{
 								value: value1,
 								placeholder: placeholder,
+								type: inputType,
 							}}
 							onChange={handleChange}
 						/>

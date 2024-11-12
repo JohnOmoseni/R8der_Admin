@@ -76,8 +76,8 @@ export const CouponSchema = yup.object().shape({
 });
 
 export const ConfigSchema = yup.object().shape({
-	customerBasicFee: yup.number(),
-	customerLuxuryFee: yup.number(),
+	customerBasicFee: yup.number().required(),
+	customerLuxuryFee: yup.number().required(),
 	driverCommissionAmount: yup.number().min(2, "Too low").max(5000, "Too high"),
 	driverCommissionType: yup.string(),
 });

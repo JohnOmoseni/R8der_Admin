@@ -31,7 +31,10 @@ function CreateAnnouncement() {
 
 			<Modal
 				openModal={openModal?.isOpen}
-				setOpenModal={() => setOpenModal({ isOpen: false, data: null })}
+				setOpenModal={() => {
+					setOpenModal({ isOpen: false, data: null });
+					navigate("/dashboard/announcements");
+				}}
 				modalStyles="max-w-md"
 			>
 				<div className="mt-3 mb-2 px-4">
@@ -39,7 +42,7 @@ function CreateAnnouncement() {
 						data={openModal?.data}
 						closeModal={() => {
 							setOpenModal({ isOpen: false, data: null });
-							navigate(-1);
+							navigate("/dashboard/announcements");
 						}}
 					/>
 				</div>
