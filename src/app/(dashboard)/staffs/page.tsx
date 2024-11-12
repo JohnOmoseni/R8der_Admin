@@ -97,14 +97,14 @@ function Staffs() {
 						</div>
 
 						{selectedRows.length > 0 && (
-							<div className="row-flex-btwn gap-3 rounded-sm bg-background-200 px-2.5 py-2 brightness-105 sm:gap-4">
-								<p className="text-xs font-semibold">
+							<div className="row-flex-btwn gap-3 max-sm:!flex-wrap rounded-sm bg-background-200 px-2.5 py-2 brightness-105 sm:gap-4">
+								<p className="text-xs font-semibold max-sm:text-center w-full">
 									{selectedRows.length} row(s) selected
 								</p>
 
-								<div className="row-flex gap-2.5 ">
+								<div className="row-flex gap-2.5 w-full">
 									<div
-										className={cn("badge-long !bg-background-100")}
+										className={cn("badge-long !bg-background-100 !w-full")}
 										onClick={() => handleAction("activate")}
 									>
 										Activate
@@ -116,7 +116,9 @@ function Staffs() {
 										)}
 									</div>
 									<div
-										className={cn("badge-long !bg-background-100")}
+										className={cn(
+											"badge-long !bg-foreground !text-secondary-foreground !w-full"
+										)}
 										onClick={() => handleAction("deactivate")}
 									>
 										Deactivate
@@ -126,7 +128,9 @@ function Staffs() {
 									</div>
 
 									<div
-										className={cn("badge-long !bg-red-600")}
+										className={cn(
+											"badge-long !bg-red-700 !text-secondary-foreground !w-full"
+										)}
 										onClick={() => handleAction("delete")}
 									>
 										Delete

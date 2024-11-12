@@ -40,7 +40,9 @@ function HeaderContent({
 
 	const deactivateButton = (
 		<div
-			className={cn("badge min-w-[125px] !gap-2 !bg-transparent !px-3 error")}
+			className={cn(
+				"badge min-w-[125px] !gap-2 !bg-transparent !px-3 error !w-full"
+			)}
 			onClick={() => handleAction("deactivate", onDeactivate)}
 		>
 			{isLoading?.type === "deactivate" && isLoading?.loading ? (
@@ -54,7 +56,7 @@ function HeaderContent({
 
 	const approveButton = (
 		<div
-			className={cn("badge min-w-[125px] !gap-2 !bg-foreground !px-3")}
+			className={cn("badge min-w-[125px] !gap-2 !bg-foreground !px-3 !w-full")}
 			onClick={() => handleAction("approve", onApprove)}
 		>
 			{isLoading?.type === "approve" && isLoading?.loading ? (
@@ -66,7 +68,13 @@ function HeaderContent({
 		</div>
 	);
 
-	const exportButton = <DownloadReport data={tableData} filename={filename} />;
+	const exportButton = (
+		<DownloadReport
+			data={tableData}
+			filename={filename}
+			containerStyles="!w-full"
+		/>
+	);
 
 	const renderHeaderContent = () => {
 		switch (activeTab as TabIndex) {
@@ -80,12 +88,13 @@ function HeaderContent({
 			case 1:
 			case 2:
 				return (
-					<div className="row-flex gap-2.5 max-[600px]:!flex-wrap">
-						<div className="row-flex gap-2.5">
-							{exportButton}
+					<div className="row-flex gap-2.5 max-sm:!flex-wrap">
+						{exportButton}
+
+						<div className="row-flex gap-2.5 w-full">
 							{deactivateButton}
+							{approveButton}
 						</div>
-						{approveButton}
 					</div>
 				);
 			case 3:

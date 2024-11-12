@@ -11,6 +11,7 @@ type Props = {
 	filename?: string;
 	title?: string;
 	trigger?: ReactNode;
+	containerStyles?: string;
 };
 
 function DownloadReport({
@@ -20,6 +21,7 @@ function DownloadReport({
 	title,
 	trigger,
 	children,
+	containerStyles,
 }: Props & PropsWithChildren) {
 	// DOWNLOAD DATA AS EXCEL DATA
 	const onDownload = async () => {
@@ -46,7 +48,10 @@ function DownloadReport({
 
 	return (
 		<div
-			className={cn(children ? "" : "badge self-center leading-3")}
+			className={cn(
+				children ? "" : "badge self-center leading-3",
+				containerStyles
+			)}
 			onClick={onDownload}
 		>
 			{children ? (

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { cn } from "@/lib/utils";
 import { PopoverWrapper } from "@/components/ui/components/PopoverWrapper";
 import { SOCKET_URL } from "@/server/apiUrls";
+import { io } from "socket.io-client";
 
 type NotificationType = {
 	message: string;
@@ -32,24 +33,23 @@ function Header({
 
 	const lastJsonMessage = "";
 
-	// useEffect(() => {
-	// 	// const socket = io(SOCKET_URL);
-	// 	const socket = "";
+	useEffect(() => {
+		const socket = io(SOCKET_URL);
 
-	// 	// Listen for events from the server
-	// 	socket.on("connect", () => {
-	// 		console.log("Connected to socket");
-	// 	});
+		// Listen for events from the server
+		socket.on("connect", () => {
+			console.log("Connected to socket");
+		});
 
-	// 	socket.on("message", (message: any) => {
-	// 		setNotifications((prevMessages) => [...prevMessages, message]);
-	// 	});
+		socket.on("message", (message: any) => {
+			setNotifications((prevMessages) => [...prevMessages, message]);
+		});
 
-	// 	// Cleanup on component unmount
-	// 	return () => {
-	// 		socket.disconnect();
-	// 	};
-	// }, []);
+		// Cleanup on component unmount
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
 
 	// useEffect(() => {
 	// 	const interval = setInterval(() => {

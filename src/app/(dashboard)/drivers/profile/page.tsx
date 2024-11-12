@@ -19,6 +19,7 @@ import ProfileContent from "../_tab-content/Profile";
 import SectionWrapper from "@/layouts/SectionWrapper";
 import FallbackLoader from "@/components/fallback/FallbackLoader";
 import HeaderContent from "./HeaderContent";
+import { cn } from "@/lib/utils";
 
 const tabIDs = ["Profile", "Vehicle and KYC Details", "Trips", "Withdrawals"];
 
@@ -117,7 +118,12 @@ function DriverProfile() {
 			<div className="flex-column gap-6">
 				<BackArrow />
 
-				<div className="grid grid-cols-[1fr_auto] gap-4 pr-1">
+				<div
+					className={cn(
+						"grid-cols-[1fr_auto] gap-4 pr-1",
+						activeTab !== 3 ? "flex-column min-[600px]:grid" : "grid"
+					)}
+				>
 					<h3 className="w-full text-xl md:text-[1.35rem] capitalize">
 						{driverData?.fullName || "Driver"} details
 					</h3>
