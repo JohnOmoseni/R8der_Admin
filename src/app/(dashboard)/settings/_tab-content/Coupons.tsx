@@ -15,13 +15,13 @@ function Coupons() {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [showModal, setShowModal] = useState(false);
 
-	const { data: couponCodes, isError, isLoading } = useGetAllCouponCodes();
+	const { data: couponCodes, isError, isFetching } = useGetAllCouponCodes();
 
 	if (isError) toast.error("Error fetching information");
 
 	return (
 		<>
-			{isLoading ? (
+			{isFetching ? (
 				<SkeletonLoader loaderVariant />
 			) : (
 				<>
@@ -58,12 +58,12 @@ function Coupons() {
 						<Modal
 							openModal={showModal}
 							setOpenModal={() => setShowModal(false)}
-							modalStyles=""
+							modalStyles="!pt-3"
 							hideClose={true}
 						>
 							<CouponModal
 								type="create"
-								setOpenModal={() => setShowModal(false)}
+								closeModal={() => setShowModal(false)}
 							/>
 						</Modal>
 					)}

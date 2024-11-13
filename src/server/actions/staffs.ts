@@ -103,12 +103,15 @@ const deactivateStaff = async (
 
 // DELETE STAFF
 const deleteStaff = async (
-	staffEmail: string
+	selectedIds: string[]
 ): Promise<AxiosResponse["data"]> => {
+	const payload = {
+		ids: selectedIds,
+	};
 	try {
-		const response = await api.delete(
-			`${APIURLS.DELETE_STAFF}?staffEmail=${staffEmail}`
-		);
+		const response = await api.delete(`${APIURLS.DELETE_STAFF}`, {
+			data: payload,
+		});
 		console.log("[DELETED STAFF RESPONSE]", response);
 
 		return response.data;

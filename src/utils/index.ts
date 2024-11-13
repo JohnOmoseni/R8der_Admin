@@ -23,6 +23,10 @@ export const stripHtmlTags = (html: string) => {
 	return doc.body.textContent || "";
 };
 
+export const truncateString = (str: string, length: number): string => {
+	return str?.length > length ? `${str.substring(0, length - 2)}...` : str;
+};
+
 export function getInitials(name: string) {
 	if (!name) return "TA";
 	return name

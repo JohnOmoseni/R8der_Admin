@@ -12,15 +12,15 @@ function DatePicker({ selected, onChange }: Props) {
 	return (
 		<Popover>
 			<PopoverTrigger className="shad-select-trigger !w-full" asChild>
-				<div className="row-flex-btwn gap-4 w-full text-placeholder">
+				<div className="row-flex-btwn gap-4 w-full ">
 					{selected ? (
 						format(selected, "PPP")
 					) : (
-						<span className="text-sm relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5">
+						<span className="text-sm text-placeholder relative flex cursor-default select-none items-center rounded-sm">
 							Pick a date
 						</span>
 					)}
-					<CalendarIcon className="mr-2 h-4 w-4" />
+					<CalendarIcon className="mr-0.5 h-4 w-4" />
 				</div>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0">

@@ -171,15 +171,15 @@ export interface TripsType {
 
 // WITHDRWAWALS
 export interface WithdrawalType {
-	customerName: string;
+	customer_name: string;
 	type: string;
-	refId: string;
+	ref_id: string;
 	amount: number;
 	bank: string;
-	accountNo: string;
+	account_no: string;
 	date: string;
 	status: Status;
-	transactionId: string;
+	transaction_id: string;
 }
 
 export interface SettlementType {

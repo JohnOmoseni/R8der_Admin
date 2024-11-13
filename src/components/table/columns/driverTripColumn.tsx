@@ -2,15 +2,20 @@ import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 import { TripType } from "@/types/server";
 import { SheetMenu } from "@/components/ui/components/SheetMenu";
+import { truncateString } from "@/utils";
 import Receipt from "@/app/(dashboard)/_sections/Receipt";
 
 export const tripsColumn: ColumnDef<TripType>[] = [
 	{
 		accessorKey: "id",
 		header: "Trip ID",
-		cell: ({ row }) => (
-			<p className="table-data-sm line-clamp-2">{row.original?.tripId}</p>
-		),
+		cell: ({ row }) => {
+			const id = row.original?.tripId
+				? truncateString(row.original?.tripId, 20)
+				: "-";
+
+			return <p className="table-data-sm">{id}</p>;
+		},
 		size: 100,
 	},
 	{

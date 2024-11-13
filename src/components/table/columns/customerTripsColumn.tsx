@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 import { TripsType } from "@/types/server";
 import { SheetMenu } from "@/components/ui/components/SheetMenu";
+import { truncateString } from "@/utils";
 import Receipt from "@/app/(dashboard)/_sections/Receipt";
 
 export const customerTripsColumn: ColumnDef<TripsType>[] = [
@@ -17,7 +18,13 @@ export const customerTripsColumn: ColumnDef<TripsType>[] = [
 	{
 		accessorKey: "tripId",
 		header: "Trip ID",
-		cell: ({ row }) => <p className="table-data-sm">{row.original?.tripId}</p>,
+		cell: ({ row }) => {
+			const id = row.original?.tripId
+				? truncateString(row.original?.tripId, 20)
+				: "-";
+
+			return <p className="table-data-sm">{id}</p>;
+		},
 	},
 
 	{

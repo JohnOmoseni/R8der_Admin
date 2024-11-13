@@ -81,6 +81,7 @@ function Config() {
 				placeholder="10%"
 				name1="driverCommissionType"
 				name2="driverCommissionAmount"
+				inputType="number"
 			/>
 
 			<Button
@@ -131,7 +132,7 @@ const Section = ({
 			<h3>{title}</h3>
 
 			<div className="py-3 px-3 brightness-105 bg-background-200 rounded-md flex-column gap-4">
-				<div className="grid grid-cols-[1fr_1fr] min-[850px]:grid-cols-[minmax(max-content,_230px)_1fr] gap-6 items-center">
+				<div className="grid grid-cols-[1fr_1fr] min-[900px]:grid-cols-[minmax(max-content,_230px)_1fr] gap-6 items-center">
 					<p className="text-sm sm:whitespace-nowrap">{desc1}</p>
 
 					{showCheckbox ? (
@@ -183,6 +184,7 @@ const Section = ({
 						field={{
 							value: value2,
 							placeholder: placeholder,
+							type: inputType,
 						}}
 						onChange={handleChange}
 					/>

@@ -73,7 +73,8 @@ export const useDeleteStaff = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (staffEmail: string) => staffApi.deleteStaff(staffEmail),
+		mutationFn: (selectedIds: SELECTEDTYPE) =>
+			staffApi.deleteStaff(selectedIds),
 		onError: (error) => console.error("[Error deleting Staff]", error),
 		onSuccess: (_values) => {
 			queryClient.invalidateQueries({ queryKey: ["getStaffsAndAdmins"] });

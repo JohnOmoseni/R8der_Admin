@@ -48,7 +48,9 @@ function Profile({ profileInfo }: { profileInfo?: GetRiderByIdResponse }) {
 							{info?.label}
 						</p>
 						<p
-							className={cn("font-semibold min-w-[12ch] break-words  text-end")}
+							className={cn(
+								"font-semibold min-w-[10ch] max-[380px]:max-w-[15ch] break-words text-end"
+							)}
 						>
 							{info?.value || "-"}
 						</p>

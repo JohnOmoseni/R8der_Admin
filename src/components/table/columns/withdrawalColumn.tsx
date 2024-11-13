@@ -2,14 +2,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 import { WithdrawalType } from "@/types/server";
 import { SheetMenu } from "@/components/ui/components/SheetMenu";
+import { truncateString } from "@/utils";
 import Receipt from "@/app/(dashboard)/_sections/Receipt";
 
 export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 	{
-		accessorKey: "customerName",
+		accessorKey: "customer_name",
 		header: "Customer Name",
 		cell: ({ row }) => (
-			<p className="table-data-sm line-clamp-2">{row.original?.customerName}</p>
+			<p className="table-data-sm line-clamp-2">
+				{row.original?.customer_name}
+			</p>
 		),
 	},
 	{
@@ -22,13 +25,15 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 		),
 	},
 	{
-		accessorKey: "transactionId",
+		accessorKey: "transaction_id",
 		header: "Transaction ID",
-		cell: ({ row }) => (
-			<p className="table-data-sm !text-center">
-				{row.original?.transactionId}
-			</p>
-		),
+		cell: ({ row }) => {
+			const id = row.original?.transaction_id
+				? truncateString(row.original?.transaction_id, 20)
+				: "-";
+
+			return <p className="table-data-sm !text-center">{id}</p>;
+		},
 	},
 
 	{
@@ -67,7 +72,7 @@ export const withdrawalColumn: ColumnDef<WithdrawalType>[] = [
 					content={
 						<Receipt
 							details={withdrawal}
-							id={withdrawal.transactionId}
+							id={withdrawal.transaction_id}
 							type="transactionReceipt"
 							specificType="withdrawal_receipt"
 						/>

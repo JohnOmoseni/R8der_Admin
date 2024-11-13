@@ -59,6 +59,8 @@ function PasswordForm({ user }: { user?: any }) {
 				}}
 				iconSrc={Lock}
 				onChange={handleChange}
+				errors={errors}
+				touched={touched}
 			/>
 
 			<CustomFormField

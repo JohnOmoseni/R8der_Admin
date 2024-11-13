@@ -112,12 +112,12 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 				<Modal
 					openModal={openEditModal}
 					setOpenModal={() => setOpenEditModal(false)}
-					modalStyles="overflow-hidden"
+					modalStyles="!pt-3"
 				>
 					<CouponModal
 						type="edit"
 						coupon={coupon}
-						setOpenModal={() => setOpenEditModal(false)}
+						closeModal={() => setOpenEditModal(false)}
 					/>
 				</Modal>
 			)}

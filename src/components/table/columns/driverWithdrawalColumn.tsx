@@ -1,6 +1,7 @@
 import { WithdrawType } from "@/types/server";
 import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
+import { truncateString } from "@/utils";
 
 export const driverWithdrawalColumn: ColumnDef<WithdrawType>[] = [
 	{
@@ -12,9 +13,13 @@ export const driverWithdrawalColumn: ColumnDef<WithdrawType>[] = [
 	{
 		accessorKey: "refId",
 		header: "Reference ID",
-		cell: ({ row }) => (
-			<p className="table-data-sm !lowercase">{row.original.refId}</p>
-		),
+		cell: ({ row }) => {
+			const id = row.original?.refId
+				? truncateString(row.original?.refId, 20)
+				: "-";
+
+			return <p className="table-data-sm !lowercase">{id}</p>;
+		},
 	},
 	{
 		accessorKey: "amount",

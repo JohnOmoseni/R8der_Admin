@@ -11,7 +11,7 @@ export const SignUpSchema = yup.object().shape({
 });
 
 export const PasswordSchema = yup.object().shape({
-	current_password: yup.string(),
+	current_password: yup.string().required("Current password is required"),
 	new_password: yup
 		.string()
 		.min(8, "New password must be at least 8 characters")

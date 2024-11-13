@@ -61,7 +61,7 @@ function Staffs() {
 				await deactivateMutation.mutateAsync(selectedIds);
 				toast.success(`${res} deactivated successfully`);
 			} else if (id === "delete") {
-				await deleteStaffMutation.mutateAsync("");
+				await deleteStaffMutation.mutateAsync(selectedIds);
 				toast.success(`${res} deleted successfully`);
 			}
 
@@ -104,7 +104,11 @@ function Staffs() {
 
 								<div className="row-flex gap-2.5 w-full">
 									<div
-										className={cn("badge-long !bg-background-100 !w-full")}
+										className={cn(
+											"badge-long  !bg-background-100 !w-full",
+											activateMutation.isPending &&
+												"!grid grid-cols-[1fr_auto] !gap-2.5"
+										)}
 										onClick={() => handleAction("activate")}
 									>
 										Activate
@@ -117,7 +121,9 @@ function Staffs() {
 									</div>
 									<div
 										className={cn(
-											"badge-long !bg-foreground !text-secondary-foreground !w-full"
+											"badge-long  !bg-foreground !text-secondary-foreground !w-full",
+											deactivateMutation.isPending &&
+												"!grid grid-cols-[1fr_auto] !gap-2.5"
 										)}
 										onClick={() => handleAction("deactivate")}
 									>
@@ -129,7 +135,9 @@ function Staffs() {
 
 									<div
 										className={cn(
-											"badge-long !bg-red-700 !text-secondary-foreground !w-full"
+											"badge-long  !bg-red-700 !text-secondary-foreground !w-full",
+											deleteStaffMutation.isPending &&
+												"!grid grid-cols-[1fr_auto] !gap-2.5"
 										)}
 										onClick={() => handleAction("delete")}
 									>

@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StatusBadge } from "../../StatusBadge";
 import { SettlementType } from "@/types/server";
+import { truncateString } from "@/utils";
 import SettlementActions from "@/app/(dashboard)/settlements/settlement-actions";
 
 export const settlementColumn: ColumnDef<SettlementType>[] = [
@@ -23,11 +24,13 @@ export const settlementColumn: ColumnDef<SettlementType>[] = [
 	{
 		accessorKey: "transactionId",
 		header: "Transaction ID",
-		cell: ({ row }) => (
-			<p className="table-data-sm !text-center">
-				{row.original?.transaction_id}
-			</p>
-		),
+		cell: ({ row }) => {
+			const id = row.original?.transaction_id
+				? truncateString(row.original?.transaction_id, 20)
+				: "-";
+
+			return <p className="table-data-sm !text-center">{id}</p>;
+		},
 	},
 
 	{

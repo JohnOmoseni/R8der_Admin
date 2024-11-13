@@ -3,26 +3,26 @@ import { Close } from "@/constants/icons";
 import { CouponResponseType } from "@/types/server";
 
 function CouponModal({
-	setOpenModal,
+	closeModal,
 	type,
 	coupon,
 }: {
-	setOpenModal: () => void;
+	closeModal: () => void;
 	coupon?: CouponResponseType;
 	type?: "edit" | "create";
 }) {
 	return (
 		<div className="">
 			<div className="pb-4">
-				<div className="badge" onClick={setOpenModal}>
+				<div className="badge" onClick={closeModal}>
 					<Close className="icon size-4" />
-					<p className="mt-[1px] text-sm font-medium capitalize transition">
+					<p className="mt-[1px] text-sm leading-none font-medium capitalize transition">
 						Close
 					</p>
 				</div>
 			</div>
 
-			<div className="flex-1 border-t border-border px-0.5 pt-5 pb-4">
+			<div className="flex-1 border-t border-border px-0.5 pt-5">
 				<h3 className="capitalize text-[1.2rem]">
 					{type === "create" ? "Create A Discount" : "Edit Discount"}
 				</h3>

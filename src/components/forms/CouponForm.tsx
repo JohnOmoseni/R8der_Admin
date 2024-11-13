@@ -93,7 +93,7 @@ const CouponForm = ({
 			discountType: coupon?.discountType || ("" as any),
 			amount: (coupon?.amount as string) || "",
 			target: coupon?.target || ("" as any),
-			expiryDate: (coupon?.expiryDate as any) || new Date(),
+			expiryDate: (coupon?.expiryDate as any) || "",
 		},
 		validationSchema: CouponSchema,
 		onSubmit,
@@ -111,7 +111,7 @@ const CouponForm = ({
 				fieldType={FormFieldType.INPUT}
 				name="title"
 				label="Title"
-				field={{ value: values.title, placeholder: "Placeholder" }}
+				field={{ value: values.title, placeholder: "Enter Title" }}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}

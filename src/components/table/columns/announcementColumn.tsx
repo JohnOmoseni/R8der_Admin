@@ -1,5 +1,5 @@
 import { AnnouncementType } from "@/types/server";
-import { stripHtmlTags } from "@/utils";
+import { stripHtmlTags, truncateString } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 
 type ColumnsProps = {
@@ -17,11 +17,15 @@ export const useAnnouncementsColumn = ({
 		{
 			accessorKey: "content",
 			header: "Broadcasts",
-			cell: ({ row }) => (
-				<p className="table-data-sm line-clamp-3">
-					{stripHtmlTags(row.original?.content)}
-				</p>
-			),
+			cell: ({ row }) => {
+				const content = stripHtmlTags(row.original?.content);
+
+				return (
+					<p className="table-data-sm line-clamp-3">
+						{truncateString(content!, 20)}
+					</p>
+				);
+			},
 		},
 		{
 			accessorKey: "targetAudience",
