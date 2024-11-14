@@ -59,7 +59,7 @@ function Trips({
 				{tripsStats?.length &&
 					tripsStats.map(({ label, value }, idx) => (
 						<div
-							className="grid grid-cols-[1fr_max-content] items-center gap-4"
+							className="grid grid-cols-[1fr_max-content] items-center gap-4 first-of-type:!border-none last-of-type:!border-l"
 							key={idx}
 						>
 							<div className="flex-column gap-1">
@@ -111,6 +111,7 @@ function Trips({
 								{selectedPeriodType}
 							</div>
 						}
+						triggerStyles="max-sm:!px-"
 						placeholder="Custom"
 						defaultValue={selectOptions[3]}
 						options={selectOptions}

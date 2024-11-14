@@ -9,11 +9,13 @@ export type NavLinkProps = SidebarLinksProp & {
 	idx?: number;
 };
 
-function NavLinks({ label, href, icon: Icon, idx }: NavLinkProps) {
+function NavLinks({ label, href, icon: Icon, tag, idx }: NavLinkProps) {
 	const { pathname } = useLocation();
-	const isActive = pathname === href;
-
+	const isActive =
+		pathname === href ||
+		(pathname.startsWith(`${href}/`) && pathname.includes(tag!));
 	const { openMenu } = useAppSelector((state) => state.appState);
+
 	const dispatch = useAppDispatch();
 
 	const handleClick = () => {
@@ -21,7 +23,7 @@ function NavLinks({ label, href, icon: Icon, idx }: NavLinkProps) {
 	};
 
 	return (
-		<li className="nav-link relative w-full">
+		<li title={tag} className="nav-link relative w-full">
 			<Link
 				to={href}
 				{...animateFn(linksAni, idx)}

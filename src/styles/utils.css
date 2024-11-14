@@ -52,6 +52,16 @@
 	left: -0.3rem !important;
 }
 
+/* REACT QUILL */
+.quill-container .quill {
+	height: auto !important;
+	min-height: 100px;
+	max-height: 180px !important;
+}
+.quill .ql-editor p {
+	font-size: 0.9rem;
+}
+
 /* Pagination */
 .pagination {
 	list-style: none;

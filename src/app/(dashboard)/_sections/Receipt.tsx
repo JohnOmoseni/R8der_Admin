@@ -118,9 +118,9 @@ function Receipt({ id, type, specificType }: ReceiptProps) {
 		}));
 
 	return (
-		<div className="py-1.5 flex-column gap-3">
+		<div className="max-sm:pt-4 py-1.5 flex-column gap-3">
 			<div>
-				<h2 className="text-2xl">
+				<h2 className="text-2xl leading-6 ">
 					{type === "transactionReceipt"
 						? specificType === "settlement_receipt"
 							? "Settlement Details"

@@ -153,7 +153,7 @@ type TripCollapsibleType = {
 	linkInner: string;
 };
 
-const TripCollapsible = ({
+export const TripCollapsible = ({
 	href,
 	Icon,
 	label,

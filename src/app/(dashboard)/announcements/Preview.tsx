@@ -1,3 +1,4 @@
+import PreviewEditor from "@/components/forms/PreviewEditor";
 import EmptyList from "@/components/EmptyList";
 import { Button } from "@/components/CustomButton";
 import { AnnouncementType } from "@/types/server";
@@ -39,9 +40,9 @@ function Preview({
 						<div className="flex-column gap-2.5 mt-2 w-full">
 							<p className="font-semibold">Message</p>
 
-							<div className="rounded-lg w-full max-h-[200px] scrollbar-thin overflow-y-auto bg-background-100 py-5 px-4 pr-1.5 flex-column gap-4 shadow-sm">
+							<div className="quill-container rounded-lg w-full max-h-[180px] scrollbar-thin overflow-y-auto bg-background-100 py-1.5 pr-1.5 flex-column gap-4 shadow-sm">
 								<p className="leading-5 text-foreground-100 w-full">
-									{preview?.content}
+									<PreviewEditor value={preview?.content} />
 								</p>
 							</div>
 						</div>

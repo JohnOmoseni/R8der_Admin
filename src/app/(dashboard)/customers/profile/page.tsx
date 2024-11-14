@@ -50,10 +50,10 @@ function CustomerProfile() {
 						/>
 
 						<div className="flex-column gap-0.5 flex-1 w-full">
-							<h3 className="text-lg sm:text-xl">
+							<h3 className="text-lg sm:text-xl leading-5">
 								{riderData?.fullName || "Rider"} details
 							</h3>
-							<span className="grey-text !font-light">
+							<span className="grey-text !font-light mt-0.5">
 								Date joined:{" "}
 								{riderData?.dateJoined
 									? dayjs(riderData?.dateJoined).format("YYYY-MM-DD, h:mm A")
