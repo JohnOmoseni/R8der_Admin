@@ -43,7 +43,7 @@ const CreateAnnouncementForm = ({ setOpenModal }: CreateAnnouncementProps) => {
 	];
 
 	const onSubmit = async (values: any) => {
-		setIsLoading(true);
+		// setIsLoading(true);
 
 		const data = {
 			subject: values.title,
@@ -53,6 +53,9 @@ const CreateAnnouncementForm = ({ setOpenModal }: CreateAnnouncementProps) => {
 			channel: values?.channel?.toUpperCase(),
 			publishedBy: values.published_by,
 		};
+		console.log("TEST", values);
+
+		return;
 
 		try {
 			await broadcastMutation.mutateAsync(data);

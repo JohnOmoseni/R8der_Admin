@@ -203,7 +203,7 @@ const CustomFormField = (props: CustomProps) => {
 				fieldType !== FormFieldType.CHECKBOX && "w-full",
 				errors?.[name] && touched?.[name]
 					? "is-error"
-					: errors?.[name] && FormFieldType.SKELETON
+					: errors?.[name] && fieldType === FormFieldType.SKELETON
 					? "is-error"
 					: ""
 			)}
