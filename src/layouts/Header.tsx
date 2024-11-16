@@ -24,7 +24,10 @@ function Header({
 }) {
 	const dispatch = useDispatch();
 	const [hasUnread, setHasUnread] = useState(false);
-	const [notifications, setNotifications] = useState<Notifications>([]);
+	const [notifications, setNotifications] = useState<Notifications>(() => {
+		const storedNotifications = localStorage.getItem("notifications_tripiee");
+		return storedNotifications ? JSON.parse(storedNotifications) : [];
+	});
 
 	useEffect(() => {
 		const socket: Socket = io(SOCKET_URL, {
@@ -45,7 +48,15 @@ function Header({
 				read: false,
 				timestamp: new Date().toISOString(),
 			};
-			setNotifications((prev) => [newNotification, ...prev]);
+			setNotifications((prev) => {
+				const updatedNotifications = [newNotification, ...prev];
+
+				localStorage.setItem(
+					"notifications_tripiee",
+					JSON.stringify(updatedNotifications)
+				);
+				return updatedNotifications;
+			});
 			setHasUnread(true);
 		});
 
@@ -66,7 +77,7 @@ function Header({
 						className={cn("place-items-center grid", customContent && "pl-2")}
 					>
 						<PopoverWrapper
-							containerStyles="max-w-sm rounded-xl border-border-100 min-w-[320px] mr-1 max-h-[540px] py-6 scrollbar-thin overflow-y-auto"
+							containerStyles="max-w-sm rounded-xl border-border-100 min-w-[290px] max-[410px]:max-w-[320px] min-[500px]:min-w-[360px] mr-1 max-h-[540px] py-3.5 min-[500px]:pt-5 pb-4 scrollbar-thin overflow-y-auto"
 							trigger={
 								<span
 									className="icon-div !bg-background-100 relative"
@@ -115,7 +126,16 @@ const Notification = ({
 
 	const handleMarkAllAsRead = useCallback(() => {
 		setHasUnread(false);
-		setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+
+		setNotifications((prev) => {
+			const updatedNotifications = prev.map((n) => ({ ...n, read: true }));
+			localStorage.setItem(
+				"notifications_tripiee",
+				JSON.stringify(updatedNotifications)
+			);
+
+			return updatedNotifications;
+		});
 	}, [setHasUnread]);
 
 	const toggleViewAll = () => setExpanded((prev) => !prev);
@@ -134,22 +154,18 @@ const Notification = ({
 			<div className="flex-column pr-1">
 				{!notification.read ? (
 					<>
-						<h4 className="font-semibold">New Notification</h4>
+						<h4 className="font-semibold max-sm:text-base">New Notification</h4>
 						<p
 							title={notification.message || ""}
-							className="text-sm my-0.5 text-foreground-100 max-w-[50ch] line-clamp-4"
+							className="text-sm my-0.5 text-foreground-100 w-full max-w-[50ch] line-clamp-4"
 						>
 							{notification.message || <span className="">No message</span>}
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel amet
-							exercitationem alias pariatur atque perferendis necessitatibus?
-							Eius aperiam recusandae voluptates rem quibusdam, eos debitis,
-							vero aliquid temporibus aliquam autem assumenda.
 						</p>
 					</>
 				) : (
 					<p
 						title={notification.message || ""}
-						className="text-sm text-foreground-100 max-w-[50ch] line-clamp-4"
+						className="text-sm text-foreground-100 w-full max-w-[50ch] line-clamp-4"
 					>
 						{notification.message || <span className="">No message</span>}
 					</p>
@@ -165,10 +181,10 @@ const Notification = ({
 	return (
 		<div className="flex-column gap-3 px-1">
 			<div className="row-flex-btwn gap-4">
-				<h3 className="font-semibold text-[1.05rem]">Notifications</h3>
+				<h3 className="font-semibold sm:text-[1.05rem]">Notifications</h3>
 				<span
 					onClick={handleMarkAllAsRead}
-					className="text-sm text-secondary cursor-pointer font-semibold active:scale-95 transition"
+					className="text-xs sm:text-sm text-end text-secondary cursor-pointer font-semibold active:scale-95 transition"
 				>
 					Mark all as read
 				</span>
@@ -186,7 +202,7 @@ const Notification = ({
 
 			<div
 				onClick={toggleViewAll}
-				className="cursor-pointer transition active:scale-95 text-base row-flex px-4 mt-auto text-secondary font-semibold"
+				className="cursor-pointer transition active:scale-95 text-sm sm:text-base row-flex px-4 mt-auto text-secondary font-semibold"
 			>
 				{expanded ? "View Less" : "View More"}
 				<ArrowRight className="size-4 ml-1" />

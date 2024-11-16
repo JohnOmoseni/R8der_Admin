@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { DropdownVariant } from "@/components/ui/components/DropdownVariant";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
-import CouponModal from "./CouponModal";
 import { useDeactivateCoupon, useDeleteCoupon } from "@/hook/useSettings";
+import CouponModal from "./CouponModal";
 
 const dropdownList = ["Edit", "Delete", "Deactivate"];
 
@@ -60,8 +60,9 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 			await deactivateMutation.mutateAsync(coupon?.target);
 			toast.success("Coupon deactivated successfully");
 			navigate(0);
-		} catch {
-			toast.error("Something went wrong");
+		} catch (error: any) {
+			const message = error.response?.data?.message;
+			toast.error(message || "Error processing request");
 		}
 	};
 
@@ -70,8 +71,9 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 			await deleteMutation.mutateAsync(coupon?.target);
 			toast.success("Coupon deleted successfully");
 			navigate(0);
-		} catch {
-			toast.error("Something went wrong");
+		} catch (error: any) {
+			const message = error.response?.data?.message;
+			toast.error(message || "Error processing request");
 		}
 	};
 
@@ -94,7 +96,7 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 									handleItemClick(index, closeDropdown, event)
 								}
 							>
-								<div className="row-flex-btwn w-full gap-2">
+								<div className="row-flex-btwn w-full gap-2 cursor-pointer">
 									{item?.icon && <item.icon className="mr-2 size-4" />}
 
 									{item}
