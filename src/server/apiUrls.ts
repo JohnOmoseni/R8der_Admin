@@ -67,7 +67,7 @@ export default {
 	PUT_UPDATE_SETTINGS: `/trip/dashboard/settings`,
 	PATCH_UPDATE_SETTINGS: `/trip/account/auth/change/password`,
 
-	PUT_UPDATE_COUPON: `/trip/dashboard/update`,
+	PUT_UPDATE_COUPON: `/trip/dashboard/coupon/update`,
 	PUT_DEACTIVATE_COUPON: `/trip/dashboard/deactivate`,
 
 	PUT_UPDATE_ROLE: `/trip/dashboard/update/role`,
