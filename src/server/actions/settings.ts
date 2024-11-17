@@ -6,7 +6,6 @@ import {
 	SettingsType,
 	UpdatePasswordParams,
 	CouponResponseType,
-	CouponTargetParmas,
 } from "@/types/server";
 import { SettingsDataType } from "@/types";
 
@@ -131,7 +130,7 @@ const updateDiscount = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(
-			`${APIURLS.PUT_UPDATE_COUPON}/${data?.target}`,
+			`${APIURLS.PUT_UPDATE_COUPON}/${data?.code}`,
 			data
 		);
 
@@ -142,7 +141,7 @@ const updateDiscount = async (
 };
 
 const deactivateCouponById = async (
-	id: CouponTargetParmas
+	id: string
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(`${APIURLS.PUT_DEACTIVATE_COUPON}/${id}`);

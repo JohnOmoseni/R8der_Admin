@@ -1,10 +1,6 @@
 import { SettingsResponse } from "@/types/server";
 import { useQuery } from "@tanstack/react-query";
-import {
-	CouponResponseType,
-	CouponTargetParmas,
-	UpdatePasswordParams,
-} from "@/types/server";
+import { CouponResponseType, UpdatePasswordParams } from "@/types/server";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { settingsApi } from "@/server/actions/settings";
 import { SettingsDataType } from "@/types";
@@ -121,8 +117,7 @@ export const useDeactivateCoupon = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (data: CouponTargetParmas) =>
-			settingsApi.deactivateCouponById(data),
+		mutationFn: (data: string) => settingsApi.deactivateCouponById(data),
 		onError: (error) => console.error("[Deactivated Discount Error]", error),
 		onSuccess: (_values) => {
 			queryClient.invalidateQueries({ queryKey: ["getAllCouponCodes"] });

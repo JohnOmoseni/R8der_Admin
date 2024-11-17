@@ -16,7 +16,6 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 	const [openEditModal, setOpenEditModal] = useState(false);
 	const deactivateMutation = useDeactivateCoupon();
 	const deleteMutation = useDeleteCoupon();
-	const navigate = useNavigate();
 
 	const [loadingStates, setLoadingStates] = useState<boolean[]>(
 		dropdownList!?.map(() => false)
@@ -57,9 +56,10 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 
 	const handleDeactivateAcoupon = async () => {
 		try {
-			await deactivateMutation.mutateAsync(coupon?.target);
-			toast.success("Coupon deactivated successfully");
-			navigate(0);
+			const res = await deactivateMutation.mutateAsync(coupon?.code);
+			const message = res?.message;
+
+			toast.success(message || "Coupon deactivated successfully");
 		} catch (error: any) {
 			const message = error.response?.data?.message;
 			toast.error(message || "Error processing request");
@@ -68,9 +68,10 @@ function CouponActions({ coupon }: { coupon: CouponResponseType }) {
 
 	const handleDeleteCoupon = async () => {
 		try {
-			await deleteMutation.mutateAsync(coupon?.target);
-			toast.success("Coupon deleted successfully");
-			navigate(0);
+			const res = await deleteMutation.mutateAsync(coupon?.code);
+			const message = res?.message;
+
+			toast.success(message || "Coupon deleted successfully");
 		} catch (error: any) {
 			const message = error.response?.data?.message;
 			toast.error(message || "Error processing request");

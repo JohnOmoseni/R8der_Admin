@@ -20,7 +20,7 @@ const AddStaffForm = () => {
 			value: "ADMIN",
 			label: "Admin",
 		},
-		{ value: "STAFF", label: "STAFF" },
+		{ value: "STAFF", label: "Staff" },
 	];
 
 	const onSubmit = async (values: InferType<typeof AddStaffSchema>) => {

@@ -24,6 +24,7 @@ export type Status =
 	| "Verified"
 	| "Not Verified"
 	| "Active"
+	| "Inactive"
 	| "Deactivated";
 
 export type ROLE = "ADMIN" | "STAFF";

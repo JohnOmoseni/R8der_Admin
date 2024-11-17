@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CouponResponseType } from "@/types/server";
+import { StatusBadge } from "@/components/StatusBadge";
 import CouponActions from "@/app/(dashboard)/settings/CouponActions";
 
 export const couponsColumn: ColumnDef<CouponResponseType>[] = [
@@ -49,6 +50,18 @@ export const couponsColumn: ColumnDef<CouponResponseType>[] = [
 		cell: ({ row }) => (
 			<p className="table-data-sm">{row.original?.expiryDate as string}</p>
 		),
+	},
+	{
+		accessorKey: "status",
+		header: "Status",
+		cell: ({ row }) => (
+			<div className="flex min-w-[80px] max-sm:px-2">
+				<StatusBadge
+					status={row.original?.active === true ? "Active" : "Inactive"}
+				/>
+			</div>
+		),
+		enableColumnFilter: true,
 	},
 	{
 		id: "actions",
