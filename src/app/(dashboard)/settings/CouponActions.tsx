@@ -3,7 +3,6 @@ import { KeyboardArrowDown } from "@/constants/icons";
 import { CouponResponseType } from "@/types/server";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { DropdownVariant } from "@/components/ui/components/DropdownVariant";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { BtnLoader } from "@/components/fallback/FallbackLoader";
