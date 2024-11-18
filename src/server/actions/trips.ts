@@ -12,7 +12,6 @@ const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_ALL_TRIPS}`, payload);
-		console.log("[ALL TRIPS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -23,7 +22,6 @@ const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
 const getTripById = async (tripId: string): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_TRIP_DETAILS}/${tripId}`);
-		console.log("[TRIP DETAILS (RECEIPT) RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

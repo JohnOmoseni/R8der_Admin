@@ -11,7 +11,6 @@ const getWithdrawals = async (): Promise<AxiosResponse["data"]> => {
 	};
 	try {
 		const response = await api.post(`${APIURLS.GET_WITHDRAWALS}`, payload);
-		console.log("[WITHDRAWALS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -26,7 +25,6 @@ const getWithdrawalById = async (
 		const response = await api.get(
 			`${APIURLS.GET_WITHDRAWAL_DETAILS}/${transactionId}`
 		);
-		console.log("[WITHDRAWAL DETAILS (RECEIPT) RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -38,7 +36,6 @@ const getWithdrawalById = async (
 const getSettlements = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_SETTLEMENTS}`);
-		console.log("[SETTLEMENTS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -53,7 +50,6 @@ const getSettlementById = async (
 		const response = await api.get(
 			`${APIURLS.GET_SETTLEMENT_DETAILS}/${transactionId}`
 		);
-		console.log("[SETTLEMENTS DETAILS (RECEIPT) RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

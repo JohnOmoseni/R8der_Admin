@@ -55,19 +55,26 @@ function Staffs() {
 
 		try {
 			if (id === "activate") {
-				await activateMutation.mutateAsync(selectedIds);
-				toast.success(`${res} activated successfully`);
+				const response = await activateMutation.mutateAsync(selectedIds);
+				const message = response?.message;
+
+				toast.success(message || `${res} activated successfully`);
 			} else if (id === "deactivate") {
-				await deactivateMutation.mutateAsync(selectedIds);
-				toast.success(`${res} deactivated successfully`);
+				const response = await deactivateMutation.mutateAsync(selectedIds);
+				const message = response?.message;
+
+				toast.success(message || `${res} deactivated successfully`);
 			} else if (id === "delete") {
-				await deleteStaffMutation.mutateAsync(selectedIds);
-				toast.success(`${res} deleted successfully`);
+				const response = await deleteStaffMutation.mutateAsync(selectedIds);
+				const message = response?.message;
+
+				toast.success(message || `${res} deleted successfully`);
 			}
 
 			refetch();
-		} catch (error) {
-			toast.error("Error processing request");
+		} catch (error: any) {
+			const message = error.response?.data?.message;
+			toast.error(message || "Error processing request");
 		}
 	};
 

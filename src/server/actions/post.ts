@@ -20,7 +20,6 @@ const approveDriverPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_APPROVE_DRIVER, payload);
-		console.log("[APPROVE DRIVER RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -36,7 +35,6 @@ const rejectDriverPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_REJECT_DRIVER, payload);
-		console.log("[REJECT DRIVER RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -55,7 +53,6 @@ const addStaffPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_ADD_STAFF, payload);
-		console.log("[ADD STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -71,7 +68,6 @@ const activateStaff = async (
 	};
 	try {
 		const response = await api.put(APIURLS.PUT_ACTIVATE_STAFF, payload);
-		console.log("[ACTIVATE STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -87,7 +83,6 @@ const deactivateStaff = async (
 	};
 	try {
 		const response = await api.put(APIURLS.PUT_DEACTIVATE_STAFF, payload);
-		console.log("[DEACTIVATE STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -120,7 +115,6 @@ const updateSetting = async (
 
 	try {
 		const response = await api.put(`${APIURLS.PUT_UPDATE_SETTINGS}`, payload);
-		console.log("[UPDATE SETTING RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -133,7 +127,6 @@ const updatePassword = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.patch(`${APIURLS.PATCH_UPDATE_SETTINGS}`, data);
-		console.log("[UPDATE PASSWORD RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -151,7 +144,6 @@ const createCoupon = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_CREATE_COUPON, payload);
-		console.log("[CREATE COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -167,7 +159,6 @@ const updateDiscount = async (
 			`${APIURLS.PUT_UPDATE_COUPON}/${data?.target}`,
 			data
 		);
-		console.log("[UPDATED DISCOUNT RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -180,7 +171,6 @@ const deactivateCouponById = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(`${APIURLS.PUT_DEACTIVATE_COUPON}/${id}`);
-		console.log("[DEACTIVATED COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -191,7 +181,6 @@ const deactivateCouponById = async (
 const deleteCouponById = async (id: string): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.delete(`${APIURLS.DELETE_COUPON}/${id}`);
-		console.log("[DLETED COUPON RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -205,7 +194,6 @@ const updateRole = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(`${APIURLS.PUT_UPDATE_ROLE}`, data);
-		console.log("[UPDATED ROLE RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

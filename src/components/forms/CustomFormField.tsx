@@ -26,6 +26,7 @@ interface CustomProps {
 		value: any;
 		type?: string;
 		placeholder?: string;
+		disabled?: boolean;
 	};
 	isShowPasswordError?: boolean;
 	containerStyles?: string;

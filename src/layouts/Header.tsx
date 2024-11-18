@@ -33,11 +33,16 @@ function Header({
 		const socket: Socket = io(SOCKET_URL, {
 			transports: ["websocket"], // Required for v2 compatibility
 			upgrade: false, // Ensures connection only uses WebSocket
+			reconnection: true,
 		});
 
 		// Listen for events from the server
 		socket.on("connect", () => {
 			console.log("[Connected to socket]");
+		});
+
+		socket.on("reconnect", (attempt) => {
+			console.log(`[Socket Reconnected] after ${attempt} attempt(s)`);
 		});
 
 		socket.on("AdminNotification", (message: any) => {

@@ -76,5 +76,5 @@ export default {
 
 	// DELETE Requests
 	DELETE_COUPON: `/trip/dashboard/delete`,
-	DELETE_STAFF: `/account/profile/delete`,
+	DELETE_STAFF: `/trip/dashboard/staff/delete`,
 };

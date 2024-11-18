@@ -8,7 +8,6 @@ import { AddStaffParams, UpdateRoleParams } from "@/types/server";
 const getAllRoles = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_ALL_ROLES}`);
-		console.log("[ALL ROLES RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -19,7 +18,6 @@ const getAllRoles = async (): Promise<AxiosResponse["data"]> => {
 const getAllEmployee = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_STAFFS_ADMINS}`);
-		console.log("[ALL STAFFS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -30,7 +28,6 @@ const getAllEmployee = async (): Promise<AxiosResponse["data"]> => {
 const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_ALL_ADMINS}`);
-		console.log("[ALL ADMINS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -41,7 +38,6 @@ const getAllAdmins = async (): Promise<AxiosResponse["data"]> => {
 const getStaff = async (): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.get(`${APIURLS.GET_STAFF_DETAILS}`);
-		console.log("[STAFF DETAILS RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -61,7 +57,6 @@ const addStaffPost = async (
 	};
 	try {
 		const response = await api.post(APIURLS.POST_ADD_STAFF, payload);
-		console.log("[ADD STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -77,7 +72,6 @@ const activateStaff = async (
 	};
 	try {
 		const response = await api.put(APIURLS.PUT_ACTIVATE_STAFF, payload);
-		console.log("[ACTIVATE STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -93,7 +87,6 @@ const deactivateStaff = async (
 	};
 	try {
 		const response = await api.put(APIURLS.PUT_DEACTIVATE_STAFF, payload);
-		console.log("[DEACTIVATE STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -112,7 +105,6 @@ const deleteStaff = async (
 		const response = await api.delete(`${APIURLS.DELETE_STAFF}`, {
 			data: payload,
 		});
-		console.log("[DELETED STAFF RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {
@@ -126,7 +118,6 @@ const updateRole = async (
 ): Promise<AxiosResponse["data"]> => {
 	try {
 		const response = await api.put(`${APIURLS.PUT_UPDATE_ROLE}`, data);
-		console.log("[UPDATED ROLE RESPONSE]", response);
 
 		return response.data;
 	} catch (error) {

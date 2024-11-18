@@ -61,16 +61,13 @@ const CouponForm = ({
 				toast.success("Coupon created successfully");
 				navigate("/dashboard/settings/success", {
 					state: { from: "create" },
-					replace: true,
 				});
 			} else if (type === "edit") {
 				await editCouponMutation.mutateAsync(data);
 				toast.success("Coupon updated successfully");
-				navigate("/dashboard/settings/success"),
-					{
-						state: { from: "edit", coupon: data },
-						replace: true,
-					};
+				navigate("/dashboard/settings/success", {
+					state: { from: "edit", coupon: data },
+				});
 			}
 		} catch (err) {
 			let msg = type === "create" ? "creating" : "updating";
@@ -111,7 +108,11 @@ const CouponForm = ({
 				fieldType={FormFieldType.INPUT}
 				name="title"
 				label="Title"
-				field={{ value: values.title, placeholder: "Enter Title" }}
+				field={{
+					value: values.title,
+					placeholder: "Enter Title",
+					disabled: type === "edit",
+				}}
 				onChange={handleChange}
 				onBlur={handleBlur}
 				errors={errors}

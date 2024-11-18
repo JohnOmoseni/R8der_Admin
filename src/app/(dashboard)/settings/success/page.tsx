@@ -7,8 +7,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function Success() {
 	const navigate = useNavigate();
-	const { state } = useLocation();
+	const location = useLocation();
 	const [showModal, setShowModal] = useState(true);
+	const state = location.state;
 
 	const msg =
 		state?.from === "edit" ? (
