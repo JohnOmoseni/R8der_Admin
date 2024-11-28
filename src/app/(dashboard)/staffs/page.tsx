@@ -112,7 +112,7 @@ function Staffs() {
 								<div className="row-flex gap-2.5 w-full">
 									<div
 										className={cn(
-											"badge-long  !bg-background-100 !w-full",
+											"badge-long !bg-background-100 !w-full",
 											activateMutation.isPending &&
 												"!grid grid-cols-[1fr_auto] !gap-2.5"
 										)}
@@ -128,9 +128,9 @@ function Staffs() {
 									</div>
 									<div
 										className={cn(
-											"badge-long  !bg-foreground !text-secondary-foreground !w-full",
+											"badge-long !bg-foreground !text-secondary-foreground !w-full",
 											deactivateMutation.isPending &&
-												"!grid grid-cols-[1fr_auto] !gap-2.5"
+												"!grid grid-cols-[1fr_auto] !gap-2.5 !px-8"
 										)}
 										onClick={() => handleAction("deactivate")}
 									>

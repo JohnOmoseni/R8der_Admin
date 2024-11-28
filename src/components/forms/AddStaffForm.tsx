@@ -35,8 +35,10 @@ const AddStaffForm = () => {
 			await newStaffMutation.mutateAsync(data);
 			toast.success("Staff added successfully");
 			navigate("/dashboard/staffs/add-staff/success");
-		} catch {
-			toast.error("Error adding staff");
+		} catch (error: any) {
+			const message = error?.response?.data?.message;
+
+			toast.error(message || "Error adding staff");
 		}
 	};
 

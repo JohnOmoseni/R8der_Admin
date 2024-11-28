@@ -152,7 +152,7 @@ const Notification = ({
 		<li key={index} className="grid grid-cols-[max-content_1fr] gap-2.5 py-2">
 			<span
 				className={cn(
-					"size-2.5 mt-[5px] rounded-full clip-circle",
+					"size-2.5 mt-[3px] rounded-full clip-circle",
 					notification.read ? "bg-grey-200" : "bg-secondary"
 				)}
 			/>
