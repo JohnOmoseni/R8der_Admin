@@ -45,6 +45,29 @@ export default function AuthProvider({
 		(typeof APP_ROLES)[keyof typeof APP_ROLES] | string | null
 	>();
 
+	// Session timeout management
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+
+		const startSessionTimer = () => {
+			if (timeoutId) clearTimeout(timeoutId);
+
+			timeoutId = setTimeout(() => {
+				handleLogout();
+				toast.info("Session expired. You have been logged out.");
+			}, 30 * 60 * 1000); // 30 minutes
+		};
+
+		// Start the timer when user is authenticated
+		if (isAuthenticated) {
+			startSessionTimer();
+		}
+
+		return () => {
+			if (timeoutId) clearTimeout(timeoutId);
+		};
+	}, [isAuthenticated]); // Only re-run when authentication status changes
+
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
@@ -143,6 +166,7 @@ export default function AuthProvider({
 			};
 
 			setUser(updatedUser as User);
+			setIsAuthenticated(true);
 			toast.success("OTP verified successfully. Redirecting to dashboard...");
 			sessionStorage.setItem("currentUser_ryder", JSON.stringify(updatedUser));
 
