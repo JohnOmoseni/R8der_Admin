@@ -10,7 +10,7 @@ const login = async (params: {
 	try {
 		const response = await axios.post(
 			"https://tripiee.com/trip/account/auth/signin",
-			params
+			{ ...params, userType: "ADMIN" }
 		);
 
 		return response.data;

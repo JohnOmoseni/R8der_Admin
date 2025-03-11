@@ -4,6 +4,8 @@ export const API_DOMAIN =
 export const SOCKET_URL =
 	import.meta.env.VITE_SOCKET_URL || "wss://tripiee.com:8443";
 
+export const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAP_APIKEY || "";
+
 if (!API_DOMAIN) {
 	throw new Error("API_DOMAIN is not defined in the environment variables.");
 }

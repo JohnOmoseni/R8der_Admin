@@ -4,10 +4,10 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "tsc -b && vite build",
-		"lint": "eslint .",
-		"preview": "vite preview"
+		"dev": "set NODE_OPTIONS=--openssl-legacy-provider && vite",
+		"build": "set NODE_OPTIONS=--openssl-legacy-provider && tsc && vite build",
+		"preview": "set NODE_OPTIONS=--openssl-legacy-provider && vite preview",
+		"lint": "eslint ."
 	},
 	"proxy": "http://tripiee.com/",
 	"dependencies": {
@@ -25,15 +25,18 @@
 		"@radix-ui/react-switch": "^1.1.0",
 		"@radix-ui/react-tooltip": "^1.1.2",
 		"@radix-ui/react-visually-hidden": "^1.1.0",
+		"@react-google-maps/api": "^2.20.3",
 		"@reduxjs/toolkit": "^2.2.7",
 		"@tanstack/react-query": "^5.55.4",
 		"@tanstack/react-table": "^8.20.5",
+		"@types/google.maps": "^3.58.1",
 		"axios": "^1.7.7",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^3.6.0",
 		"dayjs": "^1.11.13",
 		"file-saver": "^2.0.5",
+		"firebase": "^11.4.0",
 		"formik": "^2.4.6",
 		"framer-motion": "^11.5.4",
 		"input-otp": "^1.2.4",
