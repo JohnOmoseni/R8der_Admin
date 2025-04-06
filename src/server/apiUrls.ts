@@ -1,5 +1,5 @@
 export const API_DOMAIN =
-	import.meta.env.VITE_API_ENDPOINT || "https://tripiee.com";
+	import.meta.env.VITE_API_ENDPOINT || "https://api.tripiee.com";
 
 export const SOCKET_URL =
 	import.meta.env.VITE_SOCKET_URL || "wss://tripiee.com:8443";
