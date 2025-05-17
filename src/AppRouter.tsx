@@ -34,11 +34,9 @@ const AppRouter = () => {
 			<Routes>
 				<Route element={<LayoutProvider />}>
 					<Route path="/" element={<Navigate to={"/dashboard"} />} />
-					<Route path="*" element={<NotFound />} />
 
 					<Route path="/share">
 						<Route index element={<MapboxMap />} />
-						<Route path="*" element={<MapboxMap />} />
 					</Route>
 
 					<Route
@@ -97,6 +95,7 @@ const AppRouter = () => {
 							</Route>
 						</Route>
 					</Route>
+					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
 		</>

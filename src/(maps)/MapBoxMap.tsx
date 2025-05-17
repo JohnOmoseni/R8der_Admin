@@ -21,6 +21,7 @@ import Map, {
 import type { MapRef } from "react-map-gl/mapbox";
 import { useAuth } from "@/context/AuthContext";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useSearchParams } from "react-router-dom";
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -41,8 +42,8 @@ function MapboxMap() {
 	>(false);
 	const { handleLogin, token } = useAuth();
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const tripId = urlParams.get("tripId") || "";
+	const [searchParams] = useSearchParams();
+	const tripId = searchParams.get("tripId") || "";
 
 	const {
 		data: rideData,
