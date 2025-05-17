@@ -10,6 +10,7 @@ import {
 	Users,
 	Usersquare,
 } from "./icons";
+import { LocationResponse } from "@/types/server";
 
 export const routes = {
 	ROOT: "/",
@@ -285,3 +286,17 @@ export const keyMappings: Record<
 		{ key: "phone", label: "Phone number" },
 	],
 };
+
+export const default_location = [8.6753, 9.082];
+
+export async function getLocation() {
+	try {
+		const response = await fetch("http://ip-api.com/json/");
+		const json = (await response.json()) as LocationResponse;
+		if (typeof json.lat === "number" && typeof json.lon === "number") {
+			return [json.lon, json.lat];
+		}
+		// eslint-disable-next-line no-empty
+	} catch {}
+	return default_location;
+}

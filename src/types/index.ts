@@ -38,6 +38,7 @@ export type User = {
 	img: string;
 	otpVerified: boolean;
 	role: (typeof APP_ROLES)[keyof typeof APP_ROLES];
+	isAdminRoute?: boolean;
 };
 
 export type LoadingState = {

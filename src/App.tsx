@@ -2,6 +2,7 @@ import AuthProvider from "./context/AuthContext";
 import Provider from "./providers/Provider";
 import AppRouter from "./AppRouter";
 import { BrowserRouter as Router, useNavigate } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 
 import "@/styles/globals.css";
 import "@/styles/index.css";
@@ -21,9 +22,19 @@ const AppWrapper = () => {
 
 function App() {
 	return (
-		<Router>
-			<AppWrapper />
-		</Router>
+		<ErrorBoundary
+			fallback={
+				<div className="relative h-svh grid place-items-center">
+					<p className="text-center">
+						Something went wrong. Please refresh the page.
+					</p>
+				</div>
+			}
+		>
+			<Router>
+				<AppWrapper />
+			</Router>
+		</ErrorBoundary>
 	);
 }
 

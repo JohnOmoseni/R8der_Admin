@@ -63,7 +63,17 @@ export { default as Wallet } from "../assets/svgs/wallet.svg?react";
 export { default as Logo } from "../assets/svgs/Logo.svg?react";
 export { default as Announcement } from "../assets/svgs/announcement.svg?react";
 
+export { default as DestinationIcon } from "../assets/svgs/destination-icon.svg?react";
+export { default as SourceIcon } from "../assets/svgs/source-icon.svg?react";
+export { default as StartCircle } from "../assets/svgs/start-circle.svg?react";
+export { default as EndCircle } from "../assets/svgs/end-circle.svg?react";
+
+export { default as ClockIcon } from "../assets/svgs/clock-icon.svg?react";
+export { default as WarningIcon } from "../assets/svgs/warning.svg?react";
+export { default as StopIcon } from "../assets/svgs/stop-icon.svg?react";
+
 import logo from "/images/logo.png";
+import car_image from "/images/car-image.png";
 
 export {
 	Menu,
@@ -95,4 +105,5 @@ export {
 	ManageAccounts,
 	Lock,
 	logo,
+	car_image,
 };

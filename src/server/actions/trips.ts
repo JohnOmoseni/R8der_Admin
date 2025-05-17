@@ -4,7 +4,6 @@ import { AxiosResponse } from "axios";
 import { handleApiError } from "@/utils";
 
 // TRIPS ENDPOINT
-
 const getAllTrips = async (): Promise<AxiosResponse["data"]> => {
 	const payload = {
 		status: "ALL",

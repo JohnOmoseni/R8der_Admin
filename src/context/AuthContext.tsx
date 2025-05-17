@@ -18,7 +18,11 @@ type AuthContextType = {
 	user?: User | null;
 	token?: string | null;
 	role?: (typeof APP_ROLES)[keyof typeof APP_ROLES] | string | null;
-	handleLogin: (email: string, password: string) => Promise<void>;
+	handleLogin: (
+		email: string,
+		password: string,
+		isAdminRoute?: boolean
+	) => Promise<void>;
 	handleVerifyOtp: (otp: string, email: string) => Promise<void>;
 	handleResendOtp: (email: string) => Promise<void>;
 	handleLogout: () => Promise<void>;
@@ -92,7 +96,11 @@ export default function AuthProvider({
 		fetchUser();
 	}, []);
 
-	const handleLogin = async (email: string, password: string) => {
+	const handleLogin = async (
+		email: string,
+		password: string,
+		isAdminRoute?: boolean
+	) => {
 		if (!email || !password) return;
 		setIsLoadingAuth(true);
 
@@ -113,6 +121,7 @@ export default function AuthProvider({
 				img: response.photosImagePath,
 				otpVerified: false,
 				role: response?.roles?.[0] === "admin-user" ? "ADMIN" : "STAFF",
+				isAdminRoute,
 			};
 
 			setToken(authToken);
@@ -121,8 +130,10 @@ export default function AuthProvider({
 			sessionStorage.setItem("currentUser_ryder", JSON.stringify(currentUser));
 			sessionStorage.setItem("token_ryder", JSON.stringify(authToken));
 
-			toast.success(data?.message || "Login successful. Please verify OTP.");
-			navigate("/verify-otp");
+			if (!isAdminRoute) {
+				toast.success(data?.message || "Login successful. Please verify OTP.");
+				navigate("/verify-otp");
+			}
 		} catch (error: any) {
 			// null - request made and it failed
 			const errorMessage = error?.response?.data?.message;

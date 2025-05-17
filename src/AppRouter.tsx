@@ -23,82 +23,82 @@ import AuthLayout from "./layouts/AuthLayout";
 
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
-import ErrorBoundary from "./components/fallback/Error";
 import NotFound from "./layouts/NotFound";
 import AuthProtectedRoute from "./AuthProtectedRoute";
+import MapboxMap from "./(maps)/MapBoxMap";
 
 const AppRouter = () => {
 	return (
 		<>
 			<ScrollToTop />
-			<ErrorBoundary>
-				<Routes>
-					<Route element={<LayoutProvider />}>
-						<Route path="/" element={<Navigate to={"/dashboard"} />} />
-						<Route path="*" element={<NotFound />} />
+			<Routes>
+				<Route element={<LayoutProvider />}>
+					<Route path="/" element={<Navigate to={"/dashboard"} />} />
+					<Route path="*" element={<NotFound />} />
 
-						<Route
-							element={
-								<AuthProtectedRoute>
-									<AuthLayout />
-								</AuthProtectedRoute>
-							}
-						>
-							<Route path="/signin" element={<SignIn />} />
-							<Route path="/verify-otp" element={<VerifyOTP />} />
-						</Route>
+					<Route path="/share">
+						<Route index element={<MapboxMap />} />
+						<Route path="*" element={<MapboxMap />} />
+					</Route>
 
-						<Route
-							element={
-								<ProtectedRoute>
-									<DashboardLayout />
-								</ProtectedRoute>
-							}
-						>
-							<Route path="/dashboard">
-								<Route index element={<Dashboard />} />
-								<Route path="*" element={<Dashboard />} />
+					<Route
+						element={
+							<AuthProtectedRoute>
+								<AuthLayout />
+							</AuthProtectedRoute>
+						}
+					>
+						<Route path="/signin" element={<SignIn />} />
+						<Route path="/verify-otp" element={<VerifyOTP />} />
+					</Route>
 
-								<Route path="customers">
-									<Route index element={<Customers />} />
-									<Route path="profile/:id" element={<CustomerProfile />} />
-								</Route>
+					<Route
+						element={
+							<ProtectedRoute>
+								<DashboardLayout />
+							</ProtectedRoute>
+						}
+					>
+						<Route path="/dashboard">
+							<Route index element={<Dashboard />} />
+							<Route path="*" element={<Dashboard />} />
 
-								<Route path="trips">
-									<Route index element={<Trips />} />
-									<Route path="*" element={<Trips />} />
-								</Route>
+							<Route path="customers">
+								<Route index element={<Customers />} />
+								<Route path="profile/:id" element={<CustomerProfile />} />
+							</Route>
 
-								<Route path="drivers">
-									<Route index element={<Drivers />} />
-									<Route path="profile/:id" element={<DriverProfile />} />
-								</Route>
+							<Route path="trips">
+								<Route index element={<Trips />} />
+								<Route path="*" element={<Trips />} />
+							</Route>
 
-								<Route path="staffs">
-									<Route index element={<Staffs />} />
-									<Route
-										path="add-staff/success"
-										element={<AddStaffSuccess />}
-									/>
-								</Route>
+							<Route path="drivers">
+								<Route index element={<Drivers />} />
+								<Route path="profile/:id" element={<DriverProfile />} />
+							</Route>
 
-								<Route path="withdrawals" element={<Withdrawals />} />
-								<Route path="settlements" element={<Settlements />} />
+							<Route path="staffs">
+								<Route index element={<Staffs />} />
+								<Route path="add-staff/success" element={<AddStaffSuccess />} />
+							</Route>
 
-								<Route path="announcements">
-									<Route index element={<Announcements />} />
-									<Route path="create" element={<CreateAnnouncement />} />
-								</Route>
+							<Route path="withdrawals" element={<Withdrawals />} />
+							<Route path="settlements" element={<Settlements />} />
 
-								<Route path="settings">
-									<Route index element={<Settings />} />
-									<Route path="success" element={<CouponSuccess />} />
-								</Route>
+							<Route path="announcements">
+								<Route index element={<Announcements />} />
+								<Route path="create" element={<CreateAnnouncement />} />
+							</Route>
+
+							<Route path="settings">
+								<Route index element={<Settings />} />
+								<Route path="success" element={<CouponSuccess />} />
 							</Route>
 						</Route>
 					</Route>
-				</Routes>
-			</ErrorBoundary>
+				</Route>
+			</Routes>
 		</>
 	);
 };
