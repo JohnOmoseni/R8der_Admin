@@ -35,7 +35,7 @@ function InfoModal({
 	return (
 		<div className="grid place-items-center">
 			<div className="flex-column items-center gap-4">
-				<div className="relative mt-3">
+				<div className="relative">
 					<Icon className="h-fit w-fit" />
 				</div>
 

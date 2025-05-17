@@ -51,7 +51,7 @@ export function Modal({
 					</span>
 				)}
 
-				<AlertDialogHeader>
+				<AlertDialogHeader className={cn(title ? "flex-column" : "hidden")}>
 					<AlertDialogTitle className="text-xl font-bold capitalize">
 						{title}
 					</AlertDialogTitle>

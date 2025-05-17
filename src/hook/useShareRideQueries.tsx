@@ -77,7 +77,7 @@ export function useGetRideById({
 					const trip_status = currentLocationData?.TripStatus;
 					console.log("New location data:", currentLocationData);
 
-					if (trip_status === "IN_PROGRESS") {
+					if (currentLocationData) {
 						const data: any = {
 							coords: {
 								lat: Number(currentLocationData.latitude),
@@ -89,7 +89,7 @@ export function useGetRideById({
 						setError(null);
 					} else {
 						setData(null);
-						setError(new Error("Trip is yet to start"));
+						setError(new Error("Coordinates data not found"));
 					}
 
 					setTripStatus(trip_status);
@@ -129,8 +129,6 @@ export function useGetRideByIdDetails({
 		queryFn: () => tripsApi.getTripById(tripId),
 		select: (data) => {
 			const response = data.data;
-			console.log("TRIP DATA", response);
-
 			const format_response: TripDataType = {
 				trip_status: response?.trip_status,
 				trip_date: response?.trip_date,
@@ -166,7 +164,7 @@ export function useGetRideByIdDetails({
 
 			return format_response;
 		},
-		enabled: !!tripId && enabled,
+		enabled: enabled,
 		// refetchInterval: 5000, // Poll every 5 seconds
 		retry: 3,
 	});

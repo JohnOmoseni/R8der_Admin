@@ -23,8 +23,8 @@ import { useAuth } from "@/context/AuthContext";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
-const ADMIN_PASSWORD = import.meta.env.ADMIN_PASSWORD;
-const MAPBOX_TOKEN = import.meta.env.MAPBOX_ACCESS_TOKEN;
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 function MapboxMap() {
 	const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,9 @@ function MapboxMap() {
 	});
 
 	const [isSigningUser, setIsSigningUser] = useState(false);
-	const [openModal, setOpenModal] = useState(false);
+	const [openModal, setOpenModal] = useState<
+		{ title: string; description: string; type: "alert" | "stop" } | false
+	>(false);
 	const { handleLogin, token } = useAuth();
 
 	const urlParams = new URLSearchParams(window.location.search);
@@ -51,7 +53,6 @@ function MapboxMap() {
 		tripId: tripId,
 		enabled: !!tripId,
 		// tripId: "aadc0087-25c9-4782-ad82-7c4906a9a4d3",
-		// enabled: true,
 	});
 
 	const {
@@ -89,11 +90,14 @@ function MapboxMap() {
 	}, []);
 
 	useEffect(() => {
-		if (
-			(tripStatus === "START_TRIP" || tripStatus === "END_TRIP") &&
-			!openModal
-		) {
-			setOpenModal(true);
+		if (tripStatus === "START_TRIP" || tripStatus === "END_TRIP") {
+			const title = tripStatus === "START_TRIP" ? "Trip started" : "Trip ended";
+			const description =
+				tripStatus === "START_TRIP"
+					? "Driver has started the trip"
+					: "Trip has ended";
+			const type = tripStatus === "START_TRIP" ? "alert" : "stop";
+			setOpenModal({ title, description, type });
 		}
 	}, [tripStatus]);
 
@@ -197,13 +201,15 @@ function MapboxMap() {
 
 			{tripStatus && openModal && (
 				<Modal
-					openModal={Boolean(tripStatus)}
+					openModal={Boolean(openModal)}
 					setOpenModal={() => setOpenModal(false)}
+					hideClose
 					modalStyles="max-w-md flex-column gap-4"
 				>
 					<InfoModal
-						title={""}
-						description={""}
+						title={openModal.title}
+						description={openModal.description}
+						type={openModal.type}
 						onClick={() => setOpenModal(false)}
 					/>
 				</Modal>
