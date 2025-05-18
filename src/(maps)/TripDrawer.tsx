@@ -61,7 +61,7 @@ export function TripDrawer({
 					variant="outline"
 					className="font-semibold pt-2 pb-1.5 shadow drop-shadow-md"
 				>
-					Open Drawer
+					View Ride Details
 				</Button>
 			</DrawerTrigger>
 
