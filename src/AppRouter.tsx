@@ -25,7 +25,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFound from "./layouts/NotFound";
 import AuthProtectedRoute from "./AuthProtectedRoute";
-import MapboxMap from "./(maps)/MapBoxMap";
+// import MapboxMap from "./(maps)/MapBoxMap";
+import MaplibreMap from "./(maps)/(map-libre)/MapLibreMap";
 
 const AppRouter = () => {
 	return (
@@ -36,7 +37,8 @@ const AppRouter = () => {
 					<Route path="/" element={<Navigate to={"/dashboard"} />} />
 
 					<Route path="/share">
-						<Route index element={<MapboxMap />} />
+						<Route index element={<MaplibreMap />} />
+						{/* <Route index element={<MapboxMap />} /> */}
 					</Route>
 
 					<Route

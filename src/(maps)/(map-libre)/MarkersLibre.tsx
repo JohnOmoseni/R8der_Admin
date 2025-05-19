@@ -1,7 +1,7 @@
-import { Marker } from "react-map-gl/mapbox";
+import { Marker } from "@vis.gl/react-maplibre";
 import { Coordinates } from "@/hook/useShareRideQueries";
 import { DestinationIcon } from "@/constants/icons";
-import Pin from "./Pin";
+import Pin from "../Pin";
 
 interface MarkersProps {
 	source?: Coordinates;
@@ -9,7 +9,7 @@ interface MarkersProps {
 	currentLocation?: Coordinates;
 }
 
-function Markers({ source, destination, currentLocation }: MarkersProps) {
+function MarkersLibre({ source, destination, currentLocation }: MarkersProps) {
 	return (
 		<>
 			{source && (
@@ -32,7 +32,7 @@ function Markers({ source, destination, currentLocation }: MarkersProps) {
 				<Marker
 					longitude={currentLocation.lng}
 					latitude={currentLocation.lat}
-					anchor="bottom-left"
+					anchor="bottom"
 				>
 					<Pin size={30} />
 				</Marker>
@@ -41,4 +41,4 @@ function Markers({ source, destination, currentLocation }: MarkersProps) {
 	);
 }
 
-export default Markers;
+export default MarkersLibre;

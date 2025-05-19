@@ -43,7 +43,8 @@ function MapboxMap() {
 	const { handleLogin, token } = useAuth();
 
 	const [searchParams] = useSearchParams();
-	const tripId = searchParams.get("tripId") || "";
+	const tripId =
+		searchParams.get("tripId") || "aadc0087-25c9-4782-ad82-7c4906a9a4d3";
 
 	const {
 		data: rideData,
@@ -148,7 +149,9 @@ function MapboxMap() {
 
 				{routeError && (
 					<div className="absolute bottom-[20px] z-20 left-6 rounded-full px-3 pt-2 pb-1.5 bg-background-100 shadow drop-shadow-md">
-						<p className="text-red-500 text-center">{routeError.message}</p>
+						<p className="text-red-500 text-center font-semibold text-sm">
+							{routeError.message}
+						</p>
 					</div>
 				)}
 
@@ -161,8 +164,8 @@ function MapboxMap() {
 						{...viewState}
 						onMove={(evt) => setViewState(evt.viewState)}
 						style={{ width: "100%", height: "100%" }}
-						// mapStyle="mapbox://styles/mapbox/streets-v9"
-						mapStyle="mapbox://styles/mapbox/streets-v12"
+						mapStyle="mapbox://styles/mapbox/streets-v9"
+						// mapStyle="mapbox://styles/mapbox/streets-v12"
 						mapboxAccessToken={MAPBOX_TOKEN}
 						attributionControl={false}
 						interactiveLayerIds={["3d-buildings", "water"]}
@@ -185,7 +188,7 @@ function MapboxMap() {
 						<NavigationControl position="bottom-right" />
 						<GeolocateControl />
 						<FullscreenControl />
-						<ScaleControl />
+						<ScaleControl position="top-left" />
 					</Map>
 
 					<div className="absolute bottom-[20px] z-20 right-[50%] translate-x-[50%]">
@@ -197,6 +200,27 @@ function MapboxMap() {
 							isLoading={isFetchingRideDetails}
 						/>
 					</div>
+
+					{directionData?.routes[0] && (
+						<div className="absolute bottom-0 left-0 z-20 rounded px-3.5 py-2.5 shadow drop-shadow-sm bg-background-100 flex-column lg:row-flex-start gap-y-1 gap-x-2">
+							<h3 className="font-semibold text-center">
+								Distance:{" "}
+								<span className="font-semibold text-sm">
+									{(directionData.routes[0]?.distance * 0.000621371192).toFixed(
+										2
+									)}{" "}
+									Miles
+								</span>
+							</h3>
+
+							<h3 className="font-semibold text-center">
+								Duration:{" "}
+								<span className="font-semibold text-sm">
+									{(directionData.routes[0]?.duration / 60).toFixed(0)} Min
+								</span>
+							</h3>
+						</div>
+					)}
 				</div>
 			</div>
 
