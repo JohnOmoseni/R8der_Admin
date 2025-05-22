@@ -44,7 +44,7 @@ function MapboxMap() {
 
 	const [searchParams] = useSearchParams();
 	const tripId =
-		searchParams.get("tripId") || "aadc0087-25c9-4782-ad82-7c4906a9a4d3";
+		searchParams.get("tripId") || "e0d4e961-ab08-4890-acf7-b43a274135c1";
 
 	const {
 		data: rideData,
@@ -54,7 +54,6 @@ function MapboxMap() {
 	} = useGetRideById({
 		tripId: tripId,
 		enabled: !!tripId,
-		// tripId: "aadc0087-25c9-4782-ad82-7c4906a9a4d3",
 	});
 
 	const {
@@ -62,10 +61,8 @@ function MapboxMap() {
 		error: rideDetailsError,
 		isLoading: isFetchingRideDetails,
 	} = useGetRideByIdDetails({
-		// tripId: rideData?.tripId || tripId,
-		// enabled: !!rideData?.tripId,
 		tripId: tripId,
-		enabled: !!tripId,
+		enabled: !!tripId && !!token,
 	});
 
 	// Fetch route data
@@ -137,7 +134,6 @@ function MapboxMap() {
 		);
 	}
 
-	console.log("RIDE DETAILS", rideData, rideDetails);
 	return (
 		<>
 			<div className="flex-column relative h-svh w-full">
@@ -170,13 +166,19 @@ function MapboxMap() {
 						attributionControl={false}
 						interactiveLayerIds={["3d-buildings", "water"]}
 						interactive={true}
+						logoPosition="top-left"
 					>
-						{rideDetails && rideData && (
+						{rideDetails && (
 							<>
 								<Markers
 									source={rideDetails.source}
 									destination={rideDetails.destination}
-									currentLocation={rideData.coords}
+									currentLocation={
+										rideData?.coords ?? {
+											lat: rideDetails?.source.lat,
+											lng: rideDetails?.source.lng,
+										}
+									}
 								/>
 								{directionData?.routes && (
 									<MapBoxRoute
@@ -202,7 +204,7 @@ function MapboxMap() {
 					</div>
 
 					{directionData?.routes[0] && (
-						<div className="absolute bottom-0 left-0 z-20 rounded px-3.5 py-2.5 shadow drop-shadow-sm bg-background-100 flex-column lg:row-flex-start gap-y-1 gap-x-2">
+						<div className="absolute bottom-0 left-0 z-20 rounded-tr-md px-3.5 py-2.5 shadow drop-shadow-sm bg-background-100 flex-column lg:row-flex-start gap-y-1 gap-x-2">
 							<h3 className="font-semibold text-center">
 								Distance:{" "}
 								<span className="font-semibold text-sm">
@@ -213,7 +215,7 @@ function MapboxMap() {
 								</span>
 							</h3>
 
-							<h3 className="font-semibold text-center">
+							<h3 className="font-semibold">
 								Duration:{" "}
 								<span className="font-semibold text-sm">
 									{(directionData.routes[0]?.duration / 60).toFixed(0)} Min

@@ -39,6 +39,7 @@ const AppRouter = () => {
 					<Route path="/share">
 						{/* <Route index element={<MaplibreMap />} /> */}
 						<Route index element={<MapboxMap />} />
+						<Route path="*" element={<MapboxMap />} />
 					</Route>
 
 					<Route

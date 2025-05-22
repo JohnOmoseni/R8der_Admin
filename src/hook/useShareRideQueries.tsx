@@ -77,7 +77,7 @@ export function useGetRideById({
 					const trip_status = currentLocationData?.TripStatus;
 					console.log("New location data:", currentLocationData);
 
-					if (currentLocationData) {
+					if (currentLocationData?.latitude && currentLocationData?.longitude) {
 						const data: any = {
 							coords: {
 								lat: Number(currentLocationData.latitude),
@@ -89,7 +89,8 @@ export function useGetRideById({
 						setError(null);
 					} else {
 						setData(null);
-						setError(new Error("Coordinates data not found"));
+						setError(null);
+						// setError(new Error("Coordinates data not found"));
 					}
 
 					setTripStatus(trip_status);
