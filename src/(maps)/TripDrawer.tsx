@@ -34,20 +34,19 @@ export function TripDrawer({
 	isLoading,
 }: DistanceTimeProps) {
 	const info = useMemo(() => {
-		if (!rideDetails) return {};
 		return {
-			trip_status: rideDetails.trip_status,
-			driver_name: rideDetails.driver_name,
-			customer_name: rideDetails.customer_name,
-			avatar: rideDetails.avatar,
-			plate_number: rideDetails.plate_number,
-			car_color: rideDetails.car_color,
-			car: rideDetails.car,
-			time: rideDetails.trip_date
-				? dayjs(rideDetails.trip_date).format("h:mm A")
-				: "-",
-			pickup_address: rideDetails.pick_up,
-			destination_address: rideDetails.destination_address,
+			trip_status: rideDetails?.trip_status,
+			driver_name: rideDetails?.driver_name || "Unknown",
+			customer_name: rideDetails?.customer_name || "Rider",
+			avatar: rideDetails?.avatar || "",
+			plate_number: rideDetails?.plate_number || "N/A",
+			car_color: rideDetails?.car_color || "",
+			car: rideDetails?.car || "Unknow",
+			time: rideDetails?.trip_date
+				? dayjs(rideDetails?.trip_date).format("h:mm A")
+				: "N/A",
+			pickup_address: rideDetails?.pick_up || "No Address",
+			destination_address: rideDetails?.destination_address || "No Address",
 		};
 	}, [rideDetails]);
 

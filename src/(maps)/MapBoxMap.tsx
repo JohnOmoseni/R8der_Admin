@@ -43,8 +43,7 @@ function MapboxMap() {
 	const { handleLogin, token } = useAuth();
 
 	const [searchParams] = useSearchParams();
-	const tripId =
-		searchParams.get("tripId") || "e0d4e961-ab08-4890-acf7-b43a274135c1";
+	const tripId = searchParams.get("tripId") || "";
 
 	const {
 		data: rideData,
@@ -166,7 +165,7 @@ function MapboxMap() {
 						attributionControl={false}
 						interactiveLayerIds={["3d-buildings", "water"]}
 						interactive={true}
-						logoPosition="top-left"
+						logoPosition={directionData?.routes[0] ? "top-left" : "bottom-left"}
 					>
 						{rideDetails && (
 							<>
