@@ -54,7 +54,7 @@ export { default as Useravatar } from "../assets/svgs/user-avatar.svg?react";
 export { default as Userround } from "../assets/svgs/user-round.svg?react";
 export { default as Users } from "../assets/svgs/users.svg?react";
 export { default as User } from "../assets/svgs/user.svg?react";
-export { default as Car } from "../assets/svgs/car.svg?react";
+export { default as CarIcon } from "../assets/svgs/car-icon.svg?react";
 export { default as Dashboard } from "../assets/svgs/dashboard.svg?react";
 export { default as Success } from "../assets/svgs/success.svg?react";
 export { default as Success_2 } from "../assets/svgs/success-green.svg?react";

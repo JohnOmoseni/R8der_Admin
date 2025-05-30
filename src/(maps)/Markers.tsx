@@ -1,7 +1,6 @@
 import { Marker } from "react-map-gl/mapbox";
 import { Coordinates } from "@/hook/useShareRideQueries";
-import { DestinationIcon } from "@/constants/icons";
-import Pin from "./Pin";
+import { CarIcon, DestinationIcon } from "@/constants/icons";
 
 interface MarkersProps {
 	source?: Coordinates;
@@ -34,7 +33,8 @@ function Markers({ source, destination, currentLocation }: MarkersProps) {
 					latitude={currentLocation.lat}
 					anchor="bottom-left"
 				>
-					<Pin size={30} />
+					{/* <Pin size={30} /> */}
+					<CarIcon className="w-[25px]" />
 				</Marker>
 			)}
 		</>
