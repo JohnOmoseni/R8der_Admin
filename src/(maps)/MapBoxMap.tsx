@@ -43,7 +43,8 @@ function MapboxMap() {
 	const { handleLogin, token } = useAuth();
 
 	const [searchParams] = useSearchParams();
-	const tripId = searchParams.get("tripId") || "";
+	const tripId =
+		searchParams.get("tripId") || "e0d4e961-ab08-4890-acf7-b43a274135c1";
 
 	const {
 		data: rideData,
@@ -179,7 +180,7 @@ function MapboxMap() {
 						attributionControl={false}
 						interactiveLayerIds={["3d-buildings", "water"]}
 						interactive={true}
-						logoPosition={directionData?.routes[0] ? "top-left" : "bottom-left"}
+						logoPosition={"bottom-left"}
 					>
 						{rideDetails && (
 							<>
@@ -215,28 +216,32 @@ function MapboxMap() {
 							isLoading={isFetchingRideDetails}
 						/>
 					</div>
+				</div>
 
-					{directionData?.routes[0] && (
-						<div className="absolute bottom-0 left-0 z-20 rounded-tr-md px-3.5 py-2.5 shadow drop-shadow-sm bg-background-100 flex-column lg:row-flex-start gap-y-1 gap-x-2">
-							<h3 className="font-semibold text-center">
+				{directionData?.routes[0] && (
+					<div className="fixed top-1/2 -translate-y-1/2 -left-[54px] rotate-[90deg] z-20 rounded-t-md shadow drop-shadow-sm w-[155px] h-[48px] overflow-hidden">
+						<div className="size-full px-3 bg-background py-2 flex-column gap-y-1 gap-x-2">
+							<h3 className="font-semibold truncate text-xs">
 								Distance:{" "}
-								<span className="font-semibold text-sm">
-									{(directionData.routes[0]?.distance * 0.000621371192).toFixed(
-										2
-									)}{" "}
+								<span className="font-semibold">
+									{directionData.routes[0]?.distance
+										? (
+												directionData.routes[0]?.distance * 0.000621371192
+										  ).toFixed(2)
+										: "N/A"}{" "}
 									Miles
 								</span>
 							</h3>
 
-							<h3 className="font-semibold">
+							<h3 className="font-semibold truncate text-xs">
 								Duration:{" "}
-								<span className="font-semibold text-sm">
+								<span className="font-semibold">
 									{(directionData.routes[0]?.duration / 60).toFixed(0)} Min
 								</span>
 							</h3>
 						</div>
-					)}
-				</div>
+					</div>
+				)}
 			</div>
 
 			{tripStatus && openModal && (
