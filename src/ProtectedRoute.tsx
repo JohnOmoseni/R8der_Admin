@@ -11,9 +11,10 @@ function ProtectedRoute({ children }: PropsWithChildren) {
 	useLayoutEffect(() => {
 		if (user === null || token === null) {
 			navigate(routes.LOGIN, { replace: true });
-		} else if (!user?.otpVerified && !user?.isAdminRoute && token) {
-			navigate(routes.VERIFY_OTP, { replace: true });
 		}
+		// else if (!user?.otpVerified && !user?.isAdminRoute && token) {
+		// 	navigate(routes.VERIFY_OTP, { replace: true });
+		// }
 	}, [navigate, user, token]);
 
 	if (user === undefined) {

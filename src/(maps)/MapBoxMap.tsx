@@ -43,7 +43,8 @@ function MapboxMap() {
 	const { handleLogin, token } = useAuth();
 
 	const [searchParams] = useSearchParams();
-	const tripId = searchParams.get("tripId") || "";
+	const tripId =
+		searchParams.get("tripId") || "e0d4e961-ab08-4890-acf7-b43a274135c1";
 
 	const {
 		data: rideData,
@@ -99,7 +100,7 @@ function MapboxMap() {
 		}
 	}, [tripStatus]);
 
-	// Center map on route
+	// Center map on route initially
 	useEffect(() => {
 		if (directionData?.routes?.[0] && mapRef.current) {
 			const coords = directionData.routes[0].geometry.coordinates;
@@ -110,6 +111,20 @@ function MapboxMap() {
 			mapRef.current.fitBounds(bounds, { padding: 50 });
 		}
 	}, [directionData]);
+
+	// Dynamically follow and zoom to car’s current location
+	useEffect(() => {
+		if (rideData?.coords && mapRef.current) {
+			const { lat, lng } = rideData.coords;
+			mapRef.current.flyTo({
+				center: [lng, lat],
+				zoom: 14, // Zoom in to show car movement clearly
+				speed: 1.2, // Smooth transition speed
+				curve: 1, // Smooth curve for zoom
+				essential: true,
+			});
+		}
+	}, [rideData?.coords]);
 
 	if (isLoading || isSigningUser) {
 		return (

@@ -13,15 +13,14 @@ function MapBoxRoute({ coordinates }: MapBoxRouteProps) {
 			coordinates,
 		},
 		properties: {},
-		// { name: "Route", id: "route1" }
 	};
 
 	return (
 		<Source type="geojson" data={geojson}>
 			<Layer
 				type="line"
-				layout={{ "line-join": "round", "line-cap": "square" }}
-				paint={{ "line-color": "#0462d4", "line-width": 3 }}
+				layout={{ "line-join": "round", "line-cap": "round" }}
+				paint={{ "line-color": "#0462d4", "line-width": 5 }}
 			/>
 		</Source>
 	);
