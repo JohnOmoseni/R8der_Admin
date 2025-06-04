@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { TripDrawer } from "./TripDrawer";
 import {
+	Coordinates,
 	useGetRideById,
 	useGetRideByIdDetails,
 	useGetRoute,
 } from "@/hook/useShareRideQueries";
 import { Modal } from "@/components/ui/components/Modal";
-import InfoModal from "./InfoModal";
-import Markers from "./Markers";
-import MapBoxRoute from "./RouteMap";
-import mapboxgl from "mapbox-gl";
-import FallbackLoader from "@/components/fallback/FallbackLoader";
 
 import Map, {
 	FullscreenControl,
@@ -22,6 +18,11 @@ import type { MapRef } from "react-map-gl/mapbox";
 import { useAuth } from "@/context/AuthContext";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useSearchParams } from "react-router-dom";
+import InfoModal from "./InfoModal";
+import Markers from "./Markers";
+import MapBoxRoute from "./RouteMap";
+import mapboxgl from "mapbox-gl";
+import FallbackLoader from "@/components/fallback/FallbackLoader";
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -67,11 +68,18 @@ function MapboxMap() {
 
 	// Fetch route data
 	const { data: directionData, error: routeError } = useGetRoute({
-		source: rideDetails?.source,
+		source: rideData?.coords || rideDetails?.source,
 		destination: rideDetails?.destination,
-		enabled: !!rideDetails?.source && !!rideDetails?.destination,
+		enabled: !!rideData?.coords && !!rideDetails?.destination,
 	});
 
+	// State for smooth interpolation and rotation
+	const [animatedLocation, setAnimatedLocation] = useState<Coordinates | null>(
+		null
+	);
+	const prevLocation = useRef<Coordinates | null>(null);
+
+	// login user
 	useEffect(() => {
 		const loginUser = async () => {
 			if (!ADMIN_EMAIL || !ADMIN_PASSWORD || token) return;
@@ -112,6 +120,35 @@ function MapboxMap() {
 		}
 	}, [directionData]);
 
+	// Smoothly animate marker position
+	useEffect(() => {
+		if (!rideData?.coords) return;
+
+		const currentLocation = rideData.coords;
+
+		const steps = 60; // Number of animation steps
+		const start = animatedLocation || currentLocation;
+		const deltaLat = (currentLocation.lat - start.lat) / steps;
+		const deltaLng = (currentLocation.lng - start.lng) / steps;
+
+		let step = 0;
+		const interval = setInterval(() => {
+			step++;
+			if (step >= steps) {
+				setAnimatedLocation(currentLocation);
+				clearInterval(interval);
+			} else {
+				setAnimatedLocation({
+					lat: start.lat + deltaLat * step,
+					lng: start.lng + deltaLng * step,
+				});
+			}
+		}, 16); // ~60 FPS (1000ms / 60 = 16ms per frame)
+
+		prevLocation.current = currentLocation;
+		return () => clearInterval(interval);
+	}, [rideData?.coords]);
+
 	// Dynamically follow and zoom to car’s current location
 	useEffect(() => {
 		if (rideData?.coords && mapRef.current) {
@@ -124,7 +161,7 @@ function MapboxMap() {
 				essential: true,
 			});
 		}
-	}, [rideData?.coords]);
+	}, [rideData]);
 
 	if (isLoading || isSigningUser) {
 		return (
@@ -188,7 +225,7 @@ function MapboxMap() {
 									source={rideDetails.source}
 									destination={rideDetails.destination}
 									currentLocation={
-										rideData?.coords ?? {
+										animatedLocation ?? {
 											lat: rideDetails?.source.lat,
 											lng: rideDetails?.source.lng,
 										}

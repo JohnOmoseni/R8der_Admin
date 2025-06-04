@@ -20,7 +20,7 @@ function MapBoxRoute({ coordinates }: MapBoxRouteProps) {
 			<Layer
 				type="line"
 				layout={{ "line-join": "round", "line-cap": "round" }}
-				paint={{ "line-color": "#0462d4", "line-width": 5 }}
+				paint={{ "line-color": "#0462d4", "line-width": 3 }}
 			/>
 		</Source>
 	);
