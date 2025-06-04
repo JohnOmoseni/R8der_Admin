@@ -41,11 +41,11 @@ function MapboxMap() {
 	const [openModal, setOpenModal] = useState<
 		{ title: string; description: string; type: "alert" | "stop" } | false
 	>(false);
-	const { handleLogin, token } = useAuth();
+	const { handleLogin, token, user } = useAuth();
 
 	const [searchParams] = useSearchParams();
 	const tripId =
-		searchParams.get("tripId") || "e0d4e961-ab08-4890-acf7-b43a274135c1";
+		searchParams.get("tripId") || "0ec4d009-f1d6-4b7d-b878-5dfad5fda280";
 
 	const {
 		data: rideData,
@@ -82,7 +82,7 @@ function MapboxMap() {
 	// login user
 	useEffect(() => {
 		const loginUser = async () => {
-			if (!ADMIN_EMAIL || !ADMIN_PASSWORD || token) return;
+			if (!ADMIN_EMAIL || !ADMIN_PASSWORD || token || user) return;
 			setIsSigningUser(true);
 			try {
 				await handleLogin(ADMIN_EMAIL, ADMIN_PASSWORD, true);
