@@ -64,8 +64,8 @@ export { default as Wallet } from "../assets/svgs/wallet.svg?react";
 export { default as Logo } from "../assets/svgs/Logo.svg?react";
 export { default as Announcement } from "../assets/svgs/announcement.svg?react";
 
-export { default as DestinationIcon } from "../assets/svgs/destination-icon.svg?react";
 export { default as SourceIcon } from "../assets/svgs/source-icon.svg?react";
+export { default as DestinationIcon } from "../assets/svgs/destination-icon.svg?react";
 export { default as StartCircle } from "../assets/svgs/start-circle.svg?react";
 export { default as EndCircle } from "../assets/svgs/end-circle.svg?react";
 

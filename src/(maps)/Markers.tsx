@@ -1,13 +1,13 @@
 import { Marker } from "react-map-gl/mapbox";
 import { Coordinates } from "@/hook/useShareRideQueries";
-import { DestinationIcon } from "@/constants/icons";
+import { SourceIcon } from "@/constants/icons";
 interface MarkersProps {
 	source?: Coordinates;
 	destination?: Coordinates;
 	currentLocation?: Coordinates;
 }
 
-const CarIcon = ({ rotation = 0 }: { rotation?: number }) => (
+const CarIcon = () => (
 	<svg
 		width="30"
 		height="30"
@@ -15,7 +15,6 @@ const CarIcon = ({ rotation = 0 }: { rotation?: number }) => (
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 		style={{
-			transform: `rotate(${rotation}deg)`,
 			transition: "transform 0.3s ease-in-out",
 		}}
 	>
@@ -27,48 +26,16 @@ const CarIcon = ({ rotation = 0 }: { rotation?: number }) => (
 );
 
 function Markers({ source, destination, currentLocation }: MarkersProps) {
-	// @ts-ignore
-	const calculateBearing = (start: Coordinates, end: Coordinates) => {
-		const toRadians = (deg: number) => (deg * Math.PI) / 180;
-		const toDegrees = (rad: number) => (rad * 180) / Math.PI;
-
-		const lat1 = toRadians(start.lat);
-		const lng1 = toRadians(start.lng);
-		const lat2 = toRadians(end.lat);
-		const lng2 = toRadians(end.lng);
-
-		const dLng = lng2 - lng1;
-		const y = Math.sin(dLng) * Math.cos(lat2);
-		const x =
-			Math.cos(lat1) * Math.sin(lat2) -
-			Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
-		const bearing = toDegrees(Math.atan2(y, x));
-		return (bearing + 360) % 360; // Normalize to 0-360 degrees
-	};
-
 	return (
 		<>
 			{source && (
-				<Marker
-					longitude={source.lng}
-					latitude={source.lat}
-					anchor="bottom"
-				></Marker>
+				<Marker longitude={source.lng} latitude={source.lat} anchor="bottom">
+					<SourceIcon className="w-fit h-9" />
+				</Marker>
 			)}
 			{destination && (
-				<Marker longitude={destination.lng} latitude={destination.lat}>
-					<DestinationIcon className="size-9" />
-				</Marker>
+				<Marker longitude={destination.lng} latitude={destination.lat} />
 			)}
-			{/* {currentLocation && (
-				<Marker
-					longitude={currentLocation.lng}
-					latitude={currentLocation.lat}
-					anchor="bottom-left"
-				>
-				</Marker>
- 				)} 
- 			*/}
 
 			{currentLocation && (
 				<Marker

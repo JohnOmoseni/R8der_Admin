@@ -147,18 +147,18 @@ export function useGetRideByIdDetails({
 				avatar: response?.driver_profile_picture || "",
 				source: {
 					lat: response?.pick_up_location
-						? response?.pick_up_location?.split(",")[0]
+						? parseFloat(response?.pick_up_location?.split(",")[0])
 						: 0.0,
 					lng: response?.pick_up_location
-						? response?.pick_up_location?.split(",")[1]
+						? parseFloat(response?.pick_up_location?.split(",")[1])
 						: 0.0,
 				},
 				destination: {
 					lat: response?.destination_location
-						? response?.destination_location?.split(",")[0]
+						? parseFloat(response?.destination_location?.split(",")[0])
 						: 0.0,
-					lng: response?.pick_up_location
-						? response?.pick_up_location?.split(",")[1]
+					lng: response?.destination_location
+						? parseFloat(response?.destination_location?.split(",")[1])
 						: 0.0,
 				},
 			};
@@ -166,7 +166,6 @@ export function useGetRideByIdDetails({
 			return format_response;
 		},
 		enabled: enabled,
-		// refetchInterval: 5000, // Poll every 5 seconds
 		retry: 3,
 	});
 }

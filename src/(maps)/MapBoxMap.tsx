@@ -16,13 +16,14 @@ import Map, {
 } from "react-map-gl/mapbox";
 import type { MapRef } from "react-map-gl/mapbox";
 import { useAuth } from "@/context/AuthContext";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { useSearchParams } from "react-router-dom";
+
 import InfoModal from "./InfoModal";
 import Markers from "./Markers";
 import MapBoxRoute from "./RouteMap";
 import mapboxgl from "mapbox-gl";
 import FallbackLoader from "@/components/fallback/FallbackLoader";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -45,7 +46,7 @@ function MapboxMap() {
 
 	const [searchParams] = useSearchParams();
 	const tripId =
-		searchParams.get("tripId") || "0ec4d009-f1d6-4b7d-b878-5dfad5fda280";
+		searchParams.get("tripId") || "aad75df5-f617-406c-8203-d7fc4cf640b0";
 
 	const {
 		data: rideData,
@@ -66,18 +67,18 @@ function MapboxMap() {
 		enabled: !!tripId && !!token,
 	});
 
+	// State for smooth interpolation and rotation
+	const [animatedLocation, setAnimatedLocation] = useState<Coordinates | null>(
+		null
+	);
+	const prevLocation = useRef<Coordinates | null>(null);
+
 	// Fetch route data
 	const { data: directionData, error: routeError } = useGetRoute({
 		source: rideData?.coords || rideDetails?.source,
 		destination: rideDetails?.destination,
 		enabled: !!rideData?.coords && !!rideDetails?.destination,
 	});
-
-	// State for smooth interpolation and rotation
-	const [animatedLocation, setAnimatedLocation] = useState<Coordinates | null>(
-		null
-	);
-	const prevLocation = useRef<Coordinates | null>(null);
 
 	// login user
 	useEffect(() => {
@@ -96,6 +97,7 @@ function MapboxMap() {
 		loginUser();
 	}, []);
 
+	// Trip status changes (e.g., show modal and zoom in on trip start)
 	useEffect(() => {
 		if (tripStatus === "START_TRIP" || tripStatus === "END_TRIP") {
 			const title = tripStatus === "START_TRIP" ? "Trip started" : "Trip ended";
@@ -105,6 +107,16 @@ function MapboxMap() {
 					: "Trip has ended";
 			const type = tripStatus === "START_TRIP" ? "alert" : "stop";
 			setOpenModal({ title, description, type });
+		}
+
+		if (tripStatus === "START_TRIP" && rideData?.coords && mapRef.current) {
+			mapRef.current.flyTo({
+				center: [rideData.coords.lng, rideData.coords.lat],
+				zoom: 14, // Zoom in to 14 when trip starts
+				speed: 1.2,
+				curve: 1,
+				essential: true,
+			});
 		}
 	}, [tripStatus]);
 
@@ -149,19 +161,21 @@ function MapboxMap() {
 		return () => clearInterval(interval);
 	}, [rideData?.coords]);
 
-	// Dynamically follow and zoom to car’s current location
+	// Dynamically follow car without resetting zoom unless necessary
 	useEffect(() => {
-		if (rideData?.coords && mapRef.current) {
-			const { lat, lng } = rideData.coords;
+		if (animatedLocation && mapRef.current) {
+			const currentZoom = mapRef.current.getZoom();
+			const targetZoom = 14; // Desired zoom level
+
 			mapRef.current.flyTo({
-				center: [lng, lat],
-				zoom: 14, // Zoom in to show car movement clearly
+				center: [animatedLocation.lng, animatedLocation.lat],
+				zoom: currentZoom < targetZoom ? targetZoom : currentZoom,
 				speed: 1.2, // Smooth transition speed
 				curve: 1, // Smooth curve for zoom
 				essential: true,
 			});
 		}
-	}, [rideData]);
+	}, [animatedLocation]);
 
 	if (isLoading || isSigningUser) {
 		return (
@@ -212,12 +226,11 @@ function MapboxMap() {
 						onMove={(evt) => setViewState(evt.viewState)}
 						style={{ width: "100%", height: "100%" }}
 						mapStyle="mapbox://styles/mapbox/streets-v9"
-						// mapStyle="mapbox://styles/mapbox/streets-v12"
 						mapboxAccessToken={MAPBOX_TOKEN}
 						attributionControl={false}
 						interactiveLayerIds={["3d-buildings", "water"]}
 						interactive={true}
-						logoPosition={"bottom-left"}
+						logoPosition="bottom-left"
 					>
 						{rideDetails && (
 							<>
